@@ -1,16 +1,16 @@
 # Special Interest Groups
 
-csp.secureserver.net
+- csp.secureserver.net
 
-phoenyx.net
+- phoenyx.net
 
-silverseams.com
+- silverseams.com
 
-centraloffice.com
+- centraloffice.com
 
-electroniccreations.com
+- electroniccreations.com
 
-s.exunoplures.org
+- s.exunoplures.org
 
 Notes: These are the web addresses of the special interest group
 
@@ -18,7 +18,8 @@ Notes: These are the web addresses of the special interest group
 
 ### Vuln Machine IPs
 
-1.) Earth=207 (Apache, Ubuntu 24.04)
+#### 1.)  Earth=207 (Apache, Ubuntu 24.04)
+
      Host: earth.local, terratest.earth.local,
      earth.local/stateOrProvinceName=Sapce
 
@@ -28,11 +29,16 @@ Notes: These are the web addresses of the special interest group
      
      --- In addition, theres an admin login page that has a redirect to get to. No current paths forward there yet, but I think the answer lies in the messages.
 
-2.) Marlinspike=55 (Apache, Ubuntu 16.04)
+#### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
-      --- Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the lab at the same time as Porteus. It has a wordpress installation at /secret/, which is interesting, as it is a very common attack vector. It is likely that there is something hidden in the wordpress installation, or that there is a vulnerability in the wordpress installation that can be exploited. The fact that it is called secret is also interesting, as it is likely a hint that there is something hidden in the wordpress installation. The fact that it is a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress installation that can be exploited. I know for a fact I need to path traversal it. Its on the list.
+    --- Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the lab at the same time as Porteus. It has a wordpress installation at /secret/, which is interesting, as it is a very common attack vector. It is likely that there is something hidden in the wordpress installation, or that there is a vulnerability in the wordpress installation that can be exploited. The fact that it is called secret is also interesting, as it is likely a hint that there is something hidden in the wordpress installation. The fact that it is a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress installation that can be exploited. I know for a fact I need to path traversal it. Its on the list.
 
-3.) Porteus=157 (Python3 HTTP Web Server)
+     --- So Marlin is a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA outdated. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked something up k. cool. The guest account is extremely interesting to its level of being able to traverse the system files. There must be a symbolic link or authoratative issue going on here. The wordpress installation is key, because if we can upload and traverse its source code directly through the guest account, surely we will find the break like we did Porteus. The fact that it is a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress installation that can be exploited. 
+
+    --- The Guest Bin:
+     It has mysql. Vmwarectrl, which is interesting considering I don't know what part of the system the guest account is. It could honestly be trapped inside of a vm. Its barely doing anything in Proxmox's eyes. So we first have to pivot through a database, outside of a VM, just to get root. I like it. Also, old printer drivers if i recall correctly have vulnerabilities with their data. So hp-config_usb_printer could be an entry point as well. The right malware and we're in.
+
+#### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
      --- Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They sit at 80 and 31337 respectively. 
 
@@ -43,10 +49,9 @@ Notes: These are the web addresses of the special interest group
 -- Assets Directory: So I obviously kept following the white rabbit, cause who wouldn't? Guy's in a hurry. Hidden inside is .gitkeep. Most likely this started as a github repository and then was loaded onto the vm. Thats awesome! Gitkeep however is empty.
 
 -- The main javascript file:
-     'use strict';
 
+'use strict';
 (function ($) {
-
 	/**
    * [isMobile description]
    * @type {Object}
@@ -74,8 +79,6 @@ Notes: These are the web addresses of the special interest group
 	window.isIE = /(MSIE|Trident\/|Edge\/)/i.test(navigator.userAgent);
 	window.windowHeight = window.innerHeight;
 	window.windowWidth = window.innerWidth;
-
-
 	if ($('#fss-bg').length) {
 		var initialise = function initialise() {
 			scene.add(mesh);
@@ -83,18 +86,15 @@ Notes: These are the web addresses of the special interest group
 			container.appendChild(renderer.element);
 			window.addEventListener('resize', resize);
 		};
-
 		var resize = function resize() {
 			renderer.setSize(container.offsetWidth, container.offsetHeight);
 		};
-
 		var animate = function animate() {
 			now = Date.now() - start;
 			light.setPosition(300 * Math.sin(now * 0.001), 200 * Math.cos(now * 0.0005), 60);
 			renderer.render(scene);
 			requestAnimationFrame(animate);
 		};
-
 		var container = $('#fss-bg')[0];
 		var renderer = new FSS.CanvasRenderer();
 		var scene = new FSS.Scene();
@@ -104,12 +104,10 @@ Notes: These are the web addresses of the special interest group
 		var mesh = new FSS.Mesh(geometry, material);
 		var now,
 			    start = Date.now();
-
 		initialise();
 		resize();
 		animate();
 	}
-
 	var default_effect = {
 		"particles": {
 			"number": {
@@ -218,6 +216,7 @@ Notes: These are the web addresses of the special interest group
 				}
 			}
 		},
+		
 		"retina_detect": true
 	};
 	var star_effect = {
@@ -330,7 +329,6 @@ Notes: These are the web addresses of the special interest group
 		},
 		"retina_detect": true
 	};
-
 	var snow_effect = {
 		"particles": {
 			"number": {
@@ -371,7 +369,7 @@ Notes: These are the web addresses of the special interest group
 			"size": {
 				"value": 10,
 				"random": true,
-				"anim": {
+				"anim": {wa
 					"enable": false,
 					"speed": 40,
 					"size_min": 0.1,
@@ -441,7 +439,6 @@ Notes: These are the web addresses of the special interest group
 		},
 		"retina_detect": true
 	};
-
 	var bubble_effect = {
 		"particles": {
 			"number": {
@@ -550,9 +547,9 @@ Notes: These are the web addresses of the special interest group
 				}
 			}
 		},
+
 		"retina_detect": true
 	};
-
 	var nasa_effect = {
 		"particles": {
 			"number": {
@@ -759,7 +756,28 @@ Notes: These are the web addresses of the special interest group
 			self.html(event.strftime(_strf));
 		}).removeClass("hide");
 	});
-	
  })(jQuery);
 
 how very intriguing. After walking the available attack surface, the assets folder's other directories and listings, I have to absolutely commend the creator. Very organized, very good, very SIMPLE code that does wonders. Now to figure out how to break it. We need root for this box to be solved. 
+
+interestingly enough the program is also malformed in that it is awaiting a "retina_scan" variable that is never declared. I wonder what happens when we put up the variable and serve it? the script its specifically calling to, according to md linting, is http://157:31337/assets/js/particles.js. So if we can serve a modified version of the particles.js file, we can likely get the variable declared and then see what happens. This is likely the key to the box, as it is the only thing that is not working as intended. The fact that it is awaiting a variable that is never declared is also interesting, as it is likely a hint that there is something hidden in the particles.js file that is related to the retina_scan variable.
+
+     ==Vendors listed in 105:31337/assets/vendors/:
+	 _jquery
+	 Bootstrap
+	 flat-surface-shader/
+	  \  fss.min.js
+     particles.js/
+      \	 particles.js
+	 quietflow/
+	  \  quietflow.min.js
+	 swiper/
+	  \  swiper.min.js
+	 vegas/
+	  \  vegas.min.js
+	 waterpipe/
+	  \  waterpipe.min.js
+	 mb.YTPlayer/
+	  \  jquery.mb.YTPlayer.min.js
+
+I'm learning alot about javascript for someone who mains python and dabbled in html/css.

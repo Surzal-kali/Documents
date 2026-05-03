@@ -28,20 +28,16 @@ def somerandomcode1():
     ori = Or()
     print("[*] Welcome Home")
 
+    capture=psi.start_sniffing(1000, 600, f"ip.addr == {TARGET_IP} and tcp.port == 80", "http_traffic.pcap")
+    psi.analyze_capture("http_traffic.pcap", "http_traffic.txt")
+    http_traffic = psi.parse_http_traffic("http_traffic.txt")
+    for request in http_traffic:
+        print(f"[*] HTTP Request: {request['method']} {request['url']}")
+        print(f"[*] Headers: {request['headers']}")
+        print(f"[*] Body: {request['body']}")
+        print("-" * 50)
 
-    options=pfi.options_request(f"http://{TARGET_IP}/secret/")
-    print("[*] Performing GET request")
-    response = pfi.get_request(f"http://{TARGET_IP}/secret/")
-    print(f"[*] GET response: {response}")
-    print("[*] Performing POST request")
-    response = pfi.post_request(f"http://{TARGET_IP}/secret/", data={"key": "value"})
-    print(f"[*] POST response: {response}")
-    print("[*] Performing PUT request")
-    response = pfi.put_request(f"http://{TARGET_IP}/secret/resource", data={"key": "updated_value"})
-    print(f"[*] PUT response: {response}")
-    print("[*] Performing DELETE request")
-    response = pfi.delete_request(f"http://{TARGET_IP}/secret/resource")
-    print(f"[*] DELETE response: {response}")
+
 
 if __name__ == "__main__":  
     somerandomcode1()
