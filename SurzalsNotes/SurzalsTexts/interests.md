@@ -804,7 +804,7 @@ Notes: These are the web addresses of the special interest group
 
 how very intriguing. After walking the available attack surface, the assets folder's other directories and listings, I have to absolutely commend the creator. Very organized, very good, very SIMPLE code that does wonders. Now to figure out how to break it. We need root for this box to be solved. 
 
-     ==Vendors listed in 105:31337/assets/vendors/:
+     Vendors listed in 105:31337/assets/vendors/:
 	 _jquery
 	 Bootstrap
 	 flat-surface-shader/
