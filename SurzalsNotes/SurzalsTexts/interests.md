@@ -21,12 +21,20 @@ Notes: These are the web addresses of the special interest group
 1.) Earth=207 (Apache, Ubuntu 24.04)
      Host: earth.local, terratest.earth.local,
      earth.local/stateOrProvinceName=Sapce
-     earth is an interesting one, as it only answers to "earth.local", so it specifically is only through mdns. Additional commen name is terratest.earth.local, which is interesting, as it is a subdomain of earth.local, but it does not resolve to the same IP address. It is likely that this is a red herring, but it is interesting nonetheless. The stateOrProvinceName=Space is also interesting, as it is a reference to the fact that the machine is in space, and that it is a test machine for space. Ive had this box for an entire college semester and only had brief glimpses into its inner workings.
+
+     --- earth is an interesting one, as it only answers to "earth.local", so it specifically is only through mdns. Additional commen name is terratest.earth.local, which is interesting, as it is a subdomain of earth.local, but it does not resolve to the same IP address. It is likely that this is a red herring, but it is interesting nonetheless. The stateOrProvinceName=Space is also interesting, as it is a reference to the fact that the machine is in space, and that it is a test machine for space. Ive had this box for an entire college semester and only had brief glimpses into its inner workings.
+
+     ---Alot of my knowledge on earth comes from simple MitM attacks with wireshark, and IDE capture_packets. It obviously is LAN bound only. Unfortunately, while "Earths Secure Messaging Service" is available, its only through proxying with burp or changing the headers manually in the IDE. The fact that it is called "Earths Secure Messaging Service" is interesting, as it is likely a hint that there is something hidden in the messaging service. The fact that it is secure is also interesting. I recall at the beginning of the semester it encrypts the message with the "name" of the sender in the form. However I have not been able to parse the 3 past messages yet, as I don't remember the encryption method used.
+     
+     --- In addition, theres an admin login page that has a redirect to get to. No current paths forward there yet, but I think the answer lies in the messages.
 
 2.) Marlinspike=55 (Apache, Ubuntu 16.04)
-     Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the lab at the same time as Porteus.
 
-3.) Porteus=157 (Python3 HTTP Web Server) Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They sit at 80 and 31337 respectively. 
+      --- Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the lab at the same time as Porteus. It has a wordpress installation at /secret/, which is interesting, as it is a very common attack vector. It is likely that there is something hidden in the wordpress installation, or that there is a vulnerability in the wordpress installation that can be exploited. The fact that it is called secret is also interesting, as it is likely a hint that there is something hidden in the wordpress installation. The fact that it is a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress installation that can be exploited. I know for a fact I need to path traversal it. Its on the list.
+
+3.) Porteus=157 (Python3 HTTP Web Server)
+
+     --- Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They sit at 80 and 31337 respectively. 
 
 -- 31337 is very interesting, as it has a service tag inside of a css class. it reads Then you'll see, that it is not the spoon that bends, it is only yourself. The fancy graphic in the background is actually just [https://youtu.be/luCYT7Qx1oA]. Funny right? The obvious star in the lineup. In addition, both web pages of 80 and 31337 have a countdown timer to the announcement date of Matrix 4.
 

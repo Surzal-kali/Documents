@@ -143,7 +143,6 @@ In a web cache poisoning attack, an attacker crafts a malicious request that is 
 
 DOM-based XPath-injection vulnerabilities arise when a script incorporates attacker-controllable data into an XPath query. An attacker may be able to use this behavior to construct a URL that, if visited by another application user, will trigger the execution of an arbitrary XPath query, which could cause different data to be retrieved and processed by the website.
 
-
 ## HTTP Options per Method
 
 1.) GET: This method is used to retrieve data from a server. It is typically used for fetching web pages, images, and other resources. GET requests can be cached and remain in the browser history.
