@@ -30,7 +30,8 @@ Notes: These are the web addresses of the special interest group
     and that it is a test machine for space. Ive had this box for an entire college semester and only had brief
     glimpses into its inner workings.
 
-	--- A brief revelation. It uses a multicast ipv6 address to resolve the "Earth's Secure Messaging Service" webpage, while reserving the Ipv4 address for the simple Fedora Web Server test page.
+	--- A brief revelation. It uses a multicast ipv6 address to resolve the "Earth's Secure Messaging Service" webpage,
+	while reserving the Ipv4 address for the simple Fedora Web Server test page.
 
     ---Alot of my knowledge on earth comes from simple MitM attacks with wireshark, and IDE capture_packets. It
     obviously is LAN bound only. Unfortunately, while "Earths Secure Messaging Service" is available, its only through
