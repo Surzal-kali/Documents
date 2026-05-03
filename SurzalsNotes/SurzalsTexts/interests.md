@@ -73,7 +73,10 @@ Notes: These are the web addresses of the special interest group
      --- Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They
 	 sit at 80 and 31337 respectively. 
 
-	-- 31337 is very interesting, as it has a service tag inside of a css class. it reads Then you'll see, that it is not the spoon that bends, it is only yourself. The fancy graphic in the background is actually just [https://youtu.be/luCYT7Qx1oA]. Funny right? The obvious star in the lineup. In addition, both web pages of 80 and 31337 have a countdown timer to the announcement date of Matrix 4.
+	-- 31337 is very interesting, as it has a service tag inside of a css class. it reads Then you'll see, that it is not 
+	the spoon that bends, it is only yourself. The fancy graphic in the background is actually just [https://youtu.be/
+	luCYT7Qx1oA]. Funny right? The obvious star in the lineup. In addition, both web pages of 80 and 31337 have a 
+	countdown timer to the announcement date of Matrix 4.
 
 	-- 80 is also interesting. "Follow the White Rabbit" followed by "welcome to the real world, Neo. I'm glad you're 
 	here.". If you follow the white rabbit, i.e. inspect the webpage and open the exact html element of the center 
