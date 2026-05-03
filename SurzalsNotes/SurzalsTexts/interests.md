@@ -47,23 +47,18 @@
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
 
-		--- Marlinspike has a potentially interesting folder, /secret/ a wordpress installation. Secret does not 
-		seem to have anything on it's surface, but path traversal is likely. Its brand new to the 
-		lineup, and was imported into the
-		lab at the same time as Porteus. It is likely that there is something hidden in the
-		wordpress installation, or that there is a 
-		vulnerability in the wordpress installation that can be exploited. The fact that it is 
-		called secret is also 
-		interesting, as it is likely a hint that there is something hidden in the wordpress 
-		installation. The fact that it is 
-		a wordpress installation is also interesting, as it is likely that there are 
-		vulnerabilities in the wordpress 
-		installation that can be exploited. I know for a fact I need to path traversal it. Its 
-		on the list. 
-		Interestingly enough, the box is a simple wordpress server, and all you have to work 
-		with in the guest account is a text editor. So its obvious custom scripting is a must 
-		to take full advantage of the box. I have to write my catchingshells.py in the box, 
-		execute it, and execute the listening command here. FUN.
+	--- Marlinspike has a potentially interesting folder, /secret/ a wordpress installation. Secret does not 
+	seem to have anything on it's surface, but path traversal is likely. Its brand new to the 
+	lineup, and was imported into the lab at the same time as Porteus. 
+	It is likely that there is something hidden in the wordpress installation, or that there is a 
+	vulnerability in the wordpress installation that can be exploited. The fact that it is 
+	called secret is also interesting, as it is likely a hint that there is something hidden in the wordpress 
+	installation. The fact that it is a wordpress installation is also interesting, as it is likely that there are 
+	vulnerabilities in the wordpress installation that can be exploited. I know for a fact I need to path traversal it. Its 
+	on the list. Interestingly enough, the box is a simple wordpress server, and all you have to work 
+	with in the guest account is a text editor. So its obvious custom scripting is a must 
+	to take full advantage of the box. I have to write my catchingshells.py in the box, 
+	execute it, and execute the listening command here. FUN.
 
     --- So Marlin is a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA 
 	outdated. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked 
