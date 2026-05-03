@@ -1,16 +1,16 @@
 # Special Interest Groups
 
-csp.secureserver.net=23.203.230.142
+csp.secureserver.net=
 
-phoenyx.net=66.228.49.240
+phoenyx.net
 
-silverseams.com=178.156.144.12
+silverseams.com
 
-centraloffice.com=54.215.31.113
+centraloffice.com
 
-electroniccreations.com=199.250.222.56
+electroniccreations.com
 
-s.exunoplures.org=23.47.48.96
+s.exunoplures.org
 
 Notes: These are the IP addresses of the special interest group
 
