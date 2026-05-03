@@ -1,18 +1,18 @@
 # Special Interest Groups
 
-- csp.secureserver.net
-
-- phoenyx.net
-
-- silverseams.com
-
-- centraloffice.com
-
-- electroniccreations.com
-
-- s.exunoplures.org
-
-Notes: These are the web addresses of the special interest group
+	- csp.secureserver.net
+	
+	- phoenyx.net
+	
+	- silverseams.com
+	
+	- centraloffice.com
+	
+	- electroniccreations.com
+	
+	- s.exunoplures.org
+	
+	Notes: These are the web addresses of the special interest group
 
 ## Characters
 
