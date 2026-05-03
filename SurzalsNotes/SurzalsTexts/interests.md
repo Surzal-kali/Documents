@@ -20,37 +20,48 @@ Notes: These are the web addresses of the special interest group
 
 #### 1.)  Earth=207 (Apache, Ubuntu 24.04)
 
-	Host: earth.local, terratest.earth.local,
-	earth.local/stateOrProvinceName=Sapce
+    Host: earth.local, terratest.earth.local,
+    earth.local/stateOrProvinceName=Sapce
 
-	--- earth is an interesting one, as it only answers to "earth.local", so it specifically is only through mdns. 
-	Additional commen name is terratest.earth.local, which is interesting, as it is a subdomain of earth.local, but it 
-	does not resolve to the same IP address. It is likely that this is a red herring, but it is interesting nonetheless.
-	The stateOrProvinceName=Space is also interesting, as it is a reference to the fact that the machine is in space, 
-	and that it is a test machine for space. Ive had this box for an entire college semester and only had brief 
-	glimpses into its inner workings.
+    --- earth is an interesting one, as it only answers to "earth.local", so it specifically is only through mdns.
+    Additional commen name is terratest.earth.local, which is interesting, as it is a subdomain of earth.local, but it
+    does not resolve to the same IP address. It is likely that this is a red herring, but it is interesting nonetheless.
+    The stateOrProvinceName=Space is also interesting, as it is a reference to the fact that the machine is in space,
+    and that it is a test machine for space. Ive had this box for an entire college semester and only had brief
+    glimpses into its inner workings.
 
-	---Alot of my knowledge on earth comes from simple MitM attacks with wireshark, and IDE capture_packets. It 
-	obviously is LAN bound only. Unfortunately, while "Earths Secure Messaging Service" is available, its only through
-	proxying with burp or changing the headers manually in the IDE. The fact that it is called "Earths Secure Messaging
-	Service" is interesting, as it is likely a hint that there is something hidden in the messaging service. The fact 
-	that it is secure is also interesting. I recall at the beginning of the semester it encrypts the message with the 
-	"name" of the sender in the form. However I have not been able to parse the 3 past messages yet, as I don't 
-	remember the encryption method used.
+	--- A brief revelation. It uses a multicast ipv6 address to resolve the "Earth's Secure Messaging Service" webpage, while reserving the Ipv4 address for the simple Fedora Web Server test page.
 
-	--- In addition, theres an admin login page that has a redirect to get to. No current paths forward there yet, but I
-	think the answer lies in the messages.
+    ---Alot of my knowledge on earth comes from simple MitM attacks with wireshark, and IDE capture_packets. It
+    obviously is LAN bound only. Unfortunately, while "Earths Secure Messaging Service" is available, its only through
+    proxying with burp or changing the headers manually in the IDE. The fact that it is called "Earths Secure Messaging
+    Service" is interesting, as it is likely a hint that there is something hidden in the messaging service. The fact
+    that it is secure is also interesting. I recall at the beginning of the semester it encrypts the message with the
+    "name" of the sender in the form. However I have not been able to parse the 3 past messages yet, as I don't
+    remember the encryption method used.
+
+    --- In addition, theres an admin login page that has a redirect to get to. No current paths forward there yet, but I think the answer lies in the messages.
 
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
-    --- Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to
-	have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the
-	lab at the same time as Porteus. It has a wordpress installation at /secret/, which is interesting, as it is a very 
-	common attack vector. It is likely that there is something hidden in the wordpress installation, or that there is a 
-	vulnerability in the wordpress installation that can be exploited. The fact that it is called secret is also 
-	interesting, as it is likely a hint that there is something hidden in the wordpress installation. The fact that it is 
-	a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress 
-	installation that can be exploited. I know for a fact I need to path traversal it. Its on the list.
+
+		--- Marlinspike has a potentially interesting folder, /secret/ a wordpress installation. Secret does not 
+		seem to have anything on it's surface, but path traversal is likely. Its brand new to the 
+		lineup, and was imported into the
+		lab at the same time as Porteus. It is likely that there is something hidden in the
+		wordpress installation, or that there is a 
+		vulnerability in the wordpress installation that can be exploited. The fact that it is 
+		called secret is also 
+		interesting, as it is likely a hint that there is something hidden in the wordpress 
+		installation. The fact that it is 
+		a wordpress installation is also interesting, as it is likely that there are 
+		vulnerabilities in the wordpress 
+		installation that can be exploited. I know for a fact I need to path traversal it. Its 
+		on the list. 
+		Interestingly enough, the box is a simple wordpress server, and all you have to work 
+		with in the guest account is a text editor. So its obvious custom scripting is a must 
+		to take full advantage of the box. I have to write my catchingshells.py in the box, 
+		execute it, and execute the listening command here. FUN.
 
     --- So Marlin is a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA 
 	outdated. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked 
@@ -60,37 +71,79 @@ Notes: These are the web addresses of the special interest group
 	we did Porteus. The fact that it is a wordpress installation is also interesting, as it is likely that there are 
 	vulnerabilities in the wordpress installation that can be exploited. 
 
+	---Backup Storage
+	Everything lives in tmp for the login screen, but i still think i can use this somehow.
+	Its missing a child-process, duplicity. How convenient for me. 
+	I can use this to my advantage, as it is likely that there is something hidden in the backup storage. 
+	The fact that it is missing means it can be supplied. And we have a text-editor.
+	According to the Extended Partition, we have 4.3 GB of swap size in the guest login.
+
 
     --- The Guest Bin:
-    It has mysql. Vmwarectrl, which is interesting considering I don't know what part of the system the guest account is. 
-	It could honestly be trapped inside of a vm. Its barely doing anything in Proxmox's eyes. So we first have to pivot 
-	through a database, outside of a VM, just to get root. I like it. Also, old printer drivers if i recall correctly 
-	have vulnerabilities with their data. So hp-config_usb_printer could be an entry point as well. The right malware and 
-	we're in.
+	It has mysql. The site dynamically loads all of its content off an api call.
+	This could be my injection point for the actual root account.
+	In addition, the vm sits on Proxmox, but also inside of an ubuntu desktop. 
+	with an outdated version of ubuntu 16.04. So there are likely vulnerabilities 
+	Theres something in the underlying system that can be exploited.
+
+	The virtual "virtual" network is known as Windows Network, so both the vmvm and the vm are concurrently running. 
+	This inception bullshit makes my head hurt.
+
+	Vmwarectrl, which is interesting considerin
+	I don't know what part of the system the guest account is. 
+	It could honestly be trapped inside of a vm. Its barely 
+	doing anything in Proxmox's eyes. So we first have to pivot 
+	through a database, outside of a VM, just to get root. I 
+	like it. Also, old printer drivers if i recall correctly 
+	have vulnerabilities with their data. So 
+	hp-config_usb_printer could be an entry point as well. The 
+	right malware and we're in.
+
+	### The Injection Point
+	www.10.0.0.55/secret/wp-admin/Index.php. 
+	It can be rewritten from guest. But theres no need
+	http://10.0.0.55/secret/wp-admin/ is the login page we inject :Dw
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
-     --- Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They
+	 --- Porteus is a dual web server boot to root machine. It 
+	has a few interesting webpages, all matrix themed. They
 	 sit at 80 and 31337 respectively. 
 
-	-- 31337 is very interesting, as it has a service tag inside of a css class. it reads Then you'll see, that it is not 
-	the spoon that bends, it is only yourself. The fancy graphic in the background is actually just [https://youtu.be/
-	luCYT7Qx1oA]. Funny right? The obvious star in the lineup. In addition, both web pages of 80 and 31337 have a 
-	countdown timer to the announcement date of Matrix 4.
+	-- 31337 is very interesting, as it has a service tag
+	inside of a css class. it reads:
+	
+	Then you'll see, that it is not the spoon that bends, it is only yourself. 
+	
+	The fancy graphic in the background is actually just 
+	[https://youtu.be/luCYT7Qx1oA]. 
+	Funny right? The obvious star in the lineup. In addition, 
+	both web pages of 80 and 31337 have a countdown timer to 
+	the announcement date of Matrix 4.
 
-	-- 80 is also interesting. "Follow the White Rabbit" followed by "welcome to the real world, Neo. I'm glad you're 
-	here.". If you follow the white rabbit, i.e. inspect the webpage and open the exact html element of the center 
-	graphic, its a white rabbit. The url is [http://10.0.0.157/assets/img/p0rt_31337.png](http://10.0.0.157/assets/img/
-	p0rt_31337.png). Path traversal is very likely.But where does the white rabbit lead? It leads to the 31337 page, 
-	which is interesting, as it is the same image as the background of the 31337 page. This is likely a hint that the two 
-	pages are connected, and that there is something on the 31337 page that is not on the 80 page. The fact that both 
-	pages have a countdown timer to the announcement date of Matrix 4 is also interesting, as it is likely a hint that 
-	there is something on the 31337 page that is related to Matrix 4. Probably the hidden service tag, which is 
-	absolutely buried. Beyond that lies the assets folder directory.
+	-- 80 is also interesting. "Follow the White Rabbit" 
+	followed by "welcome to the real world, Neo. I'm glad you're here.".
+	If you follow the white rabbit, i.e. inspect the webpage 
+	and open the exact html element of the center 
+	graphic, its a white rabbit. The url is 
+	(http://10.0.0.157/assets/img/p0rt_31337.png). 
 
-	-- Assets Directory: So I obviously kept following the white rabbit, cause who wouldn't? Guy's in a hurry. Hidden 
-	inside is .gitkeep. Most likely this started as a github repository and then was loaded onto the vm. Thats awesome! 
-	Gitkeep however is empty.
+	Path traversal is very likely.But where does the white 
+	rabbit lead? It leads to the 31337 page, which is 
+	interesting, as it is the same image as the 
+	background of the 31337 page. This is likely a hint that the two pages are connected, and that there is something on the wdw31337 page that is not on the 80 page. The fact that both 
+	pages have a countdown timer to the announcement date of 
+	Matrix 4 is also interesting, as it is likely a hint that 
+	there is something on the 31337 page that is related to 
+	Matrix 4. Probably the hidden service tag, which is 
+	absolutely buried. Beyond that lies the assets folder 
+	directory.
+
+	-- Assets Directory: So I obviously kept following the 
+	white rabbit, cause who wouldn't? Guy's in a hurry. Hidden 
+	inside is .gitkeep. 
+	Most likely this started as a github repository and then 
+	was loaded onto the vm. Thats awesome! Gitkeep however is empty.
 
 -- The main javascript file:
 
@@ -822,4 +875,6 @@ how very intriguing. After walking the available attack surface, the assets fold
 	 mb.YTPlayer/
 	  \  jquery.mb.YTPlayer.min.js
 
-I'm learning alot about javascript for someone who mains python and dabbled in html/css.
+I'm learning alot about javascript for someone who mains python and dabbled in html/css. I wish I could find a typescript box and flaunt my knowledge there D:
+
+So the main breakage with the scripting of this website, and why its vulnerable. IS IN FACT THE COUNTDOWN TIMER. It calls for "someVariable" so that the countup from 2018/10/17 to the current date can be calculated. But the variable is never defined, so we can put whatever we want in there. So if we put in a simple alert("hello world"), it will execute that code. So we can put in a simple reverse shell payload, and it will execute that code. This is the main breakage of the website, and it is likely that there is something hidden in the countdown timer that can be exploited. Ironic that of course when the timer breaks, its a "zero-day" countdown AND vulnerability.

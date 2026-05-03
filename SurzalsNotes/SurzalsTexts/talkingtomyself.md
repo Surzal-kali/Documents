@@ -26,6 +26,7 @@ This is extremely helpful in situations where you have multiple network interfac
 ### Types of IPV6 addresses
 
 There are several types of ipv6 addresses, including:
+
 1.) Unicast addresses: These are used to identify a single interface on a device. They are typically used for communication between devices on the same network.
 
 2.) Multicast addresses: These are used to identify a group of interfaces on a device. They are typically used for communication between devices on different networks.
