@@ -12,7 +12,8 @@
 	
 	- s.exunoplures.org
 	
-	Notes: These are the web addresses of the special interest group
+	Notes: These are the web addresses of the special interest group. 
+	Honeypot checks for past visitors, tabs on old friends. You know, business.
 
 ## Characters
 
@@ -99,7 +100,12 @@
 	### The Injection Point
 	www.10.0.0.55/secret/wp-admin/Index.php. 
 	It can be rewritten from guest. But theres no need
-	http://10.0.0.55/secret/wp-admin/ is the login page we inject :Dw
+	http://10.0.0.55/secret/wp-admin/ is the login page we inject :D
+
+	### Alternative Methods
+	We have the ability to connect to a remote server from the guest client. So if we serve a
+	web payload HERE. We don't have to use the shitty text editor installed, and instead make
+	something amazing :D.
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
