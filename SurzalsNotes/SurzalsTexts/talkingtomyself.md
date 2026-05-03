@@ -112,7 +112,7 @@ Web cache poisoning is a vulnerability that allows an attacker to manipulate the
 
 In a web cache poisoning attack, an attacker crafts a malicious request that is stored in the cache. When other users access the same URL, they receive the poisoned content instead of the legitimate content. This can be particularly dangerous if the poisoned content contains malware or misleading information.
 
-#### Example of Web Cache Poisoning
+### Example of Web Cache Poisoning
 
 ### Server-Side Request Forgery (SSRF)
 
