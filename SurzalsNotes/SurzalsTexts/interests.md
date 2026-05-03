@@ -41,7 +41,8 @@ Notes: These are the web addresses of the special interest group
     "name" of the sender in the form. However I have not been able to parse the 3 past messages yet, as I don't
     remember the encryption method used.
 
-    --- In addition, theres an admin login page that has a redirect to get to. No current paths forward there yet, but I think the answer lies in the messages.
+    --- In addition, theres an admin login page that has a redirect to get to. 
+	No current paths forward there yet, but I think the answer lies in the messages.
 
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
