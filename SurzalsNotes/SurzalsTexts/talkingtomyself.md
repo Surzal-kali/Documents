@@ -140,6 +140,21 @@ In a web cache poisoning attack, an attacker crafts a malicious request that is 
 
 ### SQL Injection
 
+-- SQL injection (SQLi) is a web security vulnerability that allows an attacker to interfere with the queries that an application makes to its database. This can allow an attacker to view data that they are not normally able to retrieve. This might include data that belongs to other users, or any other data that the application can access. In many cases, an attacker can modify or delete this data, causing persistent changes to the application's content or behavior. In some cases, an attacker can even escalate their attack to compromise the underlying server or other back-end infrastructure, or perform a denial-of-service attack. Really if the availability to grab the cursour exists, its a problem. Its the minds imagination what to do with such a power.
+
+-- How to Detect SQL Injection:
+-- 1.) Error-Based SQLi: This technique relies on the database server generating error messages that can reveal information about the structure of the database. By intentionally causing errors in the SQL query, an attacker can gain insights into the database schema, which can be used to craft more effective attacks.
+-- 2.) Union-Based SQLi: This technique involves using the UNION SQL operator to combine the results of the original query with the results of a malicious query. This can allow an attacker to retrieve data from other tables in the database, or even execute arbitrary SQL commands.
+-- 3.) Boolean-Based SQLi: This technique relies on the attacker sending SQL queries that evaluate to true or false. By observing the application's response to these queries, an attacker can infer information about the database structure and the data it contains.
+-- 4.) Time-Based SQLi: This technique involves sending SQL queries that cause a delay in the response time of the application. By measuring the time it takes for the application to respond, an attacker can infer information about the database structure and the data it contains.
+-- 5.) Out-of-Band SQLi: This technique involves using a different channel to receive the results of the SQL injection attack. For example, an attacker might use a DNS request to exfiltrate data from the database, or use an HTTP request to send the results to a remote server.
+
+-- Basically if the function looked half-finished, you can probably rewrite the rest with SQLi. If you see a function that takes user input and uses it in a SQL query without proper sanitization, it's a red flag for potential SQL injection vulnerabilities.
+
+"Warning":
+
+Take care when injecting the condition OR 1=1 into a SQL query. Even if it appears to be harmless in the context you're injecting into, it's common for applications to use data from a single request in multiple different queries. If your condition reaches an UPDATE or DELETE statement, for example, it can result in an accidental loss of data. Always make sure to understand the context of the injection and the potential consequences before testing with such conditions.
+
 ### DOM-Based client-side XPath Injection
 
 DOM-based XPath-injection vulnerabilities arise when a script incorporates attacker-controllable data into an XPath query. An attacker may be able to use this behavior to construct a URL that, if visited by another application user, will trigger the execution of an arbitrary XPath query, which could cause different data to be retrieved and processed by the website.
