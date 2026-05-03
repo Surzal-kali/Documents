@@ -27,11 +27,22 @@ def somerandomcode1():
     tfi = tf()
     ori = Or()
     print("[*] Welcome Home")
-    print("[*] Starting the conquest of the target network...")
-    earth=pfi.get_request(f"http://{TARGET_IP}/", headers={'Host': 'earth.local'})
-    print(f"[*] Response from target: {earth}")  # Print the first 100 characters of the response for verification
-    print("[*] Conquest complete. Check the logs and reports for details.")
-    nri.run_nmap_script(TARGET_IP, "http-enum")
+
+
+    options=pfi.options_request(f"http://{TARGET_IP}/secret/")
+    print("[*] Performing GET request")
+    response = pfi.get_request(f"http://{TARGET_IP}/secret/")
+    print(f"[*] GET response: {response}")
+    print("[*] Performing POST request")
+    response = pfi.post_request(f"http://{TARGET_IP}/secret/", data={"key": "value"})
+    print(f"[*] POST response: {response}")
+    print("[*] Performing PUT request")
+    response = pfi.put_request(f"http://{TARGET_IP}/secret/resource", data={"key": "updated_value"})
+    print(f"[*] PUT response: {response}")
+    print("[*] Performing DELETE request")
+    response = pfi.delete_request(f"http://{TARGET_IP}/secret/resource")
+    print(f"[*] DELETE response: {response}")
+
 if __name__ == "__main__":  
     somerandomcode1()
     fsi = fs()

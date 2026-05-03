@@ -57,14 +57,3 @@ class Orchestrator:
 
 
 
-
-if __name__ == "__main__":
-    fsi = FileShuttle() 
-    ori = Orchestrator()
-    ori.preflight()
-    choice = input("[*] Would you like to clean the collected startup analysis? (y/n): ")
-    if choice.lower() == "y":
-        fsi.delete_file("rawbin.txt")  # Clear the file
-        print("[*] Startup analysis cleaned.")
-    else:
-        print("[*] Startup analysis retained.")

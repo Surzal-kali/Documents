@@ -2,6 +2,11 @@
 !.gitignore
 !*.py
 !*.ps1
+!*/
+!*.md
+!*.markdown
+!**/*.md
+!**/*.markdown
 !shared/
 !shared/*.py
 randomcode.py
