@@ -128,11 +128,8 @@
 	Path traversal is very likely.But where does the white 
 	rabbit lead? It leads to the 31337 page, which is 
 	interesting, as it is the same image as the 
-	background of the 31337 page. This is likely a hint that the two pages are connected, and that there is something on the wdw31337 page that is not on the 80 page. The fact that both 
-	pages have a countdown timer to the announcement date of 
-	Matrix 4 is also interesting, as it is likely a hint that 
-	there is something on the 31337 page that is related to 
-	Matrix 4. Probably the hidden service tag, which is 
+	background of the 31337 page. 
+	pages have a countdown timer to the announcement 2018/10/17 this is also interesting, as 	it is likely a hint related to that sequence. Probably the hidden service tag, which is 
 	absolutely buried. Beyond that lies the assets folder 
 	directory.
 
