@@ -43,22 +43,51 @@ Notes: These are the web addresses of the special interest group
 
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
-    --- Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the lab at the same time as Porteus. It has a wordpress installation at /secret/, which is interesting, as it is a very common attack vector. It is likely that there is something hidden in the wordpress installation, or that there is a vulnerability in the wordpress installation that can be exploited. The fact that it is called secret is also interesting, as it is likely a hint that there is something hidden in the wordpress installation. The fact that it is a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress installation that can be exploited. I know for a fact I need to path traversal it. Its on the list.
+    --- Marlinspike also has potentially interesting folder, /secret/ a wordpress installation. Secret does not seem to
+	have anything on it's surface, but path traversal is likely. Its brand new to the lineup, and was imported into the
+	lab at the same time as Porteus. It has a wordpress installation at /secret/, which is interesting, as it is a very 
+	common attack vector. It is likely that there is something hidden in the wordpress installation, or that there is a 
+	vulnerability in the wordpress installation that can be exploited. The fact that it is called secret is also 
+	interesting, as it is likely a hint that there is something hidden in the wordpress installation. The fact that it is 
+	a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress 
+	installation that can be exploited. I know for a fact I need to path traversal it. Its on the list.
 
-    --- So Marlin is a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA outdated. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked something up k. cool. The guest account is extremely interesting to its level of being able to traverse the system files. There must be a symbolic link or authoratative issue going on here. The wordpress installation is key, because if we can upload and traverse its source code directly through the guest account, surely we will find the break like we did Porteus. The fact that it is a wordpress installation is also interesting, as it is likely that there are vulnerabilities in the wordpress installation that can be exploited. 
+    --- So Marlin is a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA 
+	outdated. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked 
+	something up k. cool. The guest account is extremely interesting to its level of being able to traverse the system 
+	files. There must be a symbolic link or authoratative issue going on here. The wordpress installation is key, because 
+	if we can upload and traverse its source code directly through the guest account, surely we will find the break like 
+	we did Porteus. The fact that it is a wordpress installation is also interesting, as it is likely that there are 
+	vulnerabilities in the wordpress installation that can be exploited. 
+
 
     --- The Guest Bin:
-    It has mysql. Vmwarectrl, which is interesting considering I don't know what part of the system the guest account is. It could honestly be trapped inside of a vm. Its barely doing anything in Proxmox's eyes. So we first have to pivot through a database, outside of a VM, just to get root. I like it. Also, old printer drivers if i recall correctly have vulnerabilities with their data. So hp-config_usb_printer could be an entry point as well. The right malware and we're in.
+    It has mysql. Vmwarectrl, which is interesting considering I don't know what part of the system the guest account is. 
+	It could honestly be trapped inside of a vm. Its barely doing anything in Proxmox's eyes. So we first have to pivot 
+	through a database, outside of a VM, just to get root. I like it. Also, old printer drivers if i recall correctly 
+	have vulnerabilities with their data. So hp-config_usb_printer could be an entry point as well. The right malware and 
+	we're in.
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
-     --- Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They sit at 80 and 31337 respectively. 
+     --- Porteus is a dual web server boot to root machine. It has a few interesting webpages, all matrix themed. They
+	 sit at 80 and 31337 respectively. 
 
 	-- 31337 is very interesting, as it has a service tag inside of a css class. it reads Then you'll see, that it is not the spoon that bends, it is only yourself. The fancy graphic in the background is actually just [https://youtu.be/luCYT7Qx1oA]. Funny right? The obvious star in the lineup. In addition, both web pages of 80 and 31337 have a countdown timer to the announcement date of Matrix 4.
 
-	-- 80 is also interesting. "Follow the White Rabbit" followed by "welcome to the real world, Neo. I'm glad you're here.". If you follow the white rabbit, i.e. inspect the webpage and open the exact html element of the center graphic, its a white rabbit. The url is [http://10.0.0.157/assets/img/p0rt_31337.png](http://10.0.0.157/assets/img/p0rt_31337.png). Path traversal is very likely.But where does the white rabbit lead? It leads to the 31337 page, which is interesting, as it is the same image as the background of the 31337 page. This is likely a hint that the two pages are connected, and that there is something on the 31337 page that is not on the 80 page. The fact that both pages have a countdown timer to the announcement date of Matrix 4 is also interesting, as it is likely a hint that there is something on the 31337 page that is related to Matrix 4. Probably the hidden service tag, which is absolutely buried. Beyond that lies the assets folder directory.
+	-- 80 is also interesting. "Follow the White Rabbit" followed by "welcome to the real world, Neo. I'm glad you're 
+	here.". If you follow the white rabbit, i.e. inspect the webpage and open the exact html element of the center 
+	graphic, its a white rabbit. The url is [http://10.0.0.157/assets/img/p0rt_31337.png](http://10.0.0.157/assets/img/
+	p0rt_31337.png). Path traversal is very likely.But where does the white rabbit lead? It leads to the 31337 page, 
+	which is interesting, as it is the same image as the background of the 31337 page. This is likely a hint that the two 
+	pages are connected, and that there is something on the 31337 page that is not on the 80 page. The fact that both 
+	pages have a countdown timer to the announcement date of Matrix 4 is also interesting, as it is likely a hint that 
+	there is something on the 31337 page that is related to Matrix 4. Probably the hidden service tag, which is 
+	absolutely buried. Beyond that lies the assets folder directory.
 
-	-- Assets Directory: So I obviously kept following the white rabbit, cause who wouldn't? Guy's in a hurry. Hidden inside is .gitkeep. Most likely this started as a github repository and then was loaded onto the vm. Thats awesome! Gitkeep however is empty.
+	-- Assets Directory: So I obviously kept following the white rabbit, cause who wouldn't? Guy's in a hurry. Hidden 
+	inside is .gitkeep. Most likely this started as a github repository and then was loaded onto the vm. Thats awesome! 
+	Gitkeep however is empty.
 
 -- The main javascript file:
 
