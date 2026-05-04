@@ -46,6 +46,15 @@
     --- In addition, theres an admin login page that has a redirect to get to. 
 	No current paths forward there yet, but I think the answer lies in the messages.
 
+	--- After some deliberation, I've come up short on the best path to the next foothold. Mercury, the 
+	previous box in the series, was based on SQLi, and a authorative file inclusion. So I think the best 
+	path to the next foothold is through the messages, and some sort of cryptographic attack. The fact 
+	that the messages are encrypted with the "name" of the sender is interesting, as it is likely that 
+	there is something hidden in the encryption method that can be exploited. The fact that it is called 
+	"Earths Secure Messaging Service" is also interesting, as it is likely that there are vulnerabilities 
+	in the messaging service that can be exploited. I have to figure out how to parse the messages, and 
+	then figure out how to exploit any vulnerabilities in the messaging service to get a reverse shell.
+
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
 
@@ -55,12 +64,12 @@
 	It is likely that there is something hidden in the wordpress installation, or that there is a 
 	vulnerability in the wordpress installation that can be exploited. The fact that it is 
 	called secret is also interesting, as it is likely a hint that there is something hidden in the wordpress 
-	installation. The fact that it is a wordpress installation is also interesting, as it is likely that there are 
-	vulnerabilities in the wordpress installation that can be exploited. I know for a fact I need to path traversal it. Its 
-	on the list. Interestingly enough, the box is a simple wordpress server, and all you have to work 
-	with in the guest account is a text editor. So its obvious custom scripting is a must 
-	to take full advantage of the box. I have to write my catchingshells.py in the box, 
-	execute it, and execute the listening command here. FUN.
+	installation. The fact that it is a wordpress installation is also interesting, as it is likely that 
+	there are vulnerabilities in the wordpress installation that can be exploited. I know for a fact I 
+	need to path traversal it. Its on the list. Interestingly enough, the box is a simple wordpress 
+	server, and all you have to work with in the guest account is a text editor. So its obvious custom 
+	scripting is a must to take full advantage of the box. I have to write my catchingshells.py in the 
+	box, execute it, and execute the listening command here. FUN.
 
     --- So Marlin is a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA 
 	outdated. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked 
@@ -108,6 +117,8 @@
 	web payload HERE. We don't have to use the shitty text editor installed, and instead make
 	something amazing :D. 
 	After looking deeper into the system configuration, or as far as you can from an insecure guest account, it seems the guest account, along with saving to tmp, can back tmp and read the /var/ folders in there entirety. This is interesting, as it means we can read the mysql configuration files, and likely get the credentials for the mysql database. 
+
+	After some brief testing inside the file directories listed, I've concluded the easiest path to the next foothold is through the mysql database. The fact that we can read the mysql configuration files means we can get the credentials for the mysql database, and then use those credentials to connect to the mysql database and get the credentials for the wordpress installation. From there, we can likely get a reverse shell through the wordpress installation.
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
@@ -880,3 +891,5 @@ how very intriguing. After walking the available attack surface, the assets fold
 I'm learning alot about javascript for someone who mains python and dabbled in html/css. I wish I could find a typescript box and flaunt my knowledge there D:
 
 So the main breakage with the scripting of this website, and why its vulnerable. IS IN FACT THE COUNTDOWN TIMER. It calls for "someVariable" so that the countup from 2018/10/17 to the current date can be calculated. But the variable is never defined, so we can put whatever we want in there. So if we put in a simple alert("hello world"), it will execute that code. So we can put in a simple reverse shell payload, and it will execute that code. This is the main breakage of the website, and it is likely that there is something hidden in the countdown timer that can be exploited. Ironic that of course when the timer breaks, its a "zero-day" countdown AND vulnerability.
+
+After some brief testing, I've concluded that the best route to the next foothold is through the countdown timer, and cross-site scripting. Which is REALLY ironic since its the matrix, blending two realities as it were. Nerds. We will craft a malicious payload for the someVariable function of the countdown timer, and then execute that payload to get a reverse shell. If I get Marlin done first, I can do a chain attack and use the reverse shell from Marlin to execute the payload on Porteus, which would be really cool. :Dz
