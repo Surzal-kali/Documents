@@ -14,6 +14,64 @@
         VPZWEKGQ7QYK…PV
         VPZWEKGQ7QYK…KJ7
 
+        Which translated from BASE36 is
+        Riddle 1: 4162295637467353600
+        Riddle 2: 4175322795757723000
+        Riddle 3: 4175322795757723000
+
+
+        ## The Admin Panel:
+        So the admin panel is a little funky fresh feeling. upon logging in with the correct username, but incorrect password, it gives me a CSRF verification failed. This is the most plaintext way to say "hack here" i have ever seen in my life.
+
+                                        HTTP/1.1 403 Forbidden
+                        Date: Mon, 04 May 2026 11:01:39 GMT
+                        Server: Apache/2.4.51 (Fedora) OpenSSL/1.1.1l mod_wsgi/4.7.1 Python/3.9
+                        Content-Length: 1019
+                        X-Frame-Options: DENY
+                        X-Content-Type-Options: nosniff
+                        Referrer-Policy: same-origin
+                        Keep-Alive: timeout=5, max=100
+                        Connection: Keep-Alive
+                        Content-Type: text/html; charset=UTF-8
+
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+                        <meta name="robots" content="NONE,NOARCHIVE">
+                        <title>403 Forbidden</title>
+                        <style type="text/css">
+                        html * { padding:0; margin:0; }
+                        body * { padding:10px 20px; }
+                        body * * { padding:0; }
+                        body { font:small sans-serif; background:#eee; color:#000; }
+                        body>div { border-bottom:1px solid #ddd; }
+                        h1 { font-weight:normal; margin-bottom:.4em; }
+                        h1 span { font-size:60%; color:#666; font-weight:normal; }
+                        #info { background:#f6f6f6; }
+                        #info ul { margin: 0.5em 4em; }
+                        #info p, #summary p { padding-top:10px; }
+                        #summary { background: #ffc; }
+                        #explanation { background:#eee; border-bottom: 0px none; }
+                        </style>
+                        </head>
+                        <body>
+                        <div id="summary">
+                        <h1>Forbidden <span>(403)</span></h1>
+                        <p>CSRF verification failed. Request aborted.</p>
+
+
+                        </div>
+
+                        <div id="explanation">
+                        <p><small>More information is available with DEBUG=True.</small></p>
+                        </div>
+
+                        </body>
+                        </html>
+
+
 ### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
         My favorite one right now OHMYGOD. Its a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA OUTDATED BABY. So we're going to work on this one concurrently with earth, as it will serve as a pivot point for the next machines. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked up. Yeth.
