@@ -31,8 +31,9 @@
     and that it is a test machine for space. Ive had this box for an entire college semester and only had brief
     glimpses into its inner workings.
 
-	--- A brief revelation. It uses a multicast ipv6 address to resolve the "Earth's Secure Messaging Service" webpage,
-	while reserving the Ipv4 address for the simple Fedora Web Server test page.
+	--- A brief revelation. It uses a header proxy to resolve the "Earth's Secure Messaging Service" 
+	webpage, while reserving the Ipv4 address for the simple Fedora Web Server test page. So its actually making it MORE difficult to communicate with the box, as you have to change the headers in the IDE or 
+	proxy with burp to get to the actual webpage.
 
     ---Alot of my knowledge on earth comes from simple MitM attacks with wireshark, and IDE capture_packets. It
     obviously is LAN bound only. Unfortunately, while "Earths Secure Messaging Service" is available, its only through
@@ -80,22 +81,22 @@
     --- The Guest Bin:
 	It has mysql. The site dynamically loads all of its content off an api call.
 	This could be my injection point for the actual root account.
-	In addition, the vm sits on Proxmox, but also inside of an ubuntu desktop. 
+	In addition, the vm sits on Proxmox, but also has a container with ubuntu desktop. 
 	with an outdated version of ubuntu 16.04. So there are likely vulnerabilities 
 	Theres something in the underlying system that can be exploited.
 
-	The virtual "virtual" network is known as Windows Network, so both the vmvm and the vm are concurrently running. 
-	This inception bullshit makes my head hurt.
-
 	Vmwarectrl, which is interesting considerin
 	I don't know what part of the system the guest account is. 
-	It could honestly be trapped inside of a vm. Its barely 
+	It could honestly be trapped inside of a leaky container. Its barely 
 	doing anything in Proxmox's eyes. So we first have to pivot 
 	through a database, outside of a VM, just to get root. I 
 	like it. Also, old printer drivers if i recall correctly 
 	have vulnerabilities with their data. So 
 	hp-config_usb_printer could be an entry point as well. The 
 	right malware and we're in.
+
+	The virtual "virtual" network is known as Windows Network, so both the container and the vm are concurrently running. 
+	This inception bullshit makes my head hurt.
 
 	### The Injection Point
 	www.10.0.0.55/secret/wp-admin/Index.php. 
@@ -105,7 +106,8 @@
 	### Alternative Methods
 	We have the ability to connect to a remote server from the guest client. So if we serve a
 	web payload HERE. We don't have to use the shitty text editor installed, and instead make
-	something amazing :D.
+	something amazing :D. 
+	After looking deeper into the system configuration, or as far as you can from an insecure guest account, it seems the guest account, along with saving to tmp, can back tmp and read the /var/ folders in there entirety. This is interesting, as it means we can read the mysql configuration files, and likely get the credentials for the mysql database. 
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 

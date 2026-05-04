@@ -36,13 +36,7 @@ def somerandomcode1():
     print("[*] Gathering public information about the target...")
     livecheck=pfi.get_request(f"http://{TARGET_IP}", headers={"User-Agent": "Mozilla/5.0"})
     print (livecheck)
-    print("[*] Performing network reconnaissance...")
-    nri.scan_network(TARGET_RANGE)
-    print("[*] Identifying running processes on the target...")
-    wpi.identify_services()
-    wpi.cron_job(command="* * * * * /usr/bin/python3 /tmp/somerandomcode.py", service="python3", schedule="hourly")
-    croncheck = csi.execute_command("crontab -l")
-    print(croncheck)
+
 
 if __name__ == "__main__":  
     somerandomcode1()
