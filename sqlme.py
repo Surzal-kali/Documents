@@ -17,13 +17,4 @@ def GetDBStatus(database_path):
     for table in tables:
         print(f" - {table[0]}")
     conn.close()
-def GetSessions(database_path):
-    """Retrieves and prints information about active sessions."""
-    conn = sqlite3.connect(database_path)
-    cursor = conn.cursor()
-    cursor.execute("SELECT session_id, host, port, type FROM sessions;")
-    sessions = cursor.fetchall()
-    print("[*] Active Sessions:")
-    for session in sessions:
-        print(f" - Session ID: {session[0]}, Host: {session[1]}, Port: {session[2]}, Type: {session[3]}")
-    conn.close()
+

@@ -28,15 +28,10 @@ def somerandomcode1():
     tfi = tf()
     ori = Or()
 
-    #So hear me out, we can get MarlinSpike with a web server payload, and writing a cron job for easy access. It even has a "connect to server" button on the guest login page, so we can just have it connect back to us and get a shell.
+    #Right Now randomcode.py is for burp requesting the admin panel out of the grasp of earth's cold dead hands.
     
     print("[*] Welcome Home")
-    print("[*] Starting the random code execution...")
-    time.sleep(2)
-    print("[*] Gathering public information about the target...")
-    livecheck=pfi.get_request(f"http://{TARGET_IP}", headers={"User-Agent": "Mozilla/5.0"})
-    print (livecheck)
-
+    
 
 if __name__ == "__main__":  
     somerandomcode1()
