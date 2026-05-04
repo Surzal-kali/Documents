@@ -137,6 +137,8 @@
 	back tmp and read the /var/ folders in there entirety. This is interesting, as it 
 	means we can read the mysql configuration files, and likely get the credentials for the mysql database. 
 
+	Next steps include crafting a malicious payload to make the guest account give us the tmp account password
+
 
 ### 3.) Porteus=157 (Python3 HTTP Web Server)
 
@@ -147,8 +149,7 @@
         
         However to make this extra efficient, i've decided to tackle this machine last after MarlinSpike specifically is popped. Then we can do a chain attack and use the reverse shell from Marlin to execute the payload on Porteus, which would be really cool. :D Two boxes at once, and a chain attack. I'm so excited.
 
-        	-- 31337 is very interesting, as it has a service tag
-	inside of a css class. it reads:
+    -- 31337 is very interesting, as it has a service tag inside of a css class. it reads:
 	
 	Then you'll see, that it is not the spoon that bends, it is only yourself. 
 	
