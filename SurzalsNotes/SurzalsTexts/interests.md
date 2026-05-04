@@ -12,7 +12,7 @@
 	
 	- s.exunoplures.org
 	
-	Notes: These are the web addresses of the special interest group. 
+	Notes: These are the domain names of the special interest group. 
 	Honeypot checks for past visitors, tabs on old friends. You know, business.
 
 ## Characters
@@ -35,13 +35,19 @@
 	webpage, while reserving the Ipv4 address for the simple Fedora Web Server test page. So its actually making it MORE difficult to communicate with the box, as you have to change the headers in the IDE or 
 	proxy with burp to get to the actual webpage.
 
-    ---Alot of my knowledge on earth comes from simple MitM attacks with wireshark, and IDE capture_packets. It
-    obviously is LAN bound only. Unfortunately, while "Earths Secure Messaging Service" is available, its only through
-    proxying with burp or changing the headers manually in the IDE. The fact that it is called "Earths Secure Messaging
-    Service" is interesting, as it is likely a hint that there is something hidden in the messaging service. The fact
-    that it is secure is also interesting. I recall at the beginning of the semester it encrypts the message with the
-    "name" of the sender in the form. However I have not been able to parse the 3 past messages yet, as I don't
-    remember the encryption method used.
+    ---Alot of my knowledge on earth 
+	comes from simple MitM attacks with wireshark, and IDE capture_packets. 
+	It obviously is LAN bound only. Unfortunately, while 
+	"Earths Secure Messaging Service" is available, its only 
+	through proxying with burp or changing the headers 
+	manually in the IDE. The fact that it is called "Earths 
+	Secure Messaging Service" is interesting, as it is likely 
+	a hint that there is something hidden in the messaging 
+	service. The fact that it is secure is also interesting. 
+	I recall at the beginning of the semester it encrypts the 
+	message with the "name" of the sender in the form. 
+	However I have not been able to parse the 3 past messages 
+	yet, as I don't remember the encryption method used.
 
     --- In addition, theres an admin login page that has a redirect to get to. 
 	No current paths forward there yet, but I think the answer lies in the messages.
@@ -112,13 +118,16 @@
 	It can be rewritten from guest. But theres no need
 	http://10.0.0.55/secret/wp-admin/ is the login page we inject :D
 
-	### Alternative Methods
-	We have the ability to connect to a remote server from the guest client. So if we serve a
-	web payload HERE. We don't have to use the shitty text editor installed, and instead make
-	something amazing :D. 
-	After looking deeper into the system configuration, or as far as you can from an insecure guest account, it seems the guest account, along with saving to tmp, can back tmp and read the /var/ folders in there entirety. This is interesting, as it means we can read the mysql configuration files, and likely get the credentials for the mysql database. 
+	So bad news, the injection point doesn't exist, simply for the simple fact the site is so fucked up that it doesn't even load. So we have to find another path to the next foothold. Web payload ahoy!
 
-	After some brief testing inside the file directories listed, I've concluded the easiest path to the next foothold is through the mysql database. The fact that we can read the mysql configuration files means we can get the credentials for the mysql database, and then use those credentials to connect to the mysql database and get the credentials for the wordpress installation. From there, we can likely get a reverse shell through the wordpress installation.
+	### Alternative Methods
+	We have the ability to connect to a remote server from the guest client. So if we 
+	serve a web payload HERE. We don't have to use the shitty text editor installed, and 
+	instead make something amazing :D. 
+	After looking deeper into the system configuration, or as far as you can from an 
+	insecure guest account, it seems the guest account, along with saving to tmp, can 
+	back tmp and read the /var/ folders in there entirety. This is interesting, as it 
+	means we can read the mysql configuration files, and likely get the credentials for the mysql database. 
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
