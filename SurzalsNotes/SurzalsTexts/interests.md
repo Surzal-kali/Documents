@@ -24,12 +24,12 @@
     Host: earth.local, terratest.earth.local,
     earth.local/stateOrProvinceName=Sapce
 
-    --- earth is an interesting one, as it only answers to "earth.local", so it specifically is only through mdns.
-    Additional commen name is terratest.earth.local, which is interesting, as it is a subdomain of earth.local, but it
-    does not resolve to the same IP address. It is likely that this is a red herring, but it is interesting nonetheless.
-    The stateOrProvinceName=Space is also interesting, as it is a reference to the fact that the machine is in space,
-    and that it is a test machine for space. Ive had this box for an entire college semester and only had brief
-    glimpses into its inner workings.
+	--- earth is an interesting one, as it only answers to "earth.local", so it specifically is only through mdns.
+	Additional commen name is terratest.earth.local, which is interesting, as it is a subdomain of earth.local, but it
+	does not resolve to the same IP address. It is likely that this is a red herring, but it is interesting nonetheless.
+	The stateOrProvinceName=Space is also interesting, as it is a reference to the fact that the machine is
+	in space, and that it is a test machine for space. Ive had this box for an entire college semester and 
+	only had brief glimpses into its inner workings.
 
 	--- A brief revelation. It uses a header proxy to resolve the "Earth's Secure Messaging Service" 
 	webpage, while reserving the Ipv4 address for the simple Fedora Web Server test page. So its actually making it MORE difficult to communicate with the box, as you have to change the headers in the IDE or 
@@ -60,6 +60,15 @@
 	"Earths Secure Messaging Service" is also interesting, as it is likely that there are vulnerabilities 
 	in the messaging service that can be exploited. I have to figure out how to parse the messages, and 
 	then figure out how to exploit any vulnerabilities in the messaging service to get a reverse shell.
+
+	--- Earth was, a journey. Here is the final decoding python script for solving the riddle of the 
+	obfuscated messages. It was a xor encryption, base 32 on top, and a drizzle of base36. The key was the username added. 
+
+	The Final messages are a series of numbers. Best guess so far is cursor row ids.  
+
+	Riddle 1: 4162295637467353600
+	Riddle 2: 4175322795757723000
+	Riddle 3: 4175322795757723000
 
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 

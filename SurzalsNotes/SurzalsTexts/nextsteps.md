@@ -9,6 +9,11 @@
         #### The Messages:
         The messages are encrypted with the "name" of the sender, which is interesting, as well as reversing the string before encrypting it. I don't know the actual encryption method, so fuck this level. Yet its the oldest one of the lot, it deserves retirment. I'm sick of seeing that shitty stock image on my network.
 
+        The Message encryption is XOR with base 32 on top. Below are the deobfuscated messages
+        VMFMNUKBDZMI…YWE
+        VPZWEKGQ7QYK…PV
+        VPZWEKGQ7QYK…KJ7
+
 ### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
         My favorite one right now OHMYGOD. Its a fishtank. Its amazing. Its got a guest account that operates in the system memory. And its HELLA OUTDATED BABY. So we're going to work on this one concurrently with earth, as it will serve as a pivot point for the next machines. It even resets the box on power off. so lets never turn this thing off unless we absolutely fucked up. Yeth.
