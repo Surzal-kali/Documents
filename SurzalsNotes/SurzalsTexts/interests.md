@@ -106,3 +106,8 @@
 	has a few interesting webpages, all matrix themed. They
 	 sit at 80 and 31337 respectively. 
 
+	The main flag does not in fact sit in root, but the broken guest. 
+	Which can't function due to faulty permissions. So the main path to root 
+	is through the guest account, which is interesting. Its more of an IT 
+	issue than a hacking challenge, but interesting nonetheless. So we have 
+	to fix the guest account in order to find the flag maybe? I haven't found it yet.
