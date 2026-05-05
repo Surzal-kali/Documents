@@ -27,8 +27,8 @@ def somerandomcode1():
     csi = cs()
     tfi = tf()
     ori = Or()
-
-    #Right Now randomcode.py is for burp requesting the admin panel out of the grasp of earth's cold dead hands.
+    ###now we are gunna work on pivoting through a malformed url into a reverse shell.
+    nri.stop_server()
     
     print("[*] Welcome Home")
     

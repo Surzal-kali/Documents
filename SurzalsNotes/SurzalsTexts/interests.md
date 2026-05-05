@@ -70,6 +70,18 @@
 	Riddle 2: 4175322795757723000
 	Riddle 3: 4175322795757723000
 
+	Final answer guess:
+	Latitude 57°32' N, Longitude 56°14' E (approx 
+	from scaling / rounding)
+	Which is around Perm region, west of 
+	Yekaterinburg, Russia.
+
+	Currently doing a deep pen test with burp using 
+	the classic "rock you" word list. It'll take 
+	awhile and in the meantime, I'm going to start 
+	on Marlinspike, which is the next box in the 
+	series.
+
 #### 2.)  Marlinspike=55 (Apache, Ubuntu 16.04)
 
 
@@ -85,6 +97,8 @@
 	server, and all you have to work with in the guest account is a text editor. So its obvious custom 
 	scripting is a must to take full advantage of the box. I have to write my catchingshells.py in the 
 	box, execute it, and execute the listening command here. FUN.
+
+	So in order to execute a script, ill have to make a web page that enumerates the targets services for a root service running, and inject a crontab edit to execute the script. I have to be careful with the crontab edit, as it is likely that there is some sort of input validation that can be bypassed with a simple command injection.
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 
