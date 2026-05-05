@@ -137,7 +137,7 @@
 	back tmp and read the /var/ folders in there entirety. This is interesting, as it 
 	means we can read the mysql configuration files, and likely get the credentials for the mysql database. 
 
-	Next steps include crafting a malicious payload to make the guest account give us the tmp account password
+	Next steps include crafting a malicious payload to make the guest account give us the tmp account password, and maybe more!
 
 
 ### 3.) Porteus=157 (Python3 HTTP Web Server)

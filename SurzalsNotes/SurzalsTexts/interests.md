@@ -98,7 +98,7 @@
 	scripting is a must to take full advantage of the box. I have to write my catchingshells.py in the 
 	box, execute it, and execute the listening command here. FUN.
 
-	So in order to execute a script, ill have to make a web page that enumerates the targets services for a root service running, and inject a crontab edit to execute the script. I have to be careful with the crontab edit, as it is likely that there is some sort of input validation that can be bypassed with a simple command injection.
+	So in order to execute a script, ill have to remember the proper syntax for nonexec permissions. So bash is > and python is -c. So the command to execute the script is "python -c 'exec(open("catchingshells.py").read())'".
 
 #### 3.)  Porteus=157 (Python3 HTTP Web Server)
 

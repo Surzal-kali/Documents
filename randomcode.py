@@ -27,19 +27,14 @@ def somerandomcode1():
     csi = cs()
     tfi = tf()
     ori = Or()
-    ###now we are gunna work on pivoting through a malformed url into a reverse shell.
-    nri.stop_server()
-    
-    print("[*] Welcome Home")
+    ###so it turns out you can in fact LOTL in Marlin, executing with noexec is totally possible, in both python and bash. 
+    # I've saved a snapshot of exactly how it is right now, and ill be writing bash/python malware to explore 
+    # this further. The next steps will be to write a python script that will execute a payload on the guest 
+    # account, and then use that to get the tmp account password, and then use that to get the mysql credentials, 
+    # and then use those to get the mysql database, and then use that to get the flag.
+    print("[*] Is it someone new?")
+
     
 
 if __name__ == "__main__":  
     somerandomcode1()
-    fsi = fs()
-    cleanup = input("[*] Do you want to clean up old files from previous runs? (y/n): ")
-    if cleanup.lower() == "y":
-        fsi.delete_file("bin.txt")
-        fsi.delete_file("rawbin.txt")
-        print("[*] Old files cleaned up.")
-    else:
-        print("[*] Skipping cleanup of old files.")

