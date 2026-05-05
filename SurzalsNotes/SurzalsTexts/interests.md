@@ -111,3 +111,12 @@
 	is through the guest account, which is interesting. Its more of an IT 
 	issue than a hacking challenge, but interesting nonetheless. So we have 
 	to fix the guest account in order to find the flag maybe? I haven't found it yet.
+
+#### 4.) Mercury=??? (Apache, Ubuntu 18.04)
+
+	--- Mercury is a classic SQLi and file inclusion box. It 
+	has a few interesting webpages, but the main one is the 
+	"Mercuryfacts" page, which is vulnerable to SQLi. The fact 
+	that it is called "Fun facts" is interesting, and im sure i 
+	will somehow forget how to get root, but it should be fun 
+	to walk the files again. 
