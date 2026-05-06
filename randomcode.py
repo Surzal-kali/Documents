@@ -26,7 +26,6 @@ def somerandomcode1():
     ori.preflight()
     thebin=swi.crabwalk()
     csi.speak("Surzal was here :D") 
-
     sbi = sb()
 
 if __name__ == "__main__":  

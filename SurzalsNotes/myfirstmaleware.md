@@ -4,6 +4,7 @@ first things first, we need to be able to
 
 0. we need to find a way to make a tmp container or user. something out of sight out of mind to operate within. maybe we can use the sleep class to create a random user and then delete it after were done, or even better, have it create a random user and then have it sleep for a certain amount of time before deleting it, so that it looks like a normal user account that was created and then deleted after a certain amount of time.
 
+the more i think about it, the more a venv or container sounds best
 
 1. know our enviroment and adjacent local neighbors
 
