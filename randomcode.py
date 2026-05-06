@@ -23,9 +23,8 @@ def somerandomcode1():
     csi = cs()
     tfi = tf()
     ori = Or()
-
-    print("[*] Is it someone new?")
     
+
     
 
     
