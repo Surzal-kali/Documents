@@ -11,7 +11,7 @@ from dacore import CoreClass as cc
 import re
 import time
 from publicface import publicface as Pf
-
+from sleepbaby import SleepBaby as sb
 def somerandomcode1():
 
     pfi = Pf()
@@ -25,10 +25,9 @@ def somerandomcode1():
     nri = nr()
     ori.preflight()
     thebin=swi.crabwalk()
-    csi.speak("Surzal was here :D")
-    
+    csi.speak("Surzal was here :D") 
 
-    
+    sbi = sb()
 
 if __name__ == "__main__":  
     somerandomcode1()
