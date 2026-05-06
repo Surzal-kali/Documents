@@ -1,213 +1,282 @@
-Here's your complete, ready-to-copy documentation. I've structured it for your lab's exact architecture.
+# Blue Team AI Opponent - Realistic Project Plan
 
-markdown
-# Blue Team AI - Autonomous Defender for VulnHub Lab
+> **Goal**: Build a believable autonomous **simulated blue-team opponent** for a Proxmox lab. The system should observe, investigate, score risk, and take only **bounded, reversible** defensive actions against designated lab VMs.
 
-> **Purpose**: Deploy an autonomous blue-team AI that defends VulnHub target boxes while you attack them. The AI handles persistence, scanning detection, exfiltration monitoring, and defensive operations without manual prompting.
+## What This Project Is
 
-## Lab Architecture
+This is **not** a magic "AI SOC analyst" and it is **not** a free-form autonomous defender with root everywhere.
+
+This project is a **stateful automation loop**:
+
+1. Collect telemetry from the lab
+2. Normalize events into a common schema
+3. Maintain per-host incident state
+4. Score suspicious behavior
+5. Select from a small allowlist of defensive playbooks
+6. Record why each action was chosen
+7. Measure whether the action helped
+
+The LLM is a **decision aid**, not the control plane.
+
+## Core Design Principles
+
+- **Lab only**: restricted to explicitly designated VMs and VLANs
+- **Bounded autonomy**: the AI may only choose from preapproved actions
+- **Reversible actions first**: snapshot, isolate, raise logging, suspend, alert
+- **Evidence before action**: detect -> enrich -> correlate -> score -> act
+- **No unrestricted shell**: do not let the model invent commands
+- **No direct Proxmox admin authority by default**
+- **Human-readable audit trail** for every recommendation and action
+
+## What "Autonomous Opponent" Means Here
+
+The opponent should feel active because it:
+
+- notices scanning, persistence, staging, and egress patterns
+- changes its posture over time
+- reacts to attack chains instead of single events
+- forces the attacker to adapt
+
+The opponent should **not**:
+
+- delete files on its own
+- make irreversible host changes by default
+- disable core lab infrastructure
+- roam outside the scoped lab environment
+
+## Recommended Architecture
 
 ```mermaid
 flowchart LR
-    A[Windows Laptop<br>Management UI] -->|Tailscale| B[Proxmox Host]
-    B --> C[VulnHub Target VM]
-    B --> D[PurPaaS VM<br>Blue Team AI]
-    E[Raspberry Pi<br>Network Edge] -->|Tailscale| B
-    E -->|Network Logs| D
-Components:
+    A[Windows Laptop<br>Dashboard / Review] -->|Tailscale| B[Blue Team VM]
+    C[Proxmox Host] --> D[Target VM 1]
+    C --> E[Target VM 2]
+    C --> B
+    F[Raspberry Pi / Sensor Node] -->|Zeek / Suricata / Syslog| B
+    D -->|Host telemetry| B
+    E -->|Host telemetry| B
+    B --> G[Rule Engine / State Machine]
+    B --> H[LLM Decision Layer]
+    G --> I[Allowed Playbooks]
+    H --> I
+    I --> J[Reversible Actions]
+```
 
-Raspberry Pi: Separate subnet, zero-trust Tailscale, network telemetry source
+## Recommended Stack
 
-Proxmox: Hosts VulnHub target + Blue Team AI VM
+| Role | Preferred tools | Why |
+|---|---|---|
+| Host + log telemetry | **Wazuh** or **Security Onion** | Mature detections and centralized visibility |
+| Network telemetry | **Zeek** + **Suricata** | Good protocol visibility and alerting |
+| Forensic collection | **Velociraptor** | Strong artifact collection and triage workflows |
+| Orchestration / playbooks | **Shuffle** or **TheHive + Cortex** | Bounded response automation |
+| Detection content | **Sigma**, **ATT&CK**, **Atomic Red Team** | Structured rule and behavior coverage |
+| LLM runtime | **Ollama** | Local inference for summarization and playbook choice |
+| Training / simulation | **CybORG** or **CyberBattleSim** | Good for evaluation, not turnkey defense |
 
-Windows Laptop: Accesses PurPaaS web UI via Tailscale IP
+## Where PurPaaS Fits
 
-Why These Tools?
-Tool	Role	Why Not Alternatives
-PurPaaS-LLM	Autonomous purple team	AEGIS requires manual chat prompts—not autonomous
-Ollama	Local LLM runtime	No cloud dependencies, runs on homelab hardware
-CybORG	(Optional) Advanced training	More complex setup, but enables deeper learning
-Deployment Roadmap
-Prerequisites
-Proxmox VM (Ubuntu 22.04/24.04, 4GB+ RAM, 20GB storage)
+PurPaaS can still be explored as a **UI or orchestration experiment**, but it should not be treated as the whole solution.
 
-Tailscale installed on all lab nodes
+If used, it should sit **above** the telemetry and playbook layers, not replace them.
 
-VulnHub target VM network-configured for monitoring
+## Why Not "Just Build an Autonomous RADIUS Instance"
 
-Step 1: Install Ollama
-bash
-# On your designated Proxmox VM
-curl -fsSL https://ollama.com/install.sh | sh
+RADIUS is an **auth and policy surface**, not a defender by itself.
 
-# Pull recommended models (choose based on hardware)
-ollama pull llama3.2:3b      # Lightweight, good for Pi-class hardware
-ollama pull mistral:7b        # Balanced performance
-ollama pull phi3:mini         # Microsoft's efficient model
-Step 2: Deploy PurPaaS-LLM
-bash
-# Clone and install
-git clone https://github.com/dwain-barnes/PurPaaS-LLM
-cd PurPaaS-LLM
-pip install -r requirements.txt
+It can help if later you want identity-aware reactions such as:
 
-# Launch web UI (accessible via Tailscale)
-streamlit run app.py --server.address 0.0.0.0 --server.port 8501
-Access from Windows laptop: http://<proxmox-vm-tailscale-ip>:8501
+- forcing reauthentication for a test account
+- applying tighter network policy to a scoped lab segment
+- adding friction after suspicious access patterns
 
-Step 3: Configure Log Ingestion
-Point PurPaaS to your lab's telemetry sources:
+But RADIUS alone will not:
 
-bash
-# On the PurPaaS VM, configure log paths
-# Edit the agent configuration file
-nano config/blue_agent.yaml
+- investigate incidents
+- correlate host and network evidence
+- build timelines
+- detect staging and exfiltration chains
+- feel like a blue-team opponent
 
-# Add your log sources:
-# - /var/log/syslog (from Proxmox host)
-# - /var/log/auth.log (from VulnHub target, if shared storage)
-# - Network flow logs from Raspberry Pi (rsyslog forward)
-For Raspberry Pi network logs:
+Treat RADIUS as an optional **control point**, not the main brain.
 
-bash
-# On your Pi, forward logs to PurPaaS VM
-echo "*.* @<purpaas-vm-tailscale-ip>:514" >> /etc/rsyslog.conf
-systemctl restart rsyslog
-Step 4: Launch Autonomous Defense
-bash
-# Start both agents
-cd PurPaaS-LLM
-python run_purple_team.py --blue-agent --red-agent
+## Opponent Control Loop
 
-# Monitor the web dashboard
-# Watch blue team responses appear automatically
-Security Hardening for Your AI
-Critical: Your blue team AI becomes an attack surface inside your zero-trust network.
+Run the AI in short cycles:
 
-Input/Output Filtering
-Create a middleware proxy to prevent prompt injection:
+1. Pull fresh events from host and network sensors
+2. Update the world model for each lab asset
+3. Detect obvious patterns with rules
+4. Score anomalies against host/user baselines
+5. Ask the LLM to choose among allowed playbooks
+6. Execute at most one bounded action per cycle
+7. Record rationale, confidence, and effect
 
-python
-# security_gateway.py - Place between Ollama and PurPaaS
-from fastapi import FastAPI, HTTPException
-import re
+## Allowed Actions for Phase 1-2
 
-app = FastAPI()
+The AI should only choose from a fixed catalog:
 
-BLOCKED_PATTERNS = [
-    r"ignore (previous|all) instructions",
-    r"override system prompt",
-    r"jailbreak",
-    r"maintenance mode"
-]
+- raise log verbosity on a scoped host
+- trigger Velociraptor collection
+- tag a host as suspect
+- capture a VM snapshot
+- isolate one target VM from a lab VLAN
+- block one outbound destination for one host
+- suspend one suspicious process on a lab VM
+- disable one **lab-only** test account
 
-@app.post("/v1/chat/completions")
-async def gateway(request: dict):
-    user_input = request["messages"][-1]["content"]
-    
-    for pattern in BLOCKED_PATTERNS:
-        if re.search(pattern, user_input, re.IGNORECASE):
-            raise HTTPException(status_code=403, detail="Blocked prompt injection attempt")
-    
-    # Forward to Ollama
-    return await forward_to_ollama(request)
-Tailscale Access Control
-bash
-# Only expose to your Tailnet
-tailscale serve --bg --port 8501 streamlit
+Every action should be:
 
-# Verify only Tailscale IPs can access
-tailscale status
-How It Fights Back
-While you attack VulnHub boxes, PurPaaS's blue agent autonomously:
+- reversible
+- scoped
+- logged
+- cooldown-limited
 
-Attack Type	Blue Team Response
-Port scanning	Generates firewall rules, alerts on recon patterns
-Persistence attempts	Monitors cron, systemd, startup scripts
-Data exfiltration	Detects large outbound transfers, alerts
-Privilege escalation	Watches sudo/su attempts, privilege boundaries
-Lateral movement	Correlates network flows across VLAN
-Optional: Continuous Learning with PAD
-After each VulnHub session, strengthen your defender:
+## Things the AI Must Not Be Allowed to Do
 
-bash
-# Capture your attack logs from the session
-cp /var/log/vulnhub_attack.log ./training_data/
+- free-form shell execution
+- direct writes to arbitrary Proxmox configuration
+- changes to the Proxmox management plane
+- unrestricted firewall edits
+- deletion of forensic artifacts
+- broad account lockouts across the tailnet
 
-# Run PAD training (requires separate repo)
-git clone https://github.com/cissp-auditor/PAD-framework
-cd PAD-framework
-python train_defender.py --logs ../training_data/ --epochs 10
-This implements the Adversarial Defender training approach—the AI learns to discriminate safe vs unsafe inputs while preserving model quality.
+## Detection Priorities
 
-Advanced: Full Emulation with CybORG
-For realistic defense-in-depth training:
+Prioritize behaviors that make a lab opponent feel smart:
 
-bash
-# Install CybORG
-pip install CybORG
+1. **Recon**: scan bursts, rare connection patterns, unusual service touching
+2. **Execution**: suspicious parent/child chains, interpreter-heavy launches, temp-path execution
+3. **Persistence**: cron, systemd, startup modifications, new services
+4. **Privilege changes**: sudo/su patterns, token abuse indicators, role boundary crossing
+5. **Collection and staging**: large read bursts, archive creation, temp staging
+6. **Exfiltration**: rare destinations, unusual egress volume, chunked/beaconed transfers
+7. **Lateral movement**: cross-host auth anomalies, SMB/WinRM/SSH spread patterns
 
-# Define your lab topology
-cat > lab_topology.yaml << EOF
-network:
-  subnets:
-    - name: "vulnhub_segment"
-      cidr: "10.0.0.0/24"
-      hosts:
-        - "target_vm"
-        - "blue_ai_sensor"
-  firewall:
-    - from: "attacker"
-      to: "vulnhub_segment"
-      rules: "allow_tcp_80,443,22"
-EOF
+## Suggested Build Phases
 
-# Run emulation mode (spins up actual VMs in Proxmox)
-python -m CybORG.emulation --config lab_topology.yaml
-Monitoring Dashboard
-Once running, your Windows laptop dashboard shows:
+### Phase 1 - Telemetry and Visibility
 
-text
-┌─────────────────────────────────────────────────────────┐
-│  BLUE TEAM ACTIVITY                          [LIVE]     │
-├─────────────────────────────────────────────────────────┤
-│  [14:32:01] Detected port scan from 10.0.0.45           │
-│  [14:32:05] → Generated iptables block rule             │
-│  [14:33:22] Suspicious cron addition detected           │
-│  [14:33:25] → Reverted cron, alerted host               │
-│  [14:35:10] Exfiltration pattern (3.4MB outbound)       │
-│  [14:35:12] → Quarantined process, blocked egress       │
-└─────────────────────────────────────────────────────────┘
-Troubleshooting
-Issue	Solution
-PurPaaS can't reach Ollama	curl http://localhost:11434/api/generate - verify Ollama API
-No logs appearing	Check rsyslog forwarding from Pi: tcpdump -i tailscale0 port 514
-Blue agent not responding	Review purpaas/logs/blue_agent.log for errors
-High memory usage	Switch to smaller model: ollama pull phi3:mini
-Resources
-PurPaaS-LLM GitHub
+Deliverables:
 
-Ollama Model Library
+- Blue Team VM online
+- Wazuh or Security Onion collecting from target VMs
+- Zeek and/or Suricata feeding network telemetry
+- Dashboard showing alerts, timelines, and affected hosts
 
-CybORG Documentation
+Exit criteria:
 
-Adversarial Defender Research Paper
+- a known test event appears in the dashboard with source host and timestamp
 
-Next Steps After Deployment
-Attack your first VulnHub target (e.g., Kioptrix, FristiLeaks)
+### Phase 2 - Stateful Incident Engine
 
-Watch blue team responses in the dashboard
+Deliverables:
 
-Export session report: python export_report.py --session latest
+- normalized event schema
+- per-host incident state
+- simple confidence scoring
+- ATT&CK-style behavior tags
 
-Feed attack logs into PAD for defender improvement
+Exit criteria:
 
-Tune detection thresholds based on false positives
+- the system groups related events into one incident instead of isolated alerts
 
-text
+### Phase 3 - LLM-Guided Playbook Selection
 
----
+Deliverables:
 
-**Ready to copy.** Paste this directly into `docs/blue-team-ai.md` in your repo. When you have Ollama and PurPaaS installed, each command block will run as written for your exact architecture.
+- local Ollama model
+- prompt templates that consume structured telemetry only
+- playbook chooser limited to approved actions
+- rationale output for each decision
 
-One note: The security gateway snippet assumes you'll later build a FastAPI proxy. For immediate use, just rely on Tailscale's network isolation—your AI won't be internet-exposed anyway.
+Exit criteria:
+
+- given the same event bundle, the AI consistently selects from the allowlist and explains why
+
+### Phase 4 - Autonomous Reversible Actions
+
+Deliverables:
+
+- snapshot integration for designated lab VMs
+- one-host network isolation action
+- one-host outbound block action
+- one-host artifact collection action
+
+Exit criteria:
+
+- actions execute only within scope and can be rolled back cleanly
+
+### Phase 5 - Evaluation and Tuning
+
+Deliverables:
+
+- replay of saved attack sessions
+- false-positive notes
+- action effectiveness scorecard
+- threshold and playbook tuning
+
+Exit criteria:
+
+- the opponent creates pressure without constant self-sabotage
+
+## Initial Implementation Order
+
+Build in this order:
+
+1. **Telemetry stack first**
+2. **Detection and state tracking second**
+3. **Playbook framework third**
+4. **LLM decision layer fourth**
+5. **Autonomous containment last**
+
+Do **not** start with free-form AI actions.
+
+## Minimum Viable Opponent
+
+If time or complexity becomes a problem, the MVP should be:
+
+- Wazuh or Security Onion for visibility
+- Velociraptor for collection
+- Shuffle for playbooks
+- Ollama only for summarization and choosing among 5-10 actions
+- Proxmox integration limited to snapshot and lab-VM isolation
+
+That is enough to feel like an opponent without pretending the model can safely run the whole environment.
+
+## Success Criteria
+
+This project is successful if the blue team AI can:
+
+- detect suspicious activity fast enough to change attacker behavior
+- connect weak signals into one incident narrative
+- collect useful evidence automatically
+- choose from a bounded action menu
+- avoid wrecking the lab with false positives
+
+## Current Decision
+
+**Do not make RADIUS the main project.**
+
+Proceed with a **telemetry + SOAR + DFIR + local LLM** design:
+
+- **Telemetry**: Wazuh or Security Onion, plus Zeek/Suricata
+- **DFIR**: Velociraptor
+- **Playbooks**: Shuffle or TheHive/Cortex
+- **LLM**: Ollama for summarization and playbook choice
+- **Optional research/simulation**: CybORG or CyberBattleSim
+
+## Immediate Next Steps
+
+1. Stand up a dedicated Blue Team VM on Proxmox
+2. Pick **Wazuh** or **Security Onion** as the first anchor platform
+3. Add one target VM and one network sensor
+4. Prove telemetry ingestion before adding any AI layer
+5. Define the first 5 reversible actions
+6. Add the LLM only after the playbook boundaries exist
+
+## Notes to Future Me
+
+- The hard part is not "making AI smart enough"
+- The hard part is **safe autonomy, event correlation, and scoped control**
+- A realistic opponent is built from **good plumbing and tight boundaries**, not from giving a model too much power
