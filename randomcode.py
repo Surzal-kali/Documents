@@ -19,14 +19,13 @@ def somerandomcode1():
     swi = sw()
     fci = fc()
     wpi = wp()
-    nri = nr()
     csi = cs()
     tfi = tf()
     ori = Or()
+    nri = nr()
     ori.preflight()
-    
-    
-
+    thebin=swi.crabwalk()
+    csi.speak("Surzal was here :D")
     
 
     
