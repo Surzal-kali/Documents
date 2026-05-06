@@ -153,8 +153,11 @@
 	that avenue. '
 
 	The RAM Problem:
-	Good ol Marvin can only hold so much data, and only be up for so long. Because its all /tmp, the longer it lives the worse it kinda gets. So we'll have to use it as a production server for our malware.
+	Good ol Marvin can only hold so much data, and only be up for so long. Because its all /tmp, the longer it lives the worse it kinda gets. So we'll have to use it as a production server for our malware
 
+	in fact. little marvin IS our production server, specifically a firewall-freezone for maximum accessibility, 
+	with the boxes resetability in mind, this is actually perfect.
+	
 ### 3.) Porteus=157 (Python3 HTTP Web Server)
 
         --- Porteus is a dual web server boot to root machine. It has a python3 http web server, and a countdown timer that is vulnerable to cross-site scripting. So we will be working on this one concurrently with the other two machines, as it will serve as a pivot point for the next machines. The countdown timer is likely the main attack vector for this machine, as it is likely that there is something hidden in the countdown timer that can be exploited. Ironic that of course when the timer breaks, its a "zero-day" countdown AND vulnerability. 
@@ -972,3 +975,6 @@ and python, my dream girl:
 # Side Note: Learning by Doing vs Reverse Engineering
 
 I find myself at an impasse between school and self study. I usually have been reverse engineering everything, but now I'm on an ethical hacking course to learn the tools, vs building them.
+
+after some long hours of internal deliberation, ive decided to halt on direct CTF challenges. 
+instead i want to author malware, then test it on the CTF boxes. 

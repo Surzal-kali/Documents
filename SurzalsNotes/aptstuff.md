@@ -32,3 +32,11 @@ So in essence, APT and RAT simulations and techniques revolve around living off 
  # Don't be seen, don't be heard, and above all, wait. Time is your friend.
 
 :D will be back with more notes on APT techniques and strategies. Stay tuned!
+
+# Musings
+
+     It occurs to me, that trying to set up at-home apt simulations is harder than originally conceived. 
+     You have to not only update the ai model, but i personally think should enumerate often. just lots of logic problems nested into one idea.
+     Yet it sounds so very worth it. I want to practice and understand APT and RAT techniques for myself, and without a lab partner to play blue team, i am forced to turn to automation.
+     will i lose some? definitely. will my code and technique improve tho? 1000%
+     
