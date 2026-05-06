@@ -23,6 +23,8 @@ def somerandomcode1():
     csi = cs()
     tfi = tf()
     ori = Or()
+    ori.preflight()
+    
     
 
     
