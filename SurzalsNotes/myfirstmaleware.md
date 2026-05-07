@@ -21,3 +21,14 @@ this should probably be a cron job for a rnandom amount of time, and then we can
 
 if im supposed to be emulating an APT, then the next step would be to encrypt and compress the data inside of a hidden directory and sleep for a certain amount of time, preferably during busiest network times, or even better when its a skeleton crew on watch
 
+
+## Answers to above, ans follow ups
+
+making a temp user or container is too loud and system heavy. think more venv and generatwd bins that can easily rm. 
+
+know local user and enviro: i feel like this is alot of tapping localhost
+in addition, walking bin/path to get the lay of the land.
+
+2 and 3 are partially case by case basis, but ill circle back to this section to update when im further along.
+
+IN ADDITION. the exfiltration and obfuscation of data is going to be a huge component of this for me. mostly cause im sick of my own firewall deleting my code repo cause its malware. so im going to have to get creative with how i store and exfiltrate my data, and how i obfuscate my code to avoid detection. Compression however, needs to not be used. Unless the host is so tiny we must, then best not add even MORE strain to our victim system than our presence already does.

@@ -5,7 +5,7 @@ import subprocess
 import os
 from fileshuttle import FileShuttle as fs
 #hello from my phone
-class SleepBaby():
+class SleepBaby:
     def __init__(self, sleep_time=5):
         self.sleep_time = sleep_time
         self.fs = fs()
@@ -20,4 +20,6 @@ class SleepBaby():
         random_str = self.random_string()
         return f"Woke up! Here's a random string: \n{random_str}\n"
     
-    if __name__ == "__main__":
+if __name__ == "__main__":
+    sb = SleepBaby()
+    print(sb.hiccup())

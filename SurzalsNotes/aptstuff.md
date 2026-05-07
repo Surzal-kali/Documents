@@ -40,3 +40,6 @@ So in essence, APT and RAT simulations and techniques revolve around living off 
      Yet it sounds so very worth it. I want to practice and understand APT and RAT techniques for myself, and without a lab partner to play blue team, i am forced to turn to automation.
      will i lose some? definitely. will my code and technique improve tho? 1000%
      
+the more i think about the logic and behavior needed for long-term persidtence, the more i smell a challenge :D. and a better way to carry myself in cyberspace
+
+## If u do everything right, people wont be sure u did anything at all
