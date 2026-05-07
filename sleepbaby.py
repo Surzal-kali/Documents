@@ -14,12 +14,8 @@ class SleepBaby:
         letters = string.ascii_letters
         return ''.join(random.choice(letters) for i in range(length))
 
-    def hiccup(self):
-        print(f"Sleeping for {self.sleep_time} seconds...")
-        time.sleep(self.sleep_time)
-        random_str = self.random_string()
-        return f"Woke up! Here's a random string: \n{random_str}\n"
-    
-if __name__ == "__main__":
-    sb = SleepBaby()
-    print(sb.hiccup())
+#things to look into to finish this:
+
+#runtime discrepencies per cryptographic protocols
+#runtime discrepencies per file size
+

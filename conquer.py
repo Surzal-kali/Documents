@@ -65,7 +65,7 @@ class Tenfold:
     @staticmethod
     def _base_directory() -> Path:
         if os.name == "nt":
-            program_data = Path(os.environ.get("PROGRAMDATA", r"C:\ProgramData"))
+            program_data = Path(os.environ.get("PROGRAMDATA", r"C:\\ProgramData"))
             return program_data / "Conquer"
         return Path.home() / ".conquer"
 
