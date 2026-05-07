@@ -19,6 +19,5 @@ class SleepBaby():
         time.sleep(self.sleep_time)
         random_str = self.random_string()
         return f"Woke up! Here's a random string: \n{random_str}\n"
-
-        #so we need this to be able to append a file with the sectioned payloads, at random intervals of low system activity. this will be the evasion and LotL module for crafting a hidden dev enviroment. Data exfiltrarion will probably have to be a custom per enviroment module, so this will focus on obfuscated storage
-
+    
+    if __name__ == "__main__":
