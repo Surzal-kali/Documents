@@ -20,6 +20,7 @@ class SleepBaby:
 
 #things to look into to finish this:
 
-# AES256 Encryption, BASE64 per-case encoding, reverse string before transmission.
+# AES256 Encryption, BASE64 per-case encoding, reverse string before transmission. 
 
+    
     
