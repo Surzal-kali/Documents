@@ -43,3 +43,15 @@ So in essence, APT and RAT simulations and techniques revolve around living off 
 the more i think about the logic and behavior needed for long-term persidtence, the more i smell a challenge :D. and a better way to carry myself in cyberspace
 
 ## If u do everything right, people wont be sure u did anything at all
+
+so the apt simulation has 3 sides
+
+kali: meeeee
+
+pfsense: router and network chatter box (use crontab and bash scripting)
+
+ubuntu server?: a vm specifically for regex and pattern matchint telemtry from the network/hosts
+
+im not sure on the specifics on the ubuntu server, but the pfsense is pure bash
+
+oh and probably a malware production server(s)

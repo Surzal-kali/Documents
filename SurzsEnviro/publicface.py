@@ -29,7 +29,7 @@ class publicface:
         self.psi=ps()
         self.tfi=tf()
         self.ori=Or()
-        msfi=Msf(password=MSF_PASS, port=55552, ssl=False)
+        self.msfi=Msf(password=MSF_PASS, port=55552, ssl=False)
         self.ori.preflight()
 
     @staticmethod

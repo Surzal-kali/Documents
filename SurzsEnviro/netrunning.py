@@ -1,7 +1,7 @@
 import re
 import os
-from click import Path
-from flask import json
+import json
+from pathlib import Path
 import paramiko
 from computerspeak import ComputerSpeak as cs
 from fileshuttle import FileShuttle as fs
@@ -9,10 +9,24 @@ import subprocess
 import platform
 import time
 import socket
-from nmap import PortScanner
 import os
 import requests
 from target_config import TARGET_IP, TARGET_INTERFACE, SELF_IP_RE, TARGET_RANGE, IPV4_RE
+
+try:
+    from nmap import PortScanner
+except ModuleNotFoundError:
+    PortScanner = None
+
+
+def _require_portscanner():
+    if PortScanner is None:
+        raise ModuleNotFoundError(
+            "python-nmap is not installed in the active Python environment. "
+            "Install dependencies from requirements.txt before using nmap helpers."
+        )
+
+
 class NetRunning:
     def __init__(self):
         self.cs = cs()
@@ -20,6 +34,7 @@ class NetRunning:
     def scan_network(self, target_ip_range: str, scripts: list = None):
         """Scan the network for active hosts using nmap. Optionally, run specific nmap scripts against the detected hosts."""
         self.cs.speak(f"Scanning network range {target_ip_range} for active hosts...")
+        _require_portscanner()
         nm = PortScanner()
         try:
             nm.scan(hosts=target_ip_range, arguments=f'-sn -oN {target_ip_range.replace("/", "_")}_nmap_results.txt')
@@ -195,6 +210,7 @@ class NetRunning:
     def run_nmap_script(self, target_ip: str, script_name: str):
         """Run a specific nmap script against the target IP and return the results."""
         self.cs.speak(f"Running nmap script {script_name} against {target_ip}")
+        _require_portscanner()
         nm = PortScanner()
         try:
             nm.scan(hosts=target_ip, arguments=f'--script={script_name} -oN {target_ip}_{script_name}_results.txt')

@@ -1,12 +1,10 @@
 from os import name
 from xmlrpc import client
 
-from pyexploitdb import PyExploitDb 
 import re
 import socket
 from computerspeak import ComputerSpeak as cs
 from pathlib import Path
-import nmap
 from target_config import IPV4_RE, TARGET_INTERFACE, TARGET_IP, TARGET_PASSWORD, TARGET_USERNAME, TARGET_RANGE
 
 import time

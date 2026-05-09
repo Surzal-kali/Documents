@@ -4,6 +4,7 @@ import string
 import subprocess
 import os
 import shutil
+from fileshuttle import FileShuttle as fs
 
 #hello from my phone
 class SleepBaby:
@@ -19,6 +20,6 @@ class SleepBaby:
 
 #things to look into to finish this:
 
-#runtime discrepencies per cryptographic protocols
-#runtime discrepencies per file size
+# AES256 Encryption, BASE64 per-case encoding, reverse string before transmission.
 
+    
