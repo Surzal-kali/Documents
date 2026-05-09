@@ -4,21 +4,7 @@ text
 FUNCTION discover_targets():
     # Run from pfSense, no target modification
     targets = empty array
-    
-    # Method 1: ARP cache (fastest, finds recently active hosts)
-    arp_output = RUN "arp -n"
-    FOR each line in arp_output:
-        IF line contains target_network_pattern:
-            ip = extract_ip(line)
-            targets.append(ip)
-    
-    # Method 2: Ping sweep (finds everything, slower)
-    IF targets is empty:
-        FOR ip in 1..254:
-            RUN "ping -c 1 -W 1 192.168.1.${ip}" in background
-        WAIT 3 seconds
-        targets = extract from ARP cache again
-    
+
     # Method 3: Port scan profile (optional, for realism)
     FOR each ip in targets:
         common_ports = [22, 80, 443, 445, 3306, 8080]
@@ -28,7 +14,6 @@ FUNCTION discover_targets():
                 store (ip, port) as open_service
     
     RETURN targets
-Your job: Implement this in bash. Start with just ARP, then add ping sweep, then port profiling.
 
 Phase 2: Noise Generation Primitives (Building blocks)
 text
