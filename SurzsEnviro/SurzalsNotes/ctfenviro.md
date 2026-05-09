@@ -1,8 +1,4 @@
 
-
-
-oh boi
-
 # The Cast:
 
 ## Kali
@@ -17,12 +13,13 @@ custom spinnable and configurablw vm for extra red hat  automation on the networ
 
 grounded ollama and telemetery (with regex) blue team ai responding to IoCs
 
-## Raspberry Pi 
+## Pf Sense Router
 
-custom router instance to isolate the subnet, and bash scripting to simulate net traffic. 
+custom router instance to isolate the subnet, and python/bash scripting to simulate net traffic.
 cron jobs for network rhythms and holidays included
 
-## Qubes? 
+## Qubes?
+
 Digital forensics, and IoC analysis
 
-im pretty sure the backbone scripting will just be bash/py
+im pretty sure the backbone scripting will just be bash/py (jokes on me, pfsense comes with python so its pure python all the time)
