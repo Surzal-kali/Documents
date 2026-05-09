@@ -1,8 +1,8 @@
-# APT Contonued...and my first scratchinfs od malcode
+# APT Enviro Notes
 
 first things first, we need to be able to
 
-0. we need to find a way to make a tmp container or user. something out of sight out of mind to operate within. maybe we can use the sleep class to create a random user and then delete it after were done, or even better, have it create a random user and then have it sleep for a certain amount of time before deleting it, so that it looks like a normal user account that was created and then deleted after a certain amount of time.
+       we need to find a way to make a tmp container or user. something out of sight out of mind to operate within. maybe we can use the sleep class to create a random user and then delete it after were done, or even better, have it create a random user and then have it sleep for a certain amount of time before deleting it, so that it looks like a normal user account that was created and then deleted after a certain amount of time.
 
 the more i think about it, the more a venv or container sounds best
 
@@ -16,15 +16,13 @@ the more i think about it, the more a venv or container sounds best
 
 3. if were going to disguise our traffic, we first have to know the day-2-day. wiretap away
 
-this should probably be a cron job for a rnandom amount of time, and then we can use the data to create a profile of the network traffic, and then we can use that profile to create a camouflage for our exfiltration.
+this should probably be a cron job for a random amount of time, and then we can use the data to create a profile of the network traffic, and then we can use that profile to create a camouflage for our exfiltration.
 
+       if im supposed to be emulating an APT, then the next step would be to encrypt and compress the data inside of a hidden directory and sleep for a certain amount of time, preferably during busiest network times, or even better when its a skeleton crew on watch
 
-if im supposed to be emulating an APT, then the next step would be to encrypt and compress the data inside of a hidden directory and sleep for a certain amount of time, preferably during busiest network times, or even better when its a skeleton crew on watch
+## Answers to above, and follow ups
 
-
-## Answers to above, ans follow ups
-
-making a temp user or container is too loud and system heavy. think more venv and generatwd bins that can easily rm. 
+making a temp user or container is too loud and system heavy. think more venv and generated bins that can easily rm.
 
 know local user and enviro: i feel like this is alot of tapping localhost
 in addition, walking bin/path to get the lay of the land.
