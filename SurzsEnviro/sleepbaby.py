@@ -2,6 +2,8 @@ import time
 import random
 import string
 import subprocess
+import base64
+from cryptography.haxmat.primitves.ciphers.aead import 
 import os
 import shutil
 from fileshuttle import FileShuttle as fs
@@ -20,7 +22,13 @@ class SleepBaby:
 
 #things to look into to finish this:
 
-# AES256 Encryption, BASE64 per-case encoding, reverse string before transmission. 
+# AES256 Encryption, BASE64 per-case encoding, reverse string before transmission
 
-    
-    
+    def encrypt_with_aes(input:str, enc_key: str, iv: str):
+        key = enc_key.encode()
+        nonce = iv.encode() 
+        plaintext = input.encode()
+        aesgcm = AESGCM(key)
+        
+        ciphertext_str = base64.b64encode(ciphertext).decode()
+        return ciphertext_str
