@@ -8,13 +8,15 @@ import os
 import shutil
 from fileshuttle import FileShuttle as fs
 
-#hello from my phone
+
 class SleepBaby:
+
     def __init__(self, sleep_time=5):
         self.sleep_time = sleep_time
         self.fs = fs()
 
     def string_burp(self, length=10):
+        """Generates a random string of the specified length, wrapped in newlines."""
         letters = string.ascii_letters
         raw = ''.join(random.choice(letters) for i in range(length))
         realraw = "\n" + raw + "\n"
@@ -24,6 +26,7 @@ class SleepBaby:
     # AES256 Encryption, BASE64 per-case encoding, reverse string before transmission
 
     def encrypt_with_aes(self, input: str, enc_key: str, iv: str):
+        """Encrypts the input string using AES-GCM with the provided encryption key and initialization vector (IV)."""
         key = enc_key.encode()
         nonce = iv.encode() 
         plaintext = input.encode()
@@ -33,6 +36,7 @@ class SleepBaby:
         return ciphertext_str
         
     def decrypt_with_aes(self, input: str, enc_key: str, iv: str):
+        """Decrypts the input string using AES-GCM with the provided encryption key and initialization vector (IV)."""
         key = enc_key.encode()
         nonce = iv.encode()
         ciphertext = base64.b64decode(input)
@@ -41,19 +45,6 @@ class SleepBaby:
         return decrypted.decode()
        
     def generate_iv_string(self, length=6):
+        """Generates a random string of the specified length to be used as an initialization vector (IV) for encryption."""
         chars = string.ascii_letters + string.digits + "#$()*+,-.:;<=>?@[]_"
         return ''.join(random.choices(chars, k=length))
-
-
-if __name__ == "__main__":
-    sleep_baby = SleepBaby()
-    enc_key = "1Xt5YfM4ZNuFdwp3OfVkwkhhQLagWKtt"
-    iv = sleep_baby.generate_iv_string(12)
-    input_text = "F OFF"
-    
-    ciphertext = sleep_baby.encrypt_with_aes(input_text, enc_key, iv)
-    print("Ciphertext:", ciphertext) 
-    
-    decrypted = sleep_baby.decrypt_with_aes(ciphertext, enc_key, iv)
-    print("Decrypted:", decrypted)
-   
