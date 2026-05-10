@@ -1,5 +1,5 @@
-#TODO: For the love of god, utilize REST API pfsense routing syntax to script out the network changes needed for different permission enviroments.
-#TODO: This will be used to quickly change the network enviroment for different permission levels. The question is, do I want to script out tools for the blue-team ai to utilize, or do i just do the bare firewall rules?
+#TODO: For the love of god, utilize REST API pfsense routing syntax to script out the network changes needed for different permission enviroments. Fun fact, don't panic, its just curl requests. ez.
+#TODO: This will be used to quickly change the network enviroment for different permission levels. 1.) Regular multi-tiered network with a dmz and internal network
 #TODO: Test said scripting.
 
 import requests
