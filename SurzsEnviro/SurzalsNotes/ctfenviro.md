@@ -29,3 +29,7 @@ cron jobs for network rhythms and holidays included
 Digital forensics, and IoC analysis. Still unsure i even need it but hey, could be fun if blackarch goes off.
 
 im pretty sure the backbone scripting will just be bash/py (Jokes on me so many times over, it has a REST api that just...makes shit so easy)
+
+### Reiteration
+
+This is bullshit and a half this doesn't exist even paid. On the other hand i'm learning so much shit boy howdy.
