@@ -1,4 +1,5 @@
 #TODO: For the love of god, utilize REST API pfsense routing syntax to script out the network changes needed for different permission enviroments.
+#TODO: This will be used to quickly change the network enviroment for different permission levels. The question is, do I want to script out tools for the blue-team ai to utilize, or do i just do the bare firewall rules?
 #TODO: Test said scripting.
 
 import requests
@@ -9,7 +10,7 @@ class Pfsense:
         self.host = host
         self.api_key = api_key
         self.api_secret = api_secret
-        self.base_url = f"https://{host}/api/v1/"
+        self.base_url = f"https://{host}/api/v2/"
 
     def _headers(self):
         return {
@@ -17,12 +18,12 @@ class Pfsense:
             "Authorization": f"Bearer {self.api_key}:{self.api_secret}"
         }
 
-    def create_rule(self, rule_data):
-        url = self.base_url + "rules"
+    def add_firewall_rule(self, rule_data):
+        url = f"{self.base_url}/firewall/rules"
         response = requests.post(url, headers=self._headers(), data=json.dumps(rule_data), verify=False)
         return response.json()
 
-    def delete_rule(self, rule_id):
-        url = self.base_url + f"rules/{rule_id}"
+    def delete_firewall_rule(self, rule_id):
+        url = f"{self.base_url}/firewall/rules/{rule_id}"
         response = requests.delete(url, headers=self._headers(), verify=False)
         return response.json()
