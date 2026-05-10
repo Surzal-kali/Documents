@@ -2,6 +2,8 @@
 #TODO: This will be used to quickly change the network enviroment for different permission levels. 1.) Regular multi-tiered network with a dmz and internal network
 #TODO: Test said scripting.
 
+#main plan for this module: create rules in webui proper, then toggle with automation by parent id.
+
 import requests
 import json
 

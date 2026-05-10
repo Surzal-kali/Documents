@@ -1,5 +1,11 @@
 
-# The Cast:
+# The Cast
+
+Here outlined is my current architectual plans for an in house purple team lab inside of proxmox.
+
+## Simple Kali Minimal-Install for Vulnhub Intake
+
+a itty bitty install for simple enumeration on a seperate net for new boxes i download.
 
 ## Kali
 
@@ -20,6 +26,6 @@ cron jobs for network rhythms and holidays included
 
 ## Qubes?
 
-Digital forensics, and IoC analysis
+Digital forensics, and IoC analysis. Still unsure i even need it but hey, could be fun if blackarch goes off.
 
-im pretty sure the backbone scripting will just be bash/py (jokes on me, pfsense comes with python so its pure python all the time)
+im pretty sure the backbone scripting will just be bash/py (Jokes on me so many times over, it has a REST api that just...makes shit so easy)
