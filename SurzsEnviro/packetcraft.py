@@ -32,8 +32,35 @@ class PacketCraft:
             Path=path
         )
         return http_request
+    
+    def create_http_response(self, status_code, reason, body):
+        http_response = HTTPResponse(
+            Status_Code=status_code,
+            Reason=reason,
+            Body=body
+        )
+        return http_response
 
     def create_dns_query(self, qname):
         dns_query = DNS(rd=1) / DNSQR(qname=qname)
         return dns_query
     
+    def create_dns_response(self, qname, rdata):
+        dns_response = DNS(
+            qr=1,
+            aa=1,
+            qd=DNSQR(qname=qname),
+            an=DNSRR(rrname=qname, rdata=rdata)
+        )
+        return dns_response
+    
+    def send_packet(self, packet):
+        send(packet, iface=self.iface)
+
+    def sniff_packets(self, filter=None, count=0):
+        packets = sniff(filter=filter, count=count, iface=self.iface)
+        return packets
+    
+    def hexdump_packet(self, packet):
+        hexdump(packet)
+        return hexdump(packet)  
