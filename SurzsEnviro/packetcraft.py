@@ -1,6 +1,6 @@
 import scapy.all as scapy
 from scapy.layers.inet import IP, TCP, UDP
-from scapy.layers.l2 import Ether
+from scapy.layers.l2 import Ether, ARP, sendp
 from scapy.layers.http import HTTPRequest, HTTPResponse
 from scapy.layers.dns import DNS, DNSQR, DNSRR
 import random
@@ -8,6 +8,14 @@ import string
 import time
 import cryptography
 from scapy.all import sr1, send, sniff, hexdump
+
+#TODO: Add more protocols (e.g., ICMP, FTP, etc.),
+# Add support for crafting packets with custom options and flags,
+# Implement functionality for sending packets at specific intervals or in bursts,
+# Add error handling and validation for input parameters,
+# Implement functionality for saving and loading crafted packets,
+# Add support for crafting packets with custom payloads (e.g., binary data, files, etc.),
+# Implement functionality for analyzing and visualizing captured packets
 
 class PacketCraft:
     def __init__(self, iface=None):
