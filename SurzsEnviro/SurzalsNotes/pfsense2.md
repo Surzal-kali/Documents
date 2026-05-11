@@ -247,7 +247,7 @@ curl -X PATCH "https://<pf>/api/v2/system/dns" \
 | 5 | PASS | * | LAN net | * | Any | * | General internet access |
 | 6 | BLOCK | * | LAN net | * | OPT2 net | * | No direct database access |
 
-### OPT1 (DMZ / Untrusted - `192.168.2.0/24`)
+### OPT1 (DMZ / Untrusted - `172.19.44.0/24`)
 
 | # | Action | Proto | Source | Src Port | Destination | Dst Port | Description |
 |---|---|---|---|---|---|---|---|
@@ -257,7 +257,7 @@ curl -X PATCH "https://<pf>/api/v2/system/dns" \
 | 4 | BLOCK | * | OPT1 net | * | LAN net | * | DMZ cannot touch internal users |
 | 5 | PASS | * | OPT1 net | * | WAN net | * | Allow DMZ updates (optional) |
 
-### OPT2 (Database / Sensitive - `192.168.3.0/24`)
+### OPT2 (Database / Sensitive - `172.22.91.0/24`)
 
 | # | Action | Proto | Source | Src Port | Destination | Dst Port | Description |
 |---|---|---|---|---|---|---|---|
@@ -290,7 +290,7 @@ curl -X PATCH "https://<pf>/api/v2/system/dns" \
 | 4 | PASS | TCP/UDP | LAN net | * | LAN address | 53 | Internal DNS |
 | 5 | BLOCK | * | LAN net | * | Any | * | Catch-all block |
 
-### OPT1 (DMZ / Untrusted - `192.168.2.0/24`)
+### OPT1 (DMZ / Untrusted - `172.19.44.0/24`)
 
 | # | Action | Proto | Source | Src Port | Destination | Dst Port | Description |
 |---|---|---|---|---|---|---|---|
@@ -301,7 +301,7 @@ curl -X PATCH "https://<pf>/api/v2/system/dns" \
 
 **Note:** Rule `#2` should use specific source and destination IPs, not whole subnets.
 
-### OPT2 (Database / Sensitive - `192.168.3.0/24`)
+### OPT2 (Database / Sensitive - `172.22.91.0/24`)
 
 | # | Action | Proto | Source | Src Port | Destination | Dst Port | Description |
 |---|---|---|---|---|---|---|---|
@@ -330,7 +330,7 @@ curl -X PATCH "https://<pf>/api/v2/system/dns" \
 | 4 | BLOCK | * | LAN net | * | OPT2 net | * | Default | No access to VPN gateway itself |
 | 5 | BLOCK | * | Any | * | LAN net | * | Default | Default deny |
 
-### OPT1 (Legacy On-Prem DMZ - `192.168.2.0/24`)
+### OPT1 (Legacy On-Prem DMZ - `172.19.44.0/24`)
 
 | # | Action | Proto | Source | Src Port | Destination | Dst Port | Description |
 |---|---|---|---|---|---|---|---|
@@ -340,7 +340,7 @@ curl -X PATCH "https://<pf>/api/v2/system/dns" \
 | 4 | BLOCK | * | OPT1 net | * | LAN net | * | DMZ cannot touch users |
 | 5 | BLOCK | * | Any | * | OPT1 net | * | Default deny inbound |
 
-### OPT2 (Cloud Gateway / VPN - `192.168.3.0/24`)
+### OPT2 (Cloud Gateway / VPN - `172.22.91.0/24`)
 
 | # | Action | Proto | Source | Src Port | Destination | Dst Port | Description |
 |---|---|---|---|---|---|---|---|
