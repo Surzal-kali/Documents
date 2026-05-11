@@ -11,7 +11,7 @@ import time
 
 import paramiko
 
-
+### TODO: seperate into a proper osint library, not a mile long script with things we almost never use. This will be for things like the nmap parsing, the CVE parsing, and any other functions that are more for data collection and analysis rather than active exploitation. This will help keep the codebase organized and make it easier to maintain and expand in the future. It will also allow us to focus on specific areas of functionality without having to navigate through a large script with mixed purposes. :D
 class CoreClass:
     """CoreClass is responsible for various operations such as file handling, network scanning, and vulnerability assessment. Its generally where I bring out the big guns for the lab exercises, and it also contains the main logic for zipping the current working directory and shuttling it to the next host."""
     def __init__(self):

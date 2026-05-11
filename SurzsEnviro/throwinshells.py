@@ -1,5 +1,11 @@
 import socket
-"""exactly what it says on the title. still untested but should work. this is the server side, the client side is in the payloads folder....which i still need to write :D"""#honestly i have alot of options on that front. i can do a simple reverse shell, or i can do something more complex like a full featured RAT. we'll see how much time i have to work on this. :D
+"""exactly what it says on the title. still untested but should work. this is the server side, the client side is in the payloads folder....which i still need to write :D"""
+
+### TODO: - Implement basic command execution functionality
+###       - Add support for file upload and download
+###       - Implement a secure authentication mechanism
+###       - Add functionality to maintain persistence on the target machine
+###       - Implement logging and reporting features
 SERVER_HOST = "0.0.0.0"
 SERVER_PORT = 5003
 BUFFER_SIZE = 1024 * 128

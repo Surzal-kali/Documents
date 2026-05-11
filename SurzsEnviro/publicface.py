@@ -14,6 +14,7 @@ from conquer import Tenfold as tf
 from orchestrator import Orchestrator as Or
 import requests 
 import platform
+### TODO: Implement more advance payload delivery and generation with public face, and look more into the art of HTTP requests and responses.
 
 class publicface:
     """This class is designed to be the main entry point for web requests, providing a public-facing interface for various functionalities of web hunting in SurzsEnviro. It can be used for testing, demonstrations, or as a simple interface for users to interact with the underlying tools and modules."""

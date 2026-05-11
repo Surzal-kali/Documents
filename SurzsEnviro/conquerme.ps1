@@ -1,3 +1,4 @@
+# TODO: - Implement a file watcher to monitor changes in the conquer.py script, AND configure automatic init upon starting the script and embedding into the system. This will allow for seamless development and testing of the conquer script, as any changes made to the script will automatically trigger a re-run of the script without needing to manually restart it. This will enhance the development workflow and ensure that the latest changes are always being tested.
 Start-Job -Name WatchRunner -ScriptBlock {
     watchexec -r -e py -- python conquer.py
 }

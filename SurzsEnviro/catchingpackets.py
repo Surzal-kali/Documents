@@ -9,7 +9,7 @@ except ModuleNotFoundError:
 
 
 _HERE = Path(__file__).resolve().parent
-
+# TODO: Combine with packetcraft once finished.
 
 def _require_pyshark():
     if pyshark is None:

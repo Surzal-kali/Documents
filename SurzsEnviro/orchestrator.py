@@ -3,6 +3,13 @@ import re
 from pathlib import Path
 from fileshuttle import FileShuttle
 
+### TODO: - Implement a comprehensive preflight check that includes:
+###       - Verifying the presence of necessary dependencies and libraries
+###       - Checking for updates or changes in the attack modules since the last run
+###       - Performing a quick analysis of the current system state (e.g., checking for new processes, network connections, or files that may indicate changes in the environment)
+###       - Logging the results of the preflight check for future reference and analysis
+#this should be our main point of "are we pwnd and are ok? did anything escape the zoo?" right now it looks at bin and spits a firehose.
+
 class Orchestrator:
     def __init__(self):
         pass

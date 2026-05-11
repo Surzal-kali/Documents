@@ -5,6 +5,8 @@ import subprocess
 import platform
 import time
 #cause this will be so much fun for automation! we can figure out so much about each host :D
+
+#TODO: - Implment more functionality, or subutil the processes like normal.
 class ComputerSpeak:
     def __init__(self):
         """Initialize the ComputerSpeak class and detect the operating system."""

@@ -3,7 +3,7 @@ import os
 import computerspeak as cs
 from pathlib import Path
 
-
+#TODO: Implement more file parlor tricks, or delete this class entirely and use shutil like a normie. I just wanted to have a class for file operations, but it might be overkill. We'll see how much time I have to work on this. :D
 class FileShuttle:
     def __init__(self):
         pass
