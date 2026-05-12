@@ -175,3 +175,16 @@ RandString(128)
 ```python
 IP(dst=RandIP()) / UDP(dport=RandShort()) / Raw(load=RandString(256))
 ```
+
+
+### Basic Rhythm:
+
+| Time | What dominates |
+|------|-----------------|
+| 00:00–06:00 | Background + telemetry |
+| 06:00–08:30 | Background + app warming |
+| 08:30–12:00 | Web + app + admin |
+| 12:00–13:00 | Reduced web, app steady |
+| 13:00–17:30 | Web + app peak |
+| 17:30–22:00 | App + telemetry |
+| 22:00–00:00 | Mostly background |
