@@ -10,7 +10,6 @@ from computerspeak import ComputerSpeak as cs
 
 """FOR THE HORDE"""
 
-#TODO: Fix this class so it uses subutil like a proper python class, instead of computerspeak.
 class Tenfold:
     """Watch a local source folder, stage approved scripts, and run them on schedule."""
 

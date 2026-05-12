@@ -4,12 +4,10 @@ import json
 from pathlib import Path
 import paramiko
 from computerspeak import ComputerSpeak as cs
-from fileshuttle import FileShuttle as fs
 import subprocess
 import platform
 import time
 import socket
-import os
 import requests
 from target_config import TARGET_IP, TARGET_INTERFACE, SELF_IP_RE, TARGET_RANGE, IPV4_RE
 
@@ -30,11 +28,14 @@ def _require_portscanner():
 class NetRunning:
     def __init__(self):
         self.cs = cs()
-        self.fs = fs()
     def scan_network(self, target_ip_range: str, scripts: list = None):
         """Scan the network for active hosts using nmap. Optionally, run specific nmap scripts against the detected hosts."""
         self.cs.speak(f"Scanning network range {target_ip_range} for active hosts...")
-        _require_portscanner()
+        if PortScanner is None:
+            raise ModuleNotFoundError(
+                "python-nmap is not installed in the active Python environment. "
+                "Install dependencies from requirements.txt before using nmap helpers."
+            )
         nm = PortScanner()
         try:
             nm.scan(hosts=target_ip_range, arguments=f'-sn -oN {target_ip_range.replace("/", "_")}_nmap_results.txt')
@@ -146,7 +147,10 @@ class NetRunning:
                 self.send_response(200)
                 self.send_header("Content-type", "text/plain")
                 self.end_headers()
-                self.wfile.write(payload.encode())
+                if payload is not None:
+                    self.wfile.write(payload.encode())
+                else:
+                    self.wfile.write(b"")
 
         with socketserver.TCPServer((host, port), Handler) as httpd:
             print(f"Serving payload on {host}:{port}")
@@ -201,16 +205,20 @@ class NetRunning:
     def loud_scan(target_ip_range: str, rate=1000):
         """Perform a loud scan of the target IP range using nmap with aggressive timing and verbose output."""
         csi = cs()
-        fsi=fs()
         csi.speak(f"Starting loud scan of {target_ip_range} with rate {rate} packets per second")
         masscanr=csi.execute_command(f"sudo masscan -p0-65535 --rate {rate} {target_ip_range} -oL loud_scan_results.txt")
-        results = fsi.file_read("loud_scan_results.txt")
+        with open("loud_scan_results.txt", "r") as f:
+            results = f.read()
         return results
     
     def run_nmap_script(self, target_ip: str, script_name: str):
         """Run a specific nmap script against the target IP and return the results."""
         self.cs.speak(f"Running nmap script {script_name} against {target_ip}")
-        _require_portscanner()
+        try:
+            _require_portscanner()
+        except ModuleNotFoundError as e:
+            self.cs.speak(f"Error: {e}")
+            return None
         nm = PortScanner()
         try:
             nm.scan(hosts=target_ip, arguments=f'--script={script_name} -oN {target_ip}_{script_name}_results.txt')
@@ -223,3 +231,31 @@ class NetRunning:
         except Exception as e:
             self.cs.speak(f"An error occurred while running nmap script {script_name} against {target_ip}: {e}")
             return None
+
+    def exploitdbforvuln(self):
+        """This function reads vulnerability scan results from text files, extracts CVE identifiers, and uses SearchSploit to find related exploits. The results are then printed and saved to separate text files. This function is designed to automate the process of correlating vulnerability scan results with known exploits, providing valuable insights for further exploitation activities. It handles any exceptions that may occur during file reading or command execution, and it logs the findings using the ComputerSpeak class."""
+        cs_i = cs()
+        vuln_files = list(Path("SurzsEnviro/SurzalsNotes/SurzalsTexts/SurzalsVulns").glob("vuln_scan_*.txt"))
+        for vuln_file in vuln_files:
+            with open(vuln_file, "r", encoding="utf-8", errors="ignore") as f:
+                content = f.read()
+                cve_matches = re.findall(r"CVE-\d{4}-\d{4,7}", content)
+                if cve_matches:
+                    for cve in set(cve_matches):
+                        cs_i.execute_command(f"Write-Output 'Searching for exploits related to {cve}...'")
+                        exploit_results = cs_i.execute_command(f"searchsploit {cve} --json")
+                        if exploit_results:
+                            cs_i.execute_command(f"Write-Output 'Exploit search results for {cve}:'")
+                            cs_i.execute_command(f"Write-Output '{exploit_results}'")
+                            with open(f"SurzsEnviro/SurzalsNotes/SurzalsTexts/SurzalsExploits/exploit_search_{cve}.txt", "w", encoding="utf-8") as exploit_file:
+                                exploit_file.write(exploit_results)
+                        else:
+                            cs_i.execute_command(f"Write-Output 'No exploits found for {cve}.'")
+                        print(f"Exploit search results for {cve}:\n{exploit_results}")
+                else:
+                    cs_i.execute_command(f"Write-Output 'No CVE identifiers found in {vuln_file}.'")
+                    print(f"No CVE identifiers found in {vuln_file}.")
+                return cve_matches if cve_matches else None #there we go
+
+
+                                

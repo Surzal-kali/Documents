@@ -13,7 +13,7 @@ from importlib.metadata  import files, version
 from computerspeak import ComputerSpeak as cs
 import psutil
 
-#### TODO: Implement more flexible methods with file crawler, and add more functionality. Maybe combine with fileshuttle?
+
 class FileCrawler:
     """ Handles the enumeration of files on the user's system based on their consent preferences."""
     def __init__(self,):

