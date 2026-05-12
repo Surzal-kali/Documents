@@ -1,66 +1,10 @@
-
-import re
-from pathlib import Path
-from fileshuttle import FileShuttle
-
-### TODO: - Implement a comprehensive preflight check that includes:
-###       - Verifying the presence of necessary dependencies and libraries
-###       - Checking for updates or changes in the attack modules since the last run
-###       - Performing a quick analysis of the current system state (e.g., checking for new processes, network connections, or files that may indicate changes in the environment)
-###       - Logging the results of the preflight check for future reference and analysis
-#this should be our main point of "are we pwnd and are ok? did anything escape the zoo?" right now it looks at bin and spits a firehose.
+from target_config import SELF_IP_RE, TARGET_INTERFACE, TARGET_IP, TARGET_PASSWORD, TARGET_USERNAME
 
 class Orchestrator:
     def __init__(self):
-        pass
+        self.target_ip = TARGET_IP
+        self.target_username = TARGET_USERNAME
+        self.target_password = TARGET_PASSWORD
 
-    @staticmethod
-    def _list_bin_entries(directory: str = "/bin"):
-        target = Path(directory)
-        if not target.is_dir():
-            return []
-        return sorted(entry.name for entry in target.iterdir())
-
-    def preflight(self):
-        """so the idea essentially here it to check the network enviroment, the current differences since the last time this ran. It checks imports, and dependencies as well. """
-        from computerspeak import ComputerSpeak as cs
-        csi = cs()
-        csi.speak("[*] Starting orchestration of attack modules...")
-        try:
-            from netrunning import NetRunning as nr
-            from metasploiting import search_modules, execute_module, list_sessions, payload_generation, get_db_status
-            from catchingpackets import PacketSniffer as ps
-            print("[*] Successfully imported attack modules.")
-        except ImportError as e:
-            print(f"[-] Error importing attack modules: {e}")
-            return
-        try:
-            from fileshuttle import FileShuttle
-            from enumeration import FileCrawler
-            print("[*] Successfully imported data collection modules.")
-        except ImportError as e:
-            print(f"[-] Error importing data collection modules: {e}")
-            return
-        fsi = FileShuttle()
-        bin_entries = self._list_bin_entries("/bin")
-        if bin_entries:
-            print(f"[*] Found {len(bin_entries)} entries in /bin for startup analysis, would you like to review? (y/n)")
-            if input().lower() == "y":
-                for item in bin_entries:
-                    # Remove embedded null bytes to prevent subprocess errors
-                    sanitized_item = item.replace('\x00', '').replace('\0', '').replace(chr(0), '')
-                    fsi.append_file("bin.txt", f"\n[*] Analyzing command: {sanitized_item}")
-                    if re.search(r"\b(nmap|masscan|zmap|unicornscan)\b", sanitized_item):
-                        fsi.append_file("bin.txt", f"[*] Detected potential scanning command: {sanitized_item}\n")
-                    elif re.search(r"\b(msfconsole|msfrpc|metasploit)\b", sanitized_item):
-                        fsi.append_file("bin.txt", f"[*] Detected potential exploitation command: {sanitized_item}\n")
-                    elif re.search(r"\b(curl|wget|ftp|scp|sftp)\b", sanitized_item):
-                        fsi.append_file("bin.txt", f"[*] Detected potential file transfer command: {sanitized_item}\n")
-                    else:
-                        continue
-        else:
-            print("[*] No /bin entries found for startup analysis.")
-        print("[*] Orchestration complete. Attack modules are ready for use based on the collected startup analysis.")
-
-
-
+    def orchestrate(self):
+        print(f"Orchestrating with target IP: {self.target_ip}, username: {self.target_username}")

@@ -1,7 +1,6 @@
 import sqlite3
 from computerspeak import ComputerSpeak as cs
 from whatprocess import WhatProcess as wp
-from fileshuttle import FileShuttle as fs
 from enumeration import FileCrawler as fc
 from shellwalking import ShellWalker as sw
 

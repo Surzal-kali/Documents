@@ -28,8 +28,8 @@ def _require_portscanner():
 class NetRunning:
     def __init__(self):
         self.cs = cs()
-    def scan_network(self, target_ip_range: str, scripts: list = None):
-        """Scan the network for active hosts using nmap. Optionally, run specific nmap scripts against the detected hosts."""
+    def scan_network(self, target_ip_range: str):
+        """Scan the network for active hosts using nmap. Optionally, run specific nmap scsripts against the detected hosts."""
         self.cs.speak(f"Scanning network range {target_ip_range} for active hosts...")
         if PortScanner is None:
             raise ModuleNotFoundError(
