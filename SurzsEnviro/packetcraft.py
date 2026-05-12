@@ -14,9 +14,6 @@ from target_config import TARGET_INTERFACE, TARGET_IP, TARGET_RANGE
 # Add support for crafting packets with custom options and flags,
 # Implement functionality for sending packets at specific intervals or in bursts,
 # Add error handling and validation for input parameters,
-# Implement functionality for saving and loading crafted packets,
-# Add support for crafting packets with custom payloads (e.g., binary data, files, etc.),
-# Implement functionality for analyzing and visualizing captured packets
 
 class PacketCraft:
     def __init__(self, interface: str = TARGET_INTERFACE):
