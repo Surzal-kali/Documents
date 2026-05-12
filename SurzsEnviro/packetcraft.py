@@ -66,3 +66,8 @@ class PacketCraft:
     def load_packet(self, filename: str) -> scapy.Packet | None:
         packets = scapy.rdpcap(filename)
         return packets[0] if packets else None
+    
+    def dissect_packet(self, packet: scapy.Packet):
+        packet.show()
+    
+    
