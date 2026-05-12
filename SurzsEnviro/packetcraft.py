@@ -7,8 +7,8 @@ import random
 import string
 import time
 import cryptography
-from scapy.all import sr1, send, sniff, hexdump
-
+from scapy.all import sr1, send, sniff, hexdump, Raw
+from target_config import TARGET_INTERFACE, TARGET_IP, TARGET_RANGE
 #TODO: Add more protocols (e.g., ICMP, FTP, etc.),
 # Add support for crafting packets with custom options and flags,
 # Implement functionality for sending packets at specific intervals or in bursts,
@@ -18,57 +18,23 @@ from scapy.all import sr1, send, sniff, hexdump
 # Implement functionality for analyzing and visualizing captured packets
 
 class PacketCraft:
-    def __init__(self, iface=None):
-        self.iface = iface
+    def __init__(self, interface: str = TARGET_INTERFACE):
+        self.interface = interface
 
-    def create_ip_packet(self, src_ip, dst_ip, payload):
-        ip_packet = IP(src=src_ip, dst=dst_ip) / payload
-        return ip_packet
+    def craft_tcp_packet(self, src_ip: str, dst_ip: str, src_port: int, dst_port: int, flags: str = "S", payload: bytes = b"") -> scapy.Packet:
+        packet = IP(src=src_ip, dst=dst_ip) / TCP(sport=src_port, dport=dst_port, flags=flags) / Raw(load=payload)
+        return packet
 
-    def create_tcp_packet(self, src_ip, dst_ip, src_port, dst_port, payload):
-        tcp_packet = IP(src=src_ip, dst=dst_ip) / TCP(sport=src_port, dport=dst_port) / payload
-        return tcp_packet
+    def craft_udp_packet(self, src_ip: str, dst_ip: str, src_port: int, dst_port: int, payload: bytes = b"") -> scapy.Packet:
+        packet = IP(src=src_ip, dst=dst_ip) / UDP(sport=src_port, dport=dst_port) / Raw(load=payload)
+        return packet
 
-    def create_udp_packet(self, src_ip, dst_ip, src_port, dst_port, payload):
-        udp_packet = IP(src=src_ip, dst=dst_ip) / UDP(sport=src_port, dport=dst_port) / payload
-        return udp_packet
-
-    def create_http_request(self, method, host, path):
-        http_request = HTTPRequest(
-            Method=method,
-            Host=host,
-            Path=path
-        )
-        return http_request
+    def craft_arp_packet(self, src_mac: str, dst_mac: str, src_ip: str, dst_ip: str) -> scapy.Packet:
+        packet = Ether(src=src_mac, dst=dst_mac) / ARP(hwsrc=src_mac, psrc=src_ip, hwdst=dst_mac, pdst=dst_ip)
+        return packet
     
-    def create_http_response(self, status_code, reason, body):
-        http_response = HTTPResponse(
-            Status_Code=status_code,
-            Reason=reason,
-            Body=body
-        )
-        return http_response
+    def vlan_frame(self, src_mac: str, dst_mac: str, vlan_id: int, payload: bytes = b"") -> scapy.Packet:
+        packet = Ether(src=src_mac, dst=dst_mac) / scapy.Dot1Q(vlan=vlan_id) / Raw(load=payload)
+        return packet
 
-    def create_dns_query(self, qname):
-        dns_query = DNS(rd=1) / DNSQR(qname=qname)
-        return dns_query
-    
-    def create_dns_response(self, qname, rdata):
-        dns_response = DNS(
-            qr=1,
-            aa=1,
-            qd=DNSQR(qname=qname),
-            an=DNSRR(rrname=qname, rdata=rdata)
-        )
-        return dns_response
-    
-    def send_packet(self, packet):
-        send(packet, iface=self.iface)
-
-    def sniff_packets(self, filter=None, count=0):
-        packets = sniff(filter=filter, count=count, iface=self.iface)
-        return packets
-    
-    def hexdump_packet(self, packet):
-        hexdump(packet)
-        return hexdump(packet)  
+    def 
