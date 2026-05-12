@@ -70,4 +70,3 @@ class PacketCraft:
     def dissect_packet(self, packet: scapy.Packet):
         packet.show()
     
-    
