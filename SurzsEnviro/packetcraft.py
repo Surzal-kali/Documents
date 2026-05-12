@@ -1,4 +1,5 @@
 import scapy.all as scapy
+from scapy.layers.dhcp import DHCP, BOOTP
 from scapy.layers.inet import IP, TCP, UDP, ICMP
 from scapy.layers.l2 import Ether, ARP, sendp, Dot1Q
 from scapy.layers.http import HTTPRequest, HTTPResponse
@@ -40,18 +41,19 @@ class PacketCraft:
     def craft_icmp_packet(self, src_ip: str, dst_ip: str, payload: bytes = b"") -> scapy.Packet:
         packet = IP(src=src_ip, dst=dst_ip) / ICMP() / Raw(load=payload)
         return packet
-
-    def craft_http_request(self, src_ip: str, dst_ip: str, src_port: int, dst_port: int, method: str = "GET", path: str = "/", headers: dict = None, payload: bytes = b"") -> scapy.Packet:
-        if headers is None:
-            headers = {}
-        http_request = HTTPRequest(
-            Method=method,
-            Path=path,
-            Host=headers.get("Host", ""),
-            User_Agent=headers.get("User-Agent", ""),
-            Accept=headers.get("Accept", ""),
-            Accept_Encoding=headers.get("Accept-Encoding", ""),
-            Accept_Language=headers.get("Accept-Language", "")
-        )
-        packet = IP(src=src_ip, dst=dst_ip) / TCP(sport=src_port, dport=dst_port) / http_request / Raw(load=payload)
-        return packet                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+    
+    def craft_dns_query(self, src_ip: str, dst_ip: str, query_name: str) -> scapy.Packet:
+        packet = IP(src=src_ip, dst=dst_ip) / UDP(sport=random.randint(1024, 65535), dport=53) / DNS(rd=1, qd=DNSQR(qname=query_name))
+        return packet
+    
+    def dhcp_discover(self, src_mac: str) -> scapy.Packet:
+        packet = Ether(src=src_mac, dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0", dst="255.255.255.255") / UDP(sport=68, dport=67) / BOOTP(chaddr=src_mac.replace(":", "")) / DHCP(options=[("message-type", "discover"), "end"])
+        return packet
+    
+    def craft_mDNS_query(self, src_ip: str, dst_ip: str, query_name: str) -> scapy.Packet:
+        packet = IP(src=src_ip, dst=dst_ip) / UDP(sport=random.randint(1024, 65535), dport=5353) / DNS(rd=1, qd=DNSQR(qname=query_name))
+        return packet
+    
+    def craft_wireless_probe_request(self, src_mac: str, ssid: str) -> scapy.Packet:
+        packet = Dot11(type=0, subtype=4, addr1="ff:ff:ff:ff:ff:ff", addr2=src_mac, addr3=src_mac) / Dot11ProbeReq() / Dot11Elt(ID="SSID", info=ssid)
+        return packet
