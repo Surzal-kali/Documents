@@ -1,14 +1,14 @@
 import scapy.all as scapy
 from scapy.layers.dhcp import DHCP, BOOTP
 from scapy.layers.inet import IP, TCP, UDP, ICMP
-from scapy.layers.l2 import Ether, ARP, sendp, Dot1Q
+from scapy.layers.l2 import Ether, ARP, Dot1Q
 from scapy.layers.http import HTTPRequest, HTTPResponse
 from scapy.layers.dns import DNS, DNSQR, DNSRR
 import random
 import string
 import time
 import cryptography
-from scapy.all import sr1, send, sniff, hexdump, Raw
+from scapy.all import sr1, send, sniff, hexdump, Raw, sendp
 from target_config import TARGET_INTERFACE, TARGET_IP, TARGET_RANGE
 #TODO: Add more protocols (e.g., ICMP, FTP, etc.),
 # Add support for crafting packets with custom options and flags,
