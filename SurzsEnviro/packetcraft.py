@@ -54,6 +54,18 @@ class PacketCraft:
         packet = IP(src=src_ip, dst=dst_ip) / UDP(sport=random.randint(1024, 65535), dport=5353) / DNS(rd=1, qd=DNSQR(qname=query_name))
         return packet
     
-    def craft_wireless_probe_request(self, src_mac: str, ssid: str) -> scapy.Packet:
-        packet = Dot11(type=0, subtype=4, addr1="ff:ff:ff:ff:ff:ff", addr2=src_mac, addr3=src_mac) / Dot11ProbeReq() / Dot11Elt(ID="SSID", info=ssid)
-        return packet
+    def send_packet(self, packet: scapy.Packet, count: int = 1, interval: float = 0.1):
+        for _ in range(count):
+            sendp(packet, iface=self.interface, verbose=False)
+            time.sleep(interval)
+    
+    def sniff_packets(self, filter: str = "", count: int = 10, timeout: int = 30):
+        packets = sniff(iface=self.interface, filter=filter, count=count, timeout=timeout)
+        return packets
+    
+    def save_packet(self, packet: scapy.Packet, filename: str):
+        scapy.wrpcap(filename, packet)
+
+    def load_packet(self, filename: str) -> scapy.Packet | None:
+        packets = scapy.rdpcap(filename)
+        return packets[0] if packets else None
