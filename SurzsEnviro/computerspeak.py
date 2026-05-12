@@ -6,8 +6,8 @@ import platform
 import time
 #cause this will be so much fun for automation! we can figure out so much about each host :D
 
-#TODO: - Implment more functionality, or subutil the processes like normal.
 class ComputerSpeak:
+    """So I understand you can just use shutil, but its alot easier, in my brain, to just wrap it in python. I keep, and only use for logging purposes and special chains."""
     def __init__(self):
         """Initialize the ComputerSpeak class and detect the operating system."""
         self.os_name = platform.system()
