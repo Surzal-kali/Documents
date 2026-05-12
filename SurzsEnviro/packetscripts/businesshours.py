@@ -4,20 +4,4 @@ import random
 import time
 
 
-
-def monday():
-    pass
-def tuesday():
-    pass    
-def wednesday():
-    pass
-def thursday():
-    pass
-def friday():
-    pass
-def nightshift1():
-    pass
-def nightshift2():
-    pass
-def nightshift3():
-    pass
+class BusinessDaytime:
