@@ -2,6 +2,8 @@
 !.gitignore
 !*.py
 !*.ps1
+!*.sh
+!**/*.sh
 !*/
 !*.md
 !*.markdown
