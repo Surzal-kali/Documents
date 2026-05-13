@@ -23,7 +23,6 @@ class publicface:
     def __init__(self):
         self.nri=nr()
         self.fci=fc()
-        self.fsi=fs() 
         self.wpi=wp()
         self.csi=cs()
         self.swi=sw()
@@ -31,7 +30,6 @@ class publicface:
         self.tfi=tf()
         self.ori=Or()
         self.msfi=Msf(password=MSF_PASS, port=55552, ssl=False)
-        self.ori.preflight()
 
     @staticmethod
     def hostname_to_ip(hostname):
@@ -60,15 +58,14 @@ class publicface:
             print(f"An error occurred while making the GET request: {e}")
             return None
     @staticmethod
-    def trace_request(self, url):
+    def trace_route(url):
         """Trace the route to the specified URL and return the results."""
         csi = cs()
         fsi = fs()
         csi.speak(f"Tracing route to {url}...")
         command = f"tracert {url}" if platform.system() == "Windows" else f"traceroute {url}"
-        result = self.csi.execute_command(command)
+        result = csi.execute_command(command)
         if result:
-            self.fsi.file_write("trace_results.txt", result)
             return result
         else:
             return "Failed to trace route."
@@ -149,7 +146,7 @@ class publicface:
             return None
         
     @staticmethod
-    def trace_request(url):
+    def trace_http_request(url):
         """Make a TRACE request to the specified URL and return the response content."""
         try:
             response = requests.request("TRACE", url)
