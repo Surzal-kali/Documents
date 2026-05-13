@@ -13,7 +13,7 @@ else:
 
 csi = cs()
 client = None
-MSF_PASS = os.getenv("MSF_PASS", "Surzal123")
+MSF_PASS = os.getenv("MSF_PASS", "")
 MSF_RPC_PORT = int(os.getenv("MSF_RPC_PORT", "55552"))
 MSF_RPC_SSL = os.getenv("MSF_RPC_SSL", "false").strip().lower() == "true"
 
