@@ -1,6 +1,7 @@
 import argparse
 import os
 from pathlib import Path
+from typing import Any
 
 try:
     import pyshark
@@ -39,6 +40,7 @@ class PacketSniffer:
     ) -> str:
         """Capture packets to a pcap file and print a short per-packet summary."""
         _require_pyshark()
+        assert pyshark is not None
         if packet_count <= 0:
             raise ValueError("packet_count must be greater than 0.")
         if sniff_time <= 0:
@@ -48,7 +50,7 @@ class PacketSniffer:
         capture = None
 
         try:
-            capture_kwargs = {
+            capture_kwargs: dict[str, Any] = {
                 "interface": self.interface,
                 "output_file": str(save_path),
             }
@@ -80,6 +82,7 @@ class PacketSniffer:
     ) -> str:
         """Read a pcap file and write a plain-text summary of each packet."""
         _require_pyshark()
+        assert pyshark is not None
         source_path = self._resolve_path(capture_path)
         if not source_path.exists():
             raise FileNotFoundError(f"Capture file not found: {source_path}")
