@@ -213,21 +213,23 @@ APT Threat Group targets, Motives, and Attack Methods
           + Credential theft
 
    📌 Key Attack Methods Used by APT Groups
-    1. Spear-phishing Emails – Customized emails with malicious
-       links or attachments.
-    2. Remote Access Trojans (RATs) – Malware that allows attackers
-       to control the victim’s system remotely.
-    3. Watering Hole Attacks – Compromising legitimate websites to
-       infect users.
-    4. Supply Chain Attacks – Infiltrating third-party vendors to
-       reach the target.
-    5. Credential Theft – Stealing login credentials to gain
-       unauthorized access.
-    6. Lateral Movement – Moving across a network to access critical
-       systems.
-    7. Ransomware – Encrypting victims’ files and demanding ransom
-       for decryption.
+
+    1. Spear-phishing Emails – Customized emails with malicious links or attachments.
+    
+    2. Remote Access Trojans (RATs) – Malware that allows attackers to control the victim’s system remotely.
+    
+    3. Watering Hole Attacks – Compromising legitimate websites to infect users.
+    
+    4. Supply Chain Attacks – Infiltrating third-party vendors to reach the target.
+    
+    5. Credential Theft – Stealing login credentials to gain unauthorized access.
+    
+    6. Lateral Movement – Moving across a network to access critical systems.
+    
+    7. Ransomware – Encrypting victims’ files and demanding ransom for decryption.
+    
     8. Command-and-Control (C2) Servers – Servers used by attackers
        to control infected systems.
 
-    This list is not exhaustive, as new APT groups and attack methods continue to emerge. However, it provides a comprehensive overview of the most prominent APT groups, their motives, and their attack methods as of 2026.
+
+This list is not exhaustive, as new APT groups and attack methods continue to emerge. However, it provides a comprehensive overview of the most prominent APT groups, their motives, and their attack methods as of 2026.
