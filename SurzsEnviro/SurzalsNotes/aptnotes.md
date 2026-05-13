@@ -2,12 +2,6 @@
 
 Comprehensive List of APT Threat Groups, Motives, and Attack Methods
 
-By
-   Anusthika Jeyashankar
-   -
-
-   February 2, 2026
-
    Here is a list of Advanced Persistent Threat (APT) groups around
    the world, categorized by their country of origin, known aliases,
    and primary motives (cyberespionage, financial gain, political
@@ -231,5 +225,84 @@ APT Threat Group targets, Motives, and Attack Methods
     8. Command-and-Control (C2) Servers – Servers used by attackers
        to control infected systems.
 
-
 This list is not exhaustive, as new APT groups and attack methods continue to emerge. However, it provides a comprehensive overview of the most prominent APT groups, their motives, and their attack methods as of 2026.
+
+Techniques: How APTs Maintain Stealth and Persistence
+
+A. Living off the Land (LotL)
+
+     * APTs use legitimate system tools like PowerShell and WMI to
+       move within the network.
+     * This makes it difficult for security tools to differentiate
+       between normal and malicious activity.
+
+B. Credential Dumping and Privilege Escalation
+
+     * They collect user credentials to escalate privileges and
+       access more sensitive data.
+     * Tools like Mimikatz are often used to extract passwords from
+       memory.
+
+C. Lateral Movement and Data Exfiltration
+
+     * APTs move laterally through the network using stolen
+       credentials.
+     * They use encrypted channels and covert techniques to
+       exfiltrate sensitive data without triggering alarms.
+
+1. Procedures: How APTs Cover Their Tracks
+
+   To avoid detection, APTs are meticulous about covering their
+   tracks.
+
+A. Anti-Forensic Techniques
+
+     * They delete logs, clear event histories, and disable security
+       tools.
+     * APTs also use timestamp manipulation to make files appear
+       untouched.
+
+B. C2 Communication (Command and Control)
+
+     * APTs maintain long-term control using encrypted communication
+       channels.
+     * They use legitimate domains or compromised websites as C2
+       servers, making detection harder.
+
+C. Dormancy and Re-Entry
+
+     * After completing their mission, APTs go dormant to avoid
+       detection.
+     * They leave behind backdoors for easy re-entry if needed in
+       the future.
+
+1. How to Defend Against APTs
+
+   Defending against APTs requires advanced detection methods and a
+   proactive security posture.
+
+A. Implement a Zero Trust Architecture
+
+     * Never trust, always verify.
+     * Require multi-factor authentication (MFA) and continuous
+       monitoring for all users.
+
+B. AI-Powered Threat Detection
+
+     * Use behavioral analytics and AI to detect unusual activity in
+       real time.
+     * Identify anomalies such as unusual login times or
+       unauthorized access attempts.
+
+C. Threat Intelligence and Hunting
+
+     * Leverage cyber threat intelligence to stay updated on
+       emerging TTPs.
+     * Conduct proactive threat hunting to identify compromised
+       accounts or hidden backdoors.
+
+D. Regular Security Audits and Incident Response Plans
+
+     * Conduct frequent security audits and penetration tests.
+     * Have a detailed incident response plan to minimize damage
+       during an attack.
