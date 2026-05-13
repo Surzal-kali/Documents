@@ -5,7 +5,6 @@ from metasploiting import search_modules, execute_module, list_sessions, get_db_
 from pymetasploit3.msfrpc import MsfRpcClient as Msf
 from netrunning import NetRunning as nr
 from whatprocess import WhatProcess as wp
-from fileshuttle import FileShuttle as fs
 from enumeration import FileCrawler as fc
 from shellwalking import ShellWalker as sw
 from catchingpackets import PacketSniffer as ps
@@ -61,7 +60,6 @@ class publicface:
     def trace_route(url):
         """Trace the route to the specified URL and return the results."""
         csi = cs()
-        fsi = fs()
         csi.speak(f"Tracing route to {url}...")
         command = f"tracert {url}" if platform.system() == "Windows" else f"traceroute {url}"
         result = csi.execute_command(command)
