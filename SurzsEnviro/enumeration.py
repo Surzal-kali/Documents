@@ -18,7 +18,7 @@ class FileCrawler:
     """ Handles the enumeration of files on the user's system based on their consent preferences."""
     def __init__(self,):
         """Initialize the FileCrawler class with user-defined out-of-scope items. The out_of_scope parameter is expected to be a list of strings representing data types or categories that the user does not want to be collected during enumeration. The class will use this information to filter out any data that falls under these categories when crawling the file system."""
-        csi = cs()
+        pass
     def _build_payload(self, file_path: str):
         """Build a payload dictionary with file metadata and a content preview. This includes the file path, name, extension, size in bytes, and a preview of the first 300 characters of the file content (with non-text files handled gracefully). takes file_path as a parameter and returns a dictionary with the collected data. Needs to also take file size, type, and metadta from details if possible. #yeth
         """
@@ -107,7 +107,7 @@ def filecopy(source_dir, target_bin):
                 shutil.copy2(item, dest)
     except Exception as e:
         csi.speak(f"[filecopy] Error copying {source_dir} to {target_bin}: {e}")
-        csi.speak(f"[filecopy] Error copying {source_dir} to {target_bin}: {e}")
+
 
 
 

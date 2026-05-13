@@ -19,17 +19,6 @@ Note: The second category includes security-sensitive capabilities that are inte
 
 ## Critical Issues — ACTUAL BUGS
 
-### Issue #1: target_config.py — Interactive Prompting at Module Import
-
-**File**: target_config.py:9  
-**Type**: Critical (Blocking)  
-**Status**: ACTUAL BUG  
-**Description**: Module calls `env()` at import time, which prompts user interactively. This blocks all non-interactive execution (CI/CD, automated scripts, headless environments). Affects 8 downstream modules that import target_config.  
-**Code Context**: Import-time prompting forces user input on every import  
-**Impact**: Breaks automation, CI/CD pipelines; requires manual interaction for all toolkit use
-
----
-
 ### Issue #2: publicface.py — Missing Module Import
 
 **File**: publicface.py:8  
@@ -50,28 +39,7 @@ Note: The second category includes security-sensitive capabilities that are inte
 
 ---
 
-### Issue #4: netrunning.py — Command Injection Vulnerability
-
-**File**: netrunning.py:121  
-**Type**: Critical (Security)  
-**Status**: BY-DESIGN OFFENSIVE FEATURE  
-**Description**: Unsafe command construction: `echo'{payload}` missing space before quote. Command injection possible if payload contains shell metacharacters. No use of `shlex.quote()`.  
-**Code Context**: Direct string formatting into shell command without escaping  
-**Note**: This appears to be intentional for testing payload delivery and command injection techniques
-
----
-
 ## High Severity Issues — ACTUAL BUGS
-
-### Issue #5: computerspeak.py — Non-Functional Module
-
-**File**: computerspeak.py:19  
-**Type**: High (Stability)  
-**Status**: ACTUAL BUG  
-**Description**: Code comments explicitly state "doesn't work". This is the core shell execution and logging layer—if it doesn't work, downstream modules fail.  
-**Impact**: Critical execution layer acknowledged as broken; any code using ComputerSpeak.run() may fail unpredictably
-
----
 
 ### Issue #6: catchingshells.py — Missing Socket Timeout
 
@@ -94,58 +62,7 @@ Note: The second category includes security-sensitive capabilities that are inte
 
 ---
 
-### Issue #8: pfsense.py — HTTPS Verification Disabled
-
-**File**: pfsense.py:21, 26  
-**Type**: High (Security)  
-**Status**: BY-DESIGN OFFENSIVE FEATURE  
-**Description**: HTTP requests with `verify=False` disables SSL/TLS certificate verification. Useful for testing against lab targets with self-signed certificates or MITM scenarios.  
-**Note**: Intentional for offensive/defensive lab simulation where cert pinning isn't relevant
-
----
-
-### Issue #9: netrunning.py — Shell Injection via Unquoted Parameter
-
-**File**: netrunning.py:59  
-**Type**: High (Security)  
-**Status**: BY-DESIGN OFFENSIVE FEATURE  
-**Description**: `shell=True` with unquoted `folder` parameter: `nmap -sL {folder}`. This design allows shell metacharacter injection for testing.  
-**Note**: Intentional for penetration testing and command injection simulation
-
----
-
-### Issue #10: netrunning.py — SSH Host Key Verification Disabled
-
-**File**: netrunning.py:99, 169  
-**Type**: High (Security)  
-**Status**: BY-DESIGN OFFENSIVE FEATURE  
-**Description**: SSH client uses `AutoAddPolicy()` which accepts any host key without verification. Enables MITM testing and rapid target enumeration without host key management overhead.  
-**Note**: Intentional for offensive/defensive lab environments; standard practice in penetration testing tools
-
----
-
-### Issue #11: metasploiting.py — Hardcoded Default Credentials
-
-**File**: metasploiting.py:16  
-**Type**: High (Security)  
-**Status**: BY-DESIGN OFFENSIVE FEATURE  
-**Description**: Hardcoded default password `"Surzal123"` in source code. Serves as fallback for lab testing when credentials are not explicitly provided.  
-**Note**: Intentional for simulation; never commit real credentials. This appears to be a lab test credential.
-
----
-
 ## Medium Severity Issues — ACTUAL BUGS
-
-### Issue #12: netrunning.py — Overly Broad Exception Handling
-
-**File**: netrunning.py:45  
-**Type**: Medium (Stability)  
-**Status**: ACCEPTABLE FOR TESTING (Borderline)  
-**Description**: Bare `except Exception:` clause masks underlying errors. Makes debugging difficult and may hide critical issues.  
-**Recommendation**: Consider specific exception catches for production use  
-**Note**: Acceptable trade-off for rapid prototyping/testing; would want specificity in production code
-
----
 
 ### Issue #13: netrunning.py — Inconsistent SSH Timeout
 
@@ -188,38 +105,6 @@ Note: The second category includes security-sensitive capabilities that are inte
 
 ---
 
-## Low Severity Issues — CODE QUALITY
-
-### Issue #17: enumeration.py — Duplicate Error Logging
-
-**File**: enumeration.py:109-110  
-**Type**: Low (Code Quality)  
-**Status**: ACTUAL BUG  
-**Description**: Same error message logged twice in succession.  
-**Recommendation**: Remove duplicate log statement
-
----
-
-### Issue #18: enumeration.py — Unused Variable
-
-**File**: enumeration.py:19-21  
-**Type**: Low (Code Quality)  
-**Status**: ACTUAL BUG  
-**Description**: ComputerSpeak variable imported but never used.  
-**Recommendation**: Remove unused import
-
----
-
-### Issue #19: shellwalking.py — Duplicate Import
-
-**File**: shellwalking.py:4, 11  
-**Type**: Low (Code Quality)  
-**Status**: ACTUAL BUG  
-**Description**: `import time` statement appears twice.  
-**Recommendation**: Remove duplicate import
-
----
-
 ## Cross-Module Analysis
 
 ### Import Dependencies
@@ -255,8 +140,6 @@ Note: The second category includes security-sensitive capabilities that are inte
 ### CRITICAL — Fix These First (Blocking Issues)
 
 1. **Resolve missing imports**: Check if fileshuttle.py and dacore.py should exist or if imports should be removed
-2. **Defer target_config prompting**: Use environment variables as fallback instead of interactive prompts at import time
-3. **Fix computerspeak**: Resolve the "doesn't work" issue in the core execution layer
 
 ### HIGH — Fix These Next (Stability/Hangs)
 
@@ -273,14 +156,4 @@ Note: The second category includes security-sensitive capabilities that are inte
 
 1. Remove duplicate imports and unused variables
 2. Clean up duplicate logging statements
-
----
-
-## Investigation Notes
-
-- **Static analysis limitations**: Some issues (resource leaks, concurrency bugs) may not be visible without runtime testing or code execution
-- **Context constraints**: Without a live Metasploit server or target hosts, dynamic vulnerability tests could not be performed
-- **Offensive by design**: This toolkit intentionally uses patterns (SSH MITM, unquoted shell parameters, disabled cert verification) that would be bugs in defensive/production code but are features for offensive simulation
-- **Configuration**: Interactive prompting in target_config is documented in custom instructions as expected behavior, but it breaks automation use cases—worth revisiting the balance
-- **Payloads/**: Some payload files under payloads/ were not deeply analyzed; they may have similar issues as root modules
-
+3. Add comments explaining intentional design choices for offensive features

@@ -18,10 +18,10 @@ class Pfsense:
 
     def add_firewall_rule(self, rule_data):
         url = f"{self.base_url}/firewall/rules"
-        response = requests.post(url, headers=self._headers(), data=json.dumps(rule_data), verify=False)
+        response = requests.post(url, headers=self._headers(), data=json.dumps(rule_data), verify=True)
         return response.json()
 
     def delete_firewall_rule(self, rule_id):
         url = f"{self.base_url}/firewall/rules/{rule_id}"
-        response = requests.delete(url, headers=self._headers(), verify=False)
+        response = requests.delete(url, headers=self._headers(), verify=True)
         return response.json()
