@@ -2,7 +2,6 @@ import re
 import shlex
 
 from computerspeak import ComputerSpeak as cs
-from fileshuttle import FileShuttle as fs
 from enumeration import FileCrawler as fc
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
@@ -22,7 +21,6 @@ class WhatProcess:
 
     def __init__(self):
         self.cs = cs()
-        self.fs = fs()
         self.fc = fc()
         self.nr = nr()
 
@@ -47,6 +45,9 @@ class WhatProcess:
         else:
             command = f'ps aux | grep {process_name} | head -n 1'
         output = self.cs.execute_command(command)
+        if output is None:
+            print(f"Process '{process_name}' not found.")
+            return None
         process_stuff = output.strip().split()
         if len(process_stuff) < 2:
             print(f"Process '{process_name}' not found.")
@@ -88,14 +89,20 @@ class WhatProcess:
             command = f'typeperf "\\Process({pid})\\% Processor Time" "\\Process({pid})\\Working Set" -sc 1'
         else:
             command = f'ps -p {pid} -o %cpu,%mem'
-        output = self.cs.execute_command(command).split("\n")
-        cs_i = cs()
+        output = self.cs.execute_command(command)
+        if output is None:
+            return None
+        output = output.split("\n")
         if self.cs.os_name == "Windows":
+            if len(output) < 3:
+                return None
             resource_usage = {
                 "cpu_usage": output[2].split(",")[0].strip('"'),
                 "memory_usage": output[2].split(",")[1].strip('"')
             }
         else:
+            if len(output) < 2:
+                return None
             resource_usage = {
                 "cpu_usage": output[1].split()[0],
                 "memory_usage": output[1].split()[1]

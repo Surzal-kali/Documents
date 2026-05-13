@@ -1,57 +1,5 @@
 # Bug Triage Report: SurzsEnviro Toolkit
 
-## Executive Summary
-
-Comprehensive static analysis identified **19 findings** across 11 modules. After context analysis, **10 are actual bugs**, and **9 are by-design offensive features** (intentional capabilities for penetration testing/simulation):
-
-**Actual Bugs (10)** — Require fixes:
-- **3 Critical**: Missing modules, import-time prompting blocking automation, computerspeak non-functional
-- **2 High**: Socket timeout hangs
-- **5 Medium**: Array bounds crashes, logic errors, race conditions
-
-**By-Design Offensive Features (9)** — Working as intended:
-- **4 "Critical" findings**: Shell injection patterns, SSH MITM vulnerability, HTTPS cert verification disabled, hardcoded test credentials
-- **1 "Medium" finding**: Overly broad exception handling (acceptable for rapid testing)
-
-Note: The second category includes security-sensitive capabilities that are intentional for the toolkit's offensive simulation purpose.
-
----
-
-## Critical Issues — ACTUAL BUGS
-
-### Issue #3: randomcode.py — Missing Module Import
-
-**File**: randomcode.py:10  
-**Type**: Critical (Blocking)  
-**Status**: ACTUAL BUG  
-**Description**: Attempts to import `dacore` module which does not exist in the repository.  
-**Impact**: randomcode module cannot be imported
-
----
-
-## High Severity Issues — ACTUAL BUGS
-
-### Issue #6: catchingshells.py — Missing Socket Timeout
-
-**File**: catchingshells.py:10-34  
-**Type**: High (Stability)  
-**Status**: ACTUAL BUG  
-**Description**: Server socket operations have no timeout on recv(). Malformed/incomplete packets will block indefinitely.  
-**Recommendation**: Add timeout to socket.recv()
-**Note**: SERVER_HOST from argv is unvalidated, but this is likely intentional flexibility for testing
-
----
-
-### Issue #7: throwinshells.py — Missing Socket Timeout
-
-**File**: throwinshells.py:14-28  
-**Type**: High (Stability)  
-**Status**: ACTUAL BUG  
-**Description**: Socket recv() has no timeout; single-client design. Network failures cause indefinite hangs.  
-**Recommendation**: Add socket.settimeout() and implement graceful shutdown
-
----
-
 ## Medium Severity Issues — ACTUAL BUGS
 
 ### Issue #13: netrunning.py — Inconsistent SSH Timeout

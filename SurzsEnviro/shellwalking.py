@@ -43,7 +43,7 @@ class ShellWalker ():
         elif shell_type == "zsh":
             return os.path.expanduser("~/.zsh_history")
         else:
-            return None
+            return ""
     def _extract_command_history(self, history_file: str) -> list:
         """needs to be rewritten with paramiko and ssh connections in mind, instead of local file access"""
         if not os.path.exists(history_file):
