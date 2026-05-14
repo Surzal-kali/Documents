@@ -40,7 +40,7 @@ class WhatProcess:
             command = f'tasklist /FI "IMAGENAME eq {process_name}"'
         else:
             command = f'ps aux | grep {process_name} | head -n 1'
-        output = self.cs.execute_command(command)
+        output = self.cs.ec(command)
         if output is None:
             print(f"Process '{process_name}' not found.")
             return None
@@ -59,9 +59,9 @@ class WhatProcess:
         """Kill a process by its PID. This function takes a process ID (PID) as input and attempts to kill the process with that PID. It uses different commands based on the operating system (Windows or Unix-like) to terminate the process. The function includes error handling to catch and report any issues that may arise during the process termination, and it provides feedback on whether the process was successfully killed or if an error occurred."""
         try:
             if self.cs.os_name == "Windows":
-                self.cs.execute_command(f"taskkill /PID {pid} /F")
+                self.cs.ec(f"taskkill /PID {pid} /F")
             else:
-                self.cs.execute_command(f"kill -9 {pid}")
+                self.cs.ec(f"kill -9 {pid}")
             print(f"Process with PID {pid} has been killed.")
         except Exception as e:
             print(f"Error killing process: {e}")
@@ -71,9 +71,9 @@ class WhatProcess:
         """List all running processes on the system. This function retrieves a list of all active processes, including their details such as PID, memory usage, and CPU usage. It uses different commands based on the operating system (Windows or Unix-like) to gather the process information. The results are printed and returned in a structured format, and any errors encountered during the process listing are handled gracefully."""
         try:
             if self.cs.os_name == "Windows":
-                output = self.cs.execute_command("tasklist")
+                output = self.cs.ec("tasklist")
             else:
-                output = self.cs.execute_command("ps aux")
+                output = self.cs.ec("ps aux")
             print("Running processes:")
             print(output) #yeah this one is pretty simple
             return output
@@ -88,7 +88,7 @@ class WhatProcess:
             command = f'typeperf "\\Process({pid})\\% Processor Time" "\\Process({pid})\\Working Set" -sc 1'
         else:
             command = f'ps -p {pid} -o %cpu,%mem'
-        output = self.cs.execute_command(command)
+        output = self.cs.ec(command)
         if output is None:
             return None
         output = output.split("\n")
@@ -118,14 +118,14 @@ class WhatProcess:
             quoted_payload = shlex.quote(payload)
             command = f"printf '%s\n' {quoted_payload} > /tmp/payload.sh; chmod +x /tmp/payload.sh; sudo -u $(ps -o user= -p {pid}) /tmp/payload.sh"
         self.cs.speak(f"Injecting payload into process with PID: {pid}")
-        self.cs.execute_command(command)
+        self.cs.ec(command)
         print(f"Payload '{payload}' has been injected into process with PID {pid}.")
     def restart_service (self, service_name: str):
         try:
             if self.cs.os_name == "Windows":
-                self.cs.execute_command(f"net stop {service_name} && net start {service_name}")
+                self.cs.ec(f"net stop {service_name} && net start {service_name}")
             else:
-                self.cs.execute_command(f"systemctl restart {service_name}")
+                self.cs.ec(f"systemctl restart {service_name}")
             print(f"Service '{service_name}' has been restarted.")
         except Exception as e:
             print(f"Error restarting service: {e}") #if something bugs we can restart it. :D
@@ -133,9 +133,9 @@ class WhatProcess:
         """Identify running services on the system. This function retrieves a list of all active services, including their details such as service name, status, and description. It uses different commands based on the operating system (Windows or Unix-like) to gather the service information. The results are printed and returned in a structured format, and any errors encountered during the service identification are handled gracefully."""
         try:
             if self.cs.os_name == "Windows":
-                output = self.cs.execute_command("sc query type= service state= all")
+                output = self.cs.ec("sc query type= service state= all")
             else:
-                output = self.cs.execute_command("systemctl list-units --type=service --state=running")
+                output = self.cs.ec("systemctl list-units --type=service --state=running")
             print("Running services:")
             print(output) #yeah this one is pretty simple
         except Exception as e:
@@ -143,13 +143,13 @@ class WhatProcess:
     def cron_job(self, service:str, command:str, schedule: str):
         """Schedule a cron job with the specified command and schedule."""
         if self.cs.os_name == "Windows":
-            self.cs.execute_command(f"Set-Service -Name {service} -StartupType Automatic(Delayed Start); Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command \"{command}\"') -Trigger (New-ScheduledTaskTrigger -AtStartup) -TaskName '{service}_cron_job' -Description 'Cron job for {service}'")
+            self.cs.ec(f"Set-Service -Name {service} -StartupType Automatic(Delayed Start); Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command \"{command}\"') -Trigger (New-ScheduledTaskTrigger -AtStartup) -TaskName '{service}_cron_job' -Description 'Cron job for {service}'")
             self.cs.speak(f"Scheduling task: '{command}' with schedule: '{schedule}'")
             # Example of simulating task scheduling
             print(f"Task '{command}' has been scheduled with schedule '{schedule}'.") #that ones importante. another windows/linux branch
         else:
             cron_entry = self._cron_entry(command, schedule)
-            self.cs.execute_command(
+            self.cs.ec(
                 f"(crontab -l 2>/dev/null; printf '%s\n' {shlex.quote(cron_entry)}) | crontab -"
             )
         self.cs.speak(f"Scheduling cron job: '{command}' with schedule: '{schedule}'")
@@ -166,9 +166,9 @@ class WhatProcess:
             csi = cs()
             try:
                 if csi.os_name == "Windows":
-                    csi.execute_command(f"taskkill /PID {pid} /F")
+                    csi.ec(f"taskkill /PID {pid} /F")
                 else:
-                    csi.execute_command(f"kill -9 {pid}")
+                    csi.ec(f"kill -9 {pid}")
                 print(f"Process with PID '{pid}' has been killed.")
             except Exception as e:
                 print(f"Error killing process: {e}")
@@ -177,9 +177,9 @@ class WhatProcess:
         csi = cs()
         try:
             if csi.os_name == "Windows":
-                csi.execute_command(f"powershell -Command \"Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList '-Command \"Get-Process -Id {pid} | ForEach-Object {{ $_.PriorityClass = 'High' }}\"'\"")
+                csi.ec(f"powershell -Command \"Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList '-Command \"Get-Process -Id {pid} | ForEach-Object {{ $_.PriorityClass = 'High' }}\"'\"")
             else:
-                csi.execute_command(f"sudo renice -n -10 -p {pid}")
+                csi.ec(f"sudo renice -n -10 -p {pid}")
             print(f"Privileges for process with PID '{pid}' have been elevated.")
         except Exception as e:
             print(f"Error elevating privileges: {e}")

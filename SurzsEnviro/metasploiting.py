@@ -21,7 +21,7 @@ MSF_RPC_SSL = os.getenv("MSF_RPC_SSL", "false").strip().lower() == "true"
 
 def _log_action(message):
     """Log an action message using the ComputerSpeak class. This function takes a message as input and uses the ComputerSpeak instance to execute a command that echoes the message. The message is safely quoted using shlex.quote to prevent any issues with special characters or command injection vulnerabilities. This logging mechanism provides a way to track the actions being performed in the Metasploit helper functions."""
-    csi.execute_command(f"echo {shlex.quote(message)}")
+    csi.ec(f"echo {shlex.quote(message)}")
 
 
 def _get_client():

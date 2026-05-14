@@ -60,7 +60,7 @@ class publicface:
         csi = cs()
         csi.speak(f"Tracing route to {url}...")
         command = f"tracert {url}" if platform.system() == "Windows" else f"traceroute {url}"
-        result = csi.execute_command(command)
+        result = csi.ec(command)
         if result:
             return result
         else:

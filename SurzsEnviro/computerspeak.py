@@ -44,7 +44,7 @@ class ComputerSpeak:
         else:
             raise NotImplementedError(f"Unsupported operating system: {self.os_name}")
 
-    def execute_command(self, command: str):
+    def ec(self, command: str):
         """Execute a command on the system and log the output."""
         try:
             args = self._build_command_args(command)
@@ -65,22 +65,22 @@ class ComputerSpeak:
         for value in fuzz_values:
             command = command_template.replace("FUZZ", value)
             print(f"Fuzzing with value: {value}")
-            self.execute_command(command)
+            self.ec(command)
     def fuzz_command_loop(self, command_template: str, fuzz_values: list, iterations: int):
         for i in range(iterations):
             for value in fuzz_values:
                 command = command_template.replace("FUZZ", value)
                 print(f"Iteration {i+1}/{iterations}, Fuzzing with value: {value}")
-                self.execute_command(command)
+                self.ec(command)
                 time.sleep(1)  # Sleep to avoid overwhelming the system; adjust as needed
 
     def speak(self, message: str): #lets just keep with write ouput and utilizing the log function
         # Escape single quotes for shell safety: 'string' -> 'string'"'"'string'
         if self.os_name == "Windows":
-            self.execute_command(f"Write-Output '{message}'")
+            self.ec(f"Write-Output '{message}'")
         else:
             escaped_message = message.replace("'", "'\"'\"'")
-            self.execute_command(f"echo '{escaped_message}'")
+            self.ec(f"echo '{escaped_message}'")
 
 if __name__ == "__main__":
     csi = ComputerSpeak()

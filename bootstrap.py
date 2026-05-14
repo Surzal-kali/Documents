@@ -6,6 +6,8 @@ import tempfile
 import sys
 from SurzsEnviro.bootstrap import load_env
 from Exploit_Notes.bootstrap import load_notes
+import readline
+import rlcompleter
 
 CHEATSHEET=""" 
 ===========================
@@ -58,7 +60,21 @@ Open a note:
 Reindex notes after adding new files:
     notes_reindex()
 """
+def module_aware_completer(namespace):
+    completer = rlcompleter.Completer(namespace)
 
+    def complete(text, state):
+        if "." in text:
+            module_name, _, attr_prefix = text.rpartition(".")
+            module = namespace.get(module_name)
+            if module:
+                attrs = [a for a in dir(module) if a.startswith(attr_prefix)]
+                if state < len(attrs):
+                    return f"{module_name}.{attrs[state]}"
+                return None
+        return completer.complete(text, state)
+
+    return complete
 
 def open_notes(text: str):
 	editor = os.getenv("VISUAL") or os.getenv("EDITOR") or "less"
@@ -88,5 +104,6 @@ namespace.update(load_env())
 namespace.update(load_notes())
 namespace["CHEATSHEET"] = CHEATSHEET
 
-
+readline.parse_and_bind("tab: complete")
+readline.set_completer(module_aware_completer(namespace))
 code.interact(local=namespace)
