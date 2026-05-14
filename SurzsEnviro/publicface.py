@@ -10,7 +10,6 @@ from shellwalking import ShellWalker as sw
 from catchingpackets import PacketSniffer as ps
 from target_config import MSF_PASS, TARGET_IP, TARGET_INTERFACE, TARGET_USERNAME, TARGET_PASSWORD, TARGET_RANGE, SELF_IP_RE, IPV4_RE, WORDLIST_PATH
 from conquer import Tenfold as tf
-from orchestrator import Orchestrator as Or
 import requests 
 import platform
 ### TODO: Implement more advance payload delivery and generation with public face, and look more into the art of HTTP requests and responses.
@@ -27,7 +26,6 @@ class publicface:
         self.swi=sw()
         self.psi=ps()
         self.tfi=tf()
-        self.ori=Or()
         self.msfi=Msf(password=MSF_PASS, port=55552, ssl=False)
 
     @staticmethod

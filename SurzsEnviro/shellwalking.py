@@ -9,7 +9,6 @@ from importlib.metadata  import files, version
 from pathlib import Path
 import time
 import paramiko
-import computerspeak as cs
 ### TODO: - Implement a comprehensive shell history crawler that can handle various shell types (e.g., bash, zsh, PowerShell) and extract command history while respecting user consent preferences and out-of-scope settings. This should include identifying the shell type, locating the appropriate history file, and extracting command history in a way that is efficient and secure. 
 SYS_KEYWORDS = {
     "Source Port","Destination Port",  "Timestamps", "UDP payload", "TCP payload", "HTTP", "DNS", "SSL", "TLS", "FTP", "SMTP", "IMAP", "POP3", "sudo", "nano", "vim", "code", "python", "ssh", "scp", "cat", "ls", "cd", "clear", "dir", "type", "more", "less", "head", "tail", "find", "grep", "awk", "sed", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service", "journalctl", "grep", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service",
