@@ -1,7 +1,5 @@
 # Bug Triage Report: SurzsEnviro Toolkit
 
-## Medium Severity Issues — ACTUAL BUGS
-
 ### Issue #13: netrunning.py — Inconsistent SSH Timeout
 
 **File**: netrunning.py:100  
@@ -81,8 +79,6 @@
 
 ### HIGH — Fix These Next (Stability/Hangs)
 
-1. **Socket timeouts**: Add timeout to socket.recv() in catchingshells.py and throwinshells.py
-2. **SSH timeout consistency**: Define timeout constant and apply uniformly
 3. **Array bounds checking**: Add validation before array access in whatprocess.py
 
 ### MEDIUM — Fix When Convenient (Logic/Race Conditions)
@@ -90,8 +86,3 @@
 1. **Cron logic**: Fix inverted condition in whatprocess.py
 2. **Temp file handling**: Use tempfile module instead of hardcoded /tmp paths
 
-### LOW — Nice to Have (Code Quality)
-
-1. Remove duplicate imports and unused variables
-2. Clean up duplicate logging statements
-3. Add comments explaining intentional design choices for offensive features
