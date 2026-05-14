@@ -32,10 +32,6 @@ class WhatProcess:
         thevalue = f"{self.CRON_NICKNAMES.get(schedule.lower(), schedule)} {command}"
         return thevalue
     
-    ####Code Review
-# The function checks if command already contains a schedule prefix, but this logic is backwards. The regex is applied to command when it should check if command already has a cron schedule format before prepending schedule. If command already has a schedule, the function should extract and use the command portion only, or raise an error. Currently, when the regex matches, it returns the command as-is, ignoring the schedule parameter entirely.
-
-# No change found to suggest.
     
     def identify_process(self, process_name: str):
         """Identify a process by name and return its details. This function takes a process name as input and attempts to identify the process running on the system. It uses different commands based on the operating system (Windows or Unix-like) to search for the process. If the process is found, its details (such as PID) are extracted and returned in a structured format. If the process is not found, a message is printed indicating that the process was not found, and None is returned."""
@@ -70,6 +66,7 @@ class WhatProcess:
         except Exception as e:
             print(f"Error killing process: {e}")
 
+
     def list_processes(self):
         """List all running processes on the system. This function retrieves a list of all active processes, including their details such as PID, memory usage, and CPU usage. It uses different commands based on the operating system (Windows or Unix-like) to gather the process information. The results are printed and returned in a structured format, and any errors encountered during the process listing are handled gracefully."""
         try:
@@ -82,6 +79,8 @@ class WhatProcess:
             return output
         except Exception as e:
             print(f"Error listing processes: {e}")
+
+
     def monitor_process(self, pid: int):
         """Monitor a process by its PID and return its resource usage. This function takes a process ID (PID) as input and attempts to monitor the resource usage of the specified process. It uses different commands based on the operating system (Windows or Unix-like) to retrieve the CPU and memory usage of the process. The results are returned in a structured format, and any errors encountered during the monitoring process are handled gracefully."""
         self.cs.speak(f"Monitoring process with PID: {pid}")
@@ -109,9 +108,10 @@ class WhatProcess:
             }
         return resource_usage
 
+
     def inject_into_process(self, pid: int, payload: str):
         """Inject a payload into a process by its PID. This function takes a process ID (PID) and a payload string as input and attempts to inject the payload into the specified process. It uses different commands based on the operating system (Windows or Unix-like) to perform the injection. The function includes error handling to catch and report any issues that may arise during the injection process, and it provides feedback on whether the payload was successfully injected or if an error occurred."""
-    #stack overflow to the rescue. 
+
         if self.cs.os_name == "Windows":
             command = f"Write-Output {payload} | powershell -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Clipboard]::SetText((Get-Content -Raw));\"; powershell -Command \"Add-Type -AssemblyName System.Windows.Forms; [System.Windows.Forms.Clipboard]::GetText() | Out-File -FilePath payload.txt -Encoding ASCII\"; powershell -Command \"Start-Process -FilePath payload.txt -Verb RunAs\""
         else:
