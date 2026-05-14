@@ -9,7 +9,7 @@ def env(variable_name: str, default: str = "") -> str:
         value = input(f"[*] Please enter a value for {variable_name} (default: '{default}'): ") or default
     print(f"[*] {variable_name} set to: {value}")
     return value
-MSF_PASS = env("MSF_PASS", " ")
+MSF_PASS = env("MSF_PASS", "")
 TARGET_USERNAME= env("TARGET_USERNAME", "")
 TARGET_RANGE = env("TARGET_RANGE", "")
 TARGET_IP = env("TARGET_IP", "")
