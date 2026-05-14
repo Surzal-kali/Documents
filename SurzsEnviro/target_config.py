@@ -18,3 +18,4 @@ TARGET_PASSWORD = env("TARGET_PASSWORD", "")
 WORDLIST_PATH = env("WORDLIST_PATH", "./wordlist.txt")
 SELF_IP_RE = env("SELF_IP_RE", "")
 IPV4_RE = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+
