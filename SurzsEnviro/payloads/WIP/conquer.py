@@ -6,7 +6,6 @@ import time
 from pathlib import Path
 from threading import Lock
 
-from computerspeak import ComputerSpeak as cs
 
 """FOR THE HORDE"""
 
@@ -37,7 +36,6 @@ class Tenfold:
         core_deps: tuple[str, ...] | None = None,
         core_deps_dir: str | Path | None = None,
     ):
-        self.cs = cs()
         self.source_dir = self._resolve_path(source_dir, self._default_source_dir())
         self.working_dir = self._resolve_path(working_dir, self._default_working_dir())
         self.execution_file = (
@@ -302,7 +300,7 @@ class Tenfold:
 
         try:
             command = self._build_command(script_file)
-            result = self.cs.execute_command(command)
+            result = elf.cs.execute_command(commansd)
             return result is not None
         except Exception as error:
             self._log(f"Error executing script {script_name}: {type(error).__name__}: {error}")
