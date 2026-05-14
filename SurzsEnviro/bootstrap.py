@@ -18,7 +18,11 @@ def load_env():
     for loader, module_name, is_pkg in pkgutil.walk_packages(
         SurzsEnviro.__path__, SurzsEnviro.__name__ + "."
     ): #remember to keep names consistent with the actual package structure, and unique so there is no conflicts.
-        module = importlib.import_module(module_name)
+        try:
+            module = importlib.import_module(module_name)
+        except ImportError as e:
+            print(f"[!] Skipping {module_name}: {e}")
+            continue
         short = module_name.split(".")[-1]
         namespace[short] = module
 
