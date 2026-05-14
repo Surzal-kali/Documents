@@ -97,7 +97,7 @@ class NetRunning:
         """Execute a payload on a remote host via SSH. This function detects the target OS and executes the payload accordingly, ensuring compatibility with both Windows and Linux systems."""
         client = paramiko.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        client.connect(host, username=username, password=password)
+        client.connect(host, username=username, password=password, timeout=10)
 
         def run(cmd):
             stdin, stdout, stderr = client.exec_command(cmd)
@@ -168,7 +168,7 @@ class NetRunning:
         ssh_client = paramiko.SSHClient()
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         try:
-            ssh_client.connect(host, username=username, password=password, timeout=5)
+            ssh_client.connect(host, username=username, password=password, timeout=510)
             ssh_client.close()
             return True
         except paramiko.AuthenticationException:
