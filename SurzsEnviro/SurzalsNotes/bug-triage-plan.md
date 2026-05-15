@@ -12,4 +12,6 @@
 
     need to add a shell escape easier than csi.ec
 
+    notes needs better searching and pattern matching then title
+
     
