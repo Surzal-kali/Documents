@@ -106,4 +106,4 @@ namespace["CHEATSHEET"] = CHEATSHEET
 
 readline.parse_and_bind("tab: complete")
 readline.set_completer(module_aware_completer(namespace))
-code.interact(local=namespace)
+code.interact(local=namespace, banner=CHEATSHEET )
