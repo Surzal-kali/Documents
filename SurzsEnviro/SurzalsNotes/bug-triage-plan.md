@@ -1,15 +1,5 @@
 # Bug Triage Report: SurzsEnviro Toolkit
 
-### Issue #13: netrunning.py — Inconsistent SSH Timeout
-
-**File**: netrunning.py:100  
-**Type**: Medium (Stability)  
-**Status**: ACTUAL BUG  
-**Description**: Some SSH operations have `timeout=5`; others have no timeout. Inconsistent behavior leads to unpredictable hangs.  
-**Recommendation**: Define a timeout constant and apply consistently
-
----
-
 ### Issue #14: whatprocess.py — Array Bounds Checking Missing
 
 **File**: whatprocess.py:50-51, 95-96  
