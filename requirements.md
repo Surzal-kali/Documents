@@ -1,3 +1,4 @@
+appdirs==1.4.4
 bcrypt==5.0.0
 certifi==2026.4.22
 cffi==2.0.0
@@ -6,14 +7,20 @@ cryptography==48.0.0
 decorator==5.2.1
 idna==3.15
 invoke==3.0.3
+jedi==0.20.0
+lxml==6.1.0
 msgpack==1.1.2
+packaging==26.2
 paramiko==5.0.0
+parso==0.8.7
 psutil==7.2.2
 py==1.11.0
 pycparser==3.0
 pymetasploit3==1.0.6
 PyNaCl==1.6.2
+pyshark==0.6
 requests==2.34.2
 retry==0.9.2
 scapy==2.7.0
+termcolor==3.3.0
 urllib3==2.7.0

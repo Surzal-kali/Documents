@@ -61,9 +61,18 @@ Reindex notes after adding new files:
     notes_reindex()
 """
 def module_aware_completer(namespace):
-    completer = rlcompleter.Completer(namespace)
-
-    def complete(text, state):
+    # Try to use Jedi if available
+    try:
+        from jedi import Interpreter
+        JEDI_AVAILABLE = True
+    except ImportError:
+        JEDI_AVAILABLE = False
+        print("Note: Install 'jedi' for better autocompletion (pip install jedi)")
+    
+    # Fallback completer (your original logic)
+    fallback_completer = rlcompleter.Completer(namespace)
+    
+    def fallback_complete(text, state):
         if "." in text:
             module_name, _, attr_prefix = text.rpartition(".")
             module = namespace.get(module_name)
@@ -72,9 +81,58 @@ def module_aware_completer(namespace):
                 if state < len(attrs):
                     return f"{module_name}.{attrs[state]}"
                 return None
-        return completer.complete(text, state)
-
-    return complete
+        return fallback_completer.complete(text, state)
+    
+    if not JEDI_AVAILABLE:
+        return fallback_complete
+    
+    # Jedi-powered completer
+    def jedi_complete(text, state):
+        if state == 0:
+            try:
+                # Use Jedi Interpreter against your live namespace
+                interpreter = Interpreter(text, [namespace, namespace])
+                completions = interpreter.complete()
+                
+                # Store matches for subsequent state calls
+                jedi_complete.matches = []
+                for c in completions:
+                    name = c.name
+                    # Handle dotted completions like module.attr
+                    if "." in text:
+                        base, _ = text.rsplit(".", 1)
+                        full = f"{base}.{name}"
+                    else:
+                        full = name
+                    
+                    if full.startswith(text):
+                        jedi_complete.matches.append(full)
+                
+                # Also include fallback results (catches edge cases Jedi misses)
+                # But deduplicate
+                fallback_matches = []
+                for i in range(100):  # Arbitrary limit
+                    fb = fallback_complete(text, i)
+                    if fb is None:
+                        break
+                    if fb not in jedi_complete.matches:
+                        fallback_matches.append(fb)
+                jedi_complete.matches.extend(fallback_matches)
+                
+            except Exception:
+                # Jedi can fail on malformed code; fall back gracefully
+                jedi_complete.matches = []
+                for i in range(100):
+                    fb = fallback_complete(text, i)
+                    if fb is None:
+                        break
+                    jedi_complete.matches.append(fb)
+        
+        if state < len(jedi_complete.matches):
+            return jedi_complete.matches[state]
+        return None
+    
+    return jedi_complete
 
 def open_notes(text: str):
 	editor = os.getenv("VISUAL") or os.getenv("EDITOR") or "less"
