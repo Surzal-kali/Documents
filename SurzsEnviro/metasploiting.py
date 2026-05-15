@@ -79,7 +79,7 @@ def payload_generation(payload_name, options):
     _log_action(f"Generating payload: {payload_name} with options: {options}")
     payload = _get_client().modules.use("payload", payload_name)
     _apply_options(payload, options)
-    generated_payload = payload.generate()
+    generated_payload = payload.payload_generate()
     return generated_payload
 
 
