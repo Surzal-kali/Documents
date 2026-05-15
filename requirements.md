@@ -1,4 +1,5 @@
 appdirs==1.4.4
+dill
 bcrypt==5.0.0
 certifi==2026.4.22
 cffi==2.0.0

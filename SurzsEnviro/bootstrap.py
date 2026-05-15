@@ -1,5 +1,6 @@
 import importlib
 import inspect
+import os
 import pkgutil
 import sys
 from pathlib import Path
@@ -37,10 +38,30 @@ def load_env():
             if hasattr(module, "__file__"):
                 importlib.reload(module)
     
-    #currently only shows its position in memory, but it is a start. I will add more functionality to this later.
-    def add_script(name: str, content: str):
-        with open(name, "w") as f:
-            f.write(content)
+    def add_script(name: str, content):
+        # 1. Raw string — write as-is
+        if isinstance(content, str):
+            source = content
+        elif callable(content):
+            # 2. inspect — works for file-backed functions
+            try:
+                source = inspect.getsource(content)
+            except OSError:
+                # 3. dill fallback — decompiles from bytecode (handles live console functions)
+                try:
+                    import dill
+                    source = dill.source.getsource(content)
+                except Exception as e:
+                    print(f"[!] Could not extract source: {e}")
+                    return
+        else:
+            print(f"[!] content must be a string or callable, got {type(content)}")
+            return
+
+        filepath = os.path.join(os.getcwd(), name)
+        with open(filepath, "w") as f:
+            f.write(source)
+        print(f"[+] Saved → {filepath}")
 
     namespace["reload_all"] = reload_all
     namespace["add_script"] = add_script
