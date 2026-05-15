@@ -36,6 +36,12 @@ def load_env():
         for name, module in list(namespace.items()):
             if hasattr(module, "__file__"):
                 importlib.reload(module)
+    
+    #currently only shows its position in memory, but it is a start. I will add more functionality to this later.
+    def add_script(name: str, content: str):
+        with open(name, "w") as f:
+            f.write(content)
 
     namespace["reload_all"] = reload_all
+    namespace["add_script"] = add_script
     return namespace
