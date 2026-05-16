@@ -18,6 +18,9 @@ MSF_RPC_PORT = int(os.getenv("MSF_RPC_PORT", "55552"))
 MSF_RPC_SSL = os.getenv("MSF_RPC_SSL", "false").strip().lower() == "true"
 
 ### TODO: Learn more metapsloitable fun facts :D explore automated payload generation and more scripting advantages.
+# [ ] Search Modules: Implement a function to search for Metasploit modules based on specific criteria (e.g., name, description, platform). This can help users quickly find relevant modules for their testing and exploitation needs.
+# [ ] Integrate msfvenom for payload generation, allowing users to create custom payloads with specific options and configurations. This can enhance the flexibility and effectiveness of the payloads used in testing scenarios.
+# [ ] Discover more automation techniques besides session listing, executing modules, and searching for them. 
 
 def _log_action(message):
     """Log an action message using the ComputerSpeak class. This function takes a message as input and uses the ComputerSpeak instance to execute a command that echoes the message. The message is safely quoted using shlex.quote to prevent any issues with special characters or command injection vulnerabilities. This logging mechanism provides a way to track the actions being performed in the Metasploit helper functions."""
