@@ -75,3 +75,5 @@ sometimes i just want to forego everything and talk to the cpu directly :D
             xor ebx, ebx        ; exit code: 0
             int 0x80            ; call kernel
             '''
+
+it would essentially be operating with a high-level lanuage, decompiling and recompiling to necessary assembly in very specific edge cases, or when we feel cheatie and want to just talk to the cpu directly :D
