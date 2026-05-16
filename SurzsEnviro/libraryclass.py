@@ -7,7 +7,7 @@ class Librarian():
         self.library_path = library_path
         self.library_index = {}
         self.build_library_index()
- #TODO:this needs to be a nested index maybe? like library_index[filename] = content, then we can do content searching and retrieval by filename, and maybe even metadata like tags or categories if we want to get fancy.
+
     def build_library_index(self):
         for root, dirs, files in os.walk(self.library_path):
             for file in files:
@@ -27,7 +27,6 @@ class Librarian():
         for file, index in stuff:
             snippet = self.print_snippet(file, query)
             print(f"- {file}: ...{snippet}...")
-    #TODO:this parts fucked. we need to return *snippets* of the keymatched content, not whole books
     
     def print_snippet(self, file, query, context=30):
         content = self.library_index[file]
@@ -41,3 +40,15 @@ class Librarian():
     
     def get_library_entry(self, name):
         return self.library_index.get(name, None)
+    
+    def print_library_index(self):
+        for file in self.library_index:
+            print(f"- {file}")
+
+    def open_bookmark(self, name):
+        content = self.get_library_entry(name)
+        if content:
+            print(f"[+] Opening bookmark '{name}':")
+            print(content)
+        else:
+            print(f"[-] Bookmark '{name}' not found in library.")
