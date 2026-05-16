@@ -22,6 +22,7 @@ class ComputerSpeak:
             """Return the appropriate command prefix based on the operating system."""
             if "TERMUX_VERSION" in os.environ:
                 return "/bash -c"
+            #note this feature does nothing right now, android still errors as its not fully implemented.
             
             if self.os_name in ["Linux", "Darwin"]:
                 return "/bin/bash -l -c "
