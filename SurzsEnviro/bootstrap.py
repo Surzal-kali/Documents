@@ -107,6 +107,11 @@ def _build_stdlib_callable_script(content):
         f"{export_name}.__annotations__ = pickle.loads(base64.b64decode({annotations_payload!r}))\n"
     )
 
+def pinspect(obj):
+	a=inspect.getsource(obj)
+	print(a)
+
+
 def load_env():
     namespace = {}
 
@@ -175,7 +180,7 @@ def load_env():
         with open(filepath, "w") as f:
             f.write(source)
         print(f"[+] Saved → {filepath}")
-
+    namespace["pinspect"] = pinspect
     namespace["reload_all"] = reload_all
     namespace["add_script"] = add_script
     return namespace
