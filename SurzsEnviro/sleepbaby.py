@@ -8,7 +8,11 @@ import os
 import shutil
 
 
-#TODO: add more obfuscation and encoding to runtime parsing and passing recursively through the sleepbaby class. also add a filewalker method to the sleepbaby class that uses the file shuttle to recursively walk through directories and files, encrypting them with AES-GCM and sending them to the server. 
+#TODO: Make the SleepBaby class more robust, and useful for obfuscation, encoding, and encryption of any data.
+# [ ] Random String Generation: Enhance the string_burp method to allow for customizable character sets (e.g., alphanumeric, special characters) and the option to include/exclude certain characters. This can be useful for generating more complex and varied random strings for obfuscation purposes.
+# [ ] AES-GCM Encryption/Decryption: Implement AES-GCM encryption and decryption methods that can handle arbitrary input data, allowing for secure encryption of sensitive information. This should include proper handling of encryption keys, initialization vectors (IVs), and authentication tags to ensure data integrity and confidentiality.
+# [ ] IV Generation: Create a method to generate random initialization vectors (IVs) of appropriate length for AES encryption, ensuring that each encryption operation uses a unique IV to enhance security.
+# [ ] File Operations with FileShuttle: Integrate the FileShuttle class to manage file operations such as reading, writing, and transferring files securely. This can be useful for handling encrypted data or obfuscated content, allowing for seamless integration of encryption and file management functionalities within the SleepBaby class.
 class SleepBaby:
     """A class that provides methods for generating random strings, encrypting and decrypting data using AES-GCM, and managing file operations using the FileShuttle class."""
 

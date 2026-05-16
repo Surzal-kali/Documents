@@ -3,6 +3,16 @@ import os
 
 class Librarian():
     #ok step one, enumerate library. step two, index directories sith key:pair for variable matching. 
+        # --- Public API ---
+    # TODO: Librarian - Notes management system with features like:
+    # [ ] Reindexing to detect new/removed notes
+    # [ ] Organize by directory with indentation
+    # [ ] Show metadata (file size, modification date, note count per folder)
+    # [ ] Use consistent column alignment (filename, size, date)
+    # [ ] Add a header like "Available Notes" with divider
+    # [ ] Strip .md and / cleanly, capitalize/title-case folder/note names
+    # [ ] Truncate long paths to avoid clutter
+    # [ ] Add counters like [3/10 notes] per category
     def __init__(self, library_path):
         self.library_path = library_path
         self.library_index = {}

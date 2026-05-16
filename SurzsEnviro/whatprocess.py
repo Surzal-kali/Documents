@@ -6,7 +6,10 @@ from enumeration import FileCrawler as fc
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
 
-#TODO: Add strace functionality for debugging rogue code
+#TODO: Add more process management capabilities to the WhatProcess class, 
+# [ ]: Process Suspension and Resumption: Implement methods to suspend and resume processes by their PID. This functionality can be useful for temporarily halting a process without terminating it, allowing for analysis or manipulation before resuming its execution.
+# [ ]: Process Priority Management: Add functionality to change the priority of a process by its PID. This can help in scenarios where you want to allocate more or fewer system resources to a specific process for performance tuning or testing purposes.
+# [ ]: Process Information Retrieval: Enhance the identify_process method to retrieve and return more detailed information about the process, such as its parent process ID (PPID), memory usage, CPU usage, and open file descriptors. This can provide a more comprehensive view of the process's behavior and resource consumption. Look into PWSH or BASH for this one, and maybe even look into using psutil for a more cross-platform approach.
 
 class WhatProcess:
     CRON_NICKNAMES = {

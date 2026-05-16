@@ -9,7 +9,11 @@ from importlib.metadata  import files, version
 from pathlib import Path
 import time
 import paramiko
-### TODO: - Implement a comprehensive shell history crawler that can handle various shell types (e.g., bash, zsh, PowerShell) and extract command history while respecting user consent preferences and out-of-scope settings. This should include identifying the shell type, locating the appropriate history file, and extracting command history in a way that is efficient and secure. 
+### TODO: - Implement more network capabilities to the Shellwalker Class with the following features:
+# [ ] Remote Shell History Extraction: Extend the ShellWalker class to support remote shell history extraction
+# [ ] SSH Integration: Use the paramiko library to establish SSH connections to remote hosts and access their shell history files securely.
+# [ ] Remote File Access: Implement functionality to read shell history files from remote hosts over SSH, ensuring proper handling of authentication and permissions.
+# [ ] Data Aggregation: Collect shell history from multiple remote hosts and aggregate it for analysis, while respecting user consent preferences and out-of-scope settings. 
 SYS_KEYWORDS = {
     "Source Port","Destination Port",  "Timestamps", "UDP payload", "TCP payload", "HTTP", "DNS", "SSL", "TLS", "FTP", "SMTP", "IMAP", "POP3", "sudo", "nano", "vim", "code", "python", "ssh", "scp", "cat", "ls", "cd", "clear", "dir", "type", "more", "less", "head", "tail", "find", "grep", "awk", "sed", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service", "journalctl", "grep", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service",
     "firewall", "ufw", "iptables", "nmap", "dns", "dig", "nslookup", "tcpdump", "wireshark", "pyshark", "scapy", "msfconsole", "msfrpc", "metasploit", "powershell", "bash", "zsh", "history", "env", "printenv", "set", "export", "alias", "unalias", "which", "whereis", "locate", "find", "updatedb", "crontab", "at",
