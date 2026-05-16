@@ -19,12 +19,16 @@ class ComputerSpeak:
     #k this module is kind of imporante. it also doesn't work 
     
     def get_command_prefix(self):
-        """Return the appropriate command prefix based on the operating system."""
-        if self.os_name in ["Linux", "Darwin"]:
-            return "/bin/bash -l -c "
-        if self.os_name == "Windows":
-            return "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "
-        raise NotImplementedError(f"Unsupported operating system: {self.os_name}")
+            """Return the appropriate command prefix based on the operating system."""
+            if "TERMUX_VERSION" in os.environ:
+                return "/bash -c"
+            
+            if self.os_name in ["Linux", "Darwin"]:
+                return "/bin/bash -l -c "
+            if self.os_name == "Windows":
+                return "powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "
+            raise NotImplementedError(f"Unsupported operating system: {self.os_name}")
+
 
     def _write_log(self, command: str, output: str): 
         """Write the executed command and its output to a log file with a timestamp."""

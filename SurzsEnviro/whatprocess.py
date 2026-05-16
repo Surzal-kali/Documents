@@ -6,6 +6,7 @@ from enumeration import FileCrawler as fc
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
 
+#TODO: Add strace functionality for debugging rogue code
 
 class WhatProcess:
     CRON_NICKNAMES = {
