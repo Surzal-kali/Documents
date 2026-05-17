@@ -168,3 +168,33 @@ In an exploit, you overwrite the instruction pointer to redirect execution. Comm
 •  Virtual tables (vtables): In C++, objects with virtual functions use a table of function pointers.
 
 •  Structured Exception Handlers (SEH): On Windows, these handle exceptions and can be overwritten.
+
+### Exploit Techniques:
+
+1.  Buffer Overflow: Overwrite the return address on the stack to point to your shellcode.
+2. Use-After-Free: Free an object and then reuse its memory to overwrite a function pointer or vtable entry.
+3. Format String Vulnerability: Use format string specifiers to write arbitrary values to memory, including the instruction pointer.
+4. ROP (Return-Oriented Programming): Instead of injecting shellcode, chain together existing code snippets (gadgets) that end with a `ret` instruction to achieve arbitrary code execution.
+
+### Bypassing Protections:
+
+1. ASLR Bypass
+Leak a memory address to calculate the location of your payload or gadgets. For example, use a format string bug to leak a libc address.
+2. DEP/NX Bypass
+Use ROP to execute existing code without needing to inject shellcode. For example, call `system("/bin/sh")` using gadgets.
+3. Stack Canaries Bypass
+Use a format string vulnerability to overwrite the canary value or leak it to bypass stack smashing protections.
+
+### Conclusion:
+
+The instruction pointer is a critical target in exploit development. By controlling it, attackers can redirect execution to their malicious payloads. Understanding how to manipulate the instruction pointer and bypass modern protections is essential for both offensive and defensive security professionals.
+
+Key Takeaways
+
+• The instruction pointer (EIP/RIP) is the most important target in exploit development.
+
+• Controlling it lets you redirect execution to your payload (shellcode, ROP, ret2libc).
+
+• Common techniques to control it: buffer overflows, UAF, format string bugs, and vtable hijacking.
+
+• Modern protections (ASLR, DEP/NX, stack canaries) make exploitation harder but not impossible—leaks and ROP are your friends.
