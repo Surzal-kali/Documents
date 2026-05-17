@@ -8,6 +8,6 @@
 - [ ] Implement a more intuitive command history navigation system, allowing users to easily access and reuse previous commands without needing to remember specific command numbers or use complex key combinations.
 	- Maybe a search feature that allows users to quickly find and reuse previous commands based on keywords or patterns, similar to how some shells allow for reverse searching through command history.
 
-## side note, everything must stay inside the terminal for more easier integration with other tools and workflows, and to maintain the lightweight and efficient nature of the REPL, which is a core design principle of the project.
+## side note, everything must stay inside the terminal for more easier integration with other tools and workflows, and to maintain the lightweight and efficient nature of the REPL, which is a core design principle of the project
 
-## no gui, no web interface, just pure terminal-based interaction to keep it fast and accessible for all users, regardless of their setup or preferences....also i don't wanna leave the ide k cool thanks
+ no gui, no web interface, just pure terminal-based interaction to keep it fast and accessible for all users, regardless of their setup or preferences....also i don't wanna leave the ide k cool thanks
