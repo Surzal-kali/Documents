@@ -110,18 +110,18 @@ The opponent should **not**:
 
 ```mermaid
 flowchart LR
-    A[Windows Laptop<br>Dashboard / Review] -->|Tailscale| B[Blue Team VM]
-    C[Proxmox Host] --> D[Target VM 1]
-    C --> E[Target VM 2]
-    C --> B
-    F[Raspberry Pi / Sensor Node] -->|Zeek / Suricata / Syslog| B
-    D -->|Host telemetry| B
-    E -->|Host telemetry| B
-    B --> G[Rule Engine / State Machine]
-    B --> H[LLM Decision Layer]
-    G --> I[Allowed Playbooks]
-    H --> I
-    I --> J[Reversible Actions]
+A[Windows Laptop<br>Dashboard / Review] -->|Tailscale| B[Blue Team VM]
+C[Proxmox Host] --> D[Target VM 1]
+C --> E[Target VM 2]
+C --> B
+F[Raspberry Pi / Sensor Node] -->|Zeek / Suricata / Syslog| B
+D -->|Host telemetry| B
+E -->|Host telemetry| B
+B --> G[Rule Engine / State Machine]
+B --> H[LLM Decision Layer]
+G --> I[Allowed Playbooks]
+H --> I
+I --> J[Reversible Actions]
 ```
 
 ## Recommended Stack
