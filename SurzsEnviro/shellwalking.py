@@ -1,19 +1,12 @@
 import os 
 import sys
-import json
 import csv
-import psutil
-import subprocess
-import requests
 from importlib.metadata  import files, version
 from pathlib import Path
 import time
 import paramiko
 ### TODO: - Implement more network capabilities to the Shellwalker Class with the following features:
 # [ ] Remote Shell History Extraction: Extend the ShellWalker class to support remote shell history extraction
-# [ ] SSH Integration: Use the paramiko library to establish SSH connections to remote hosts and access their shell history files securely.
-# [ ] Remote File Access: Implement functionality to read shell history files from remote hosts over SSH, ensuring proper handling of authentication and permissions.
-# [ ] Data Aggregation: Collect shell history from multiple remote hosts and aggregate it for analysis, while respecting user consent preferences and out-of-scope settings. 
 SYS_KEYWORDS = {
     "Source Port","Destination Port",  "Timestamps", "UDP payload", "TCP payload", "HTTP", "DNS", "SSL", "TLS", "FTP", "SMTP", "IMAP", "POP3", "sudo", "nano", "vim", "code", "python", "ssh", "scp", "cat", "ls", "cd", "clear", "dir", "type", "more", "less", "head", "tail", "find", "grep", "awk", "sed", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service", "journalctl", "grep", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service",
     "firewall", "ufw", "iptables", "nmap", "dns", "dig", "nslookup", "tcpdump", "wireshark", "pyshark", "scapy", "msfconsole", "msfrpc", "metasploit", "powershell", "bash", "zsh", "history", "env", "printenv", "set", "export", "alias", "unalias", "which", "whereis", "locate", "find", "updatedb", "crontab", "at",
@@ -79,6 +72,8 @@ class ShellWalker ():
         path_dirs = path_env.split(os.pathsep)
         print(f"System PATH directories: {path_dirs}")
         return path_dirs
+
+
     def shell_payload(self):
         """Generate a payload containing shell history and system PATH information based on user consent preferences. This method orchestrates the process of crawling shell history and checking the system PATH while respecting any out-of-scope settings specified by the user. The collected shell history and PATH information can then be used for further analysis in the digestion process and summarized in the report card."""
         shell_history = self.crabwalk()
