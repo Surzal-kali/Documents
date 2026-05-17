@@ -135,3 +135,36 @@ Exploit Steps:
     - CPU reality (e.g., speculative execution, cache timing).
 
 3. The same features that make CPUs fast (reordering, caching, speculation) are the same ones that break correctness and enable exploits.
+
+## The Instruction Pointer:
+
+Definition
+The instruction pointer (called EIP in x86 and RIP in x86_64) is a CPU register that holds the memory address of the next instruction to execute. It’s automatically updated by the CPU after each instruction.
+Example: If EIP = `0x080484a0`, the CPU will execute the instruction at that address next.
+
+Why It’s Important
+If you can control the instruction pointer, you can redirect execution to anywhere in memory—including your shellcode, ROP chains, or malicious functions.
+
+### How its controlled:
+
+Normal Execution
+
+During normal execution, the CPU updates the instruction pointer automatically:
+
+1.  Fetch the instruction at the address in EIP/RIP.
+
+2.  Execute the instruction.
+
+3.  Increment EIP/RIP to point to the next instruction
+
+Exploiting Execution
+
+In an exploit, you overwrite the instruction pointer to redirect execution. Common targets for overwriting:
+
+•  Return address: On the stack, when a function returns, it pops the return address into EIP/RIP.
+
+•  Function pointers: Variables that hold addresses of functions (e.g., `void (*func_ptr)()`).
+
+•  Virtual tables (vtables): In C++, objects with virtual functions use a table of function pointers.
+
+•  Structured Exception Handlers (SEH): On Windows, these handle exceptions and can be overwritten.
