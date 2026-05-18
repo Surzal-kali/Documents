@@ -4,7 +4,6 @@ import sqlite3
 
 # TODO: - Implement basic SQLi payloads for common databases (MySQL, PostgreSQL, SQLite)
 #   [ ]    - Add functionality to extract data from the database (e.g., tables, columns, data)
-#   [ ]    - Implement error-based and time-based SQLi techniques
 #   [ ]    - Add support for different types of SQLi (e.g., blind, union-based)
 #   [ ]    - Create a user-friendly interface for interacting with the tool
 #   [ ]    - Implement logging and reporting features

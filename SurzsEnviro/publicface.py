@@ -15,7 +15,6 @@ import platform
 ### TODO: Implement more advance payload delivery and generation with public face, and look more into the art of HTTP requests and responses.
 # [ ] Payload Generation: Enhance the payload generation capabilities to create more sophisticated and customizable payloads for various attack scenarios. This could include support for different payload types (e.g., reverse shells, bind shells, staged payloads) and the ability to specify parameters such as callback IP, port, and encoding options.
 # [ ] Payload Delivery: Implement functionality to deliver generated payloads to target systems using various methods, such as email attachments, web server hosting, or direct network delivery. This should include options for obfuscation and evasion techniques to bypass security measures.
-# [ ] Integration with PublicFace: Integrate the payload generation and delivery features into the PublicFace class, allowing users to easily create and deploy payloads through a user-friendly interface. This could involve adding methods to the PublicFace class for generating and delivering payloads, as well as providing options for customization and configuration.
 
 class publicface:
     """This class is designed to be the main entry point for web requests, providing a public-facing interface for various functionalities of web hunting in SurzsEnviro. It can be used for testing, demonstrations, or as a simple interface for users to interact with the underlying tools and modules."""

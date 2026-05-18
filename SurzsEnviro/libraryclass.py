@@ -5,7 +5,6 @@ class Librarian():
     #ok step one, enumerate library. step two, index directories sith key:pair for variable matching. 
         # --- Public API ---
     # TODO: Librarian - Notes management system with features like:
-    # [ ] Reindexing to detect new/removed notes
     # [ ] Organize by directory with indentation
     # [ ] Show metadata (file size, modification date, note count per folder)
     # [ ] Use consistent column alignment (filename, size, date)
