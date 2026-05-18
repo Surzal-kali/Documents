@@ -18,7 +18,7 @@ SurzsEnviro (Python Modules)
 -----------------------------------
 
 List everything loaded:
-    dir()print
+    dir() will print all variables, functions, and modules in the current namespace.
 
 Call any function directly:
     function_name(args)
@@ -30,13 +30,11 @@ Access a module directly:
 Reload ALL modules after edits:
     reload_all()
 
-Reload ONE module:
-    reload("module_name")
-
 Inspect modules and functions:
     help(module_name)
     help(function_name)
     dir(module_name)
+    pinspect(module_name) for complete code introspection
 
 Store state in variables:
 
@@ -48,17 +46,11 @@ Store state in variables:
 
 -----------------------------------
 
-List all notes (recursive):
-    notes_list()
-
-Search notes by keyword:
-    notes_search("keyword")
-
-Open a note:
-    print(notes_open("Category/file.md"))
-
-Reindex notes after adding new files:
-    notes_reindex()
+To checkout a database of .MD or .txt notes, use the Librarian class with the Full Path to your notes directory:
+    li = Librarian("/path/to/notes")
+    li.build_library_index()  # Scans and indexes notes
+    li.print_index()  # Prints the indexed notes
+    li.open_bookmark("Note Title")  # Prints the note to console.
 """
 def module_aware_completer(namespace):
     # Try to use Jedi if available
