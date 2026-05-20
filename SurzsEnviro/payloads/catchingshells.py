@@ -2,7 +2,7 @@ import socket
 import os
 import subprocess
 import sys
-from target_config import TARGET_IP, TARGET_INTERFACE, SELF_IP_RE, TARGET_RANGE
+from SurzsEnviro.target_config import TARGET_IP, TARGET_INTERFACE, SELF_IP_RE, TARGET_RANGE
 #so we have to get this file to jangow. hmmmm. this seems like a fileshuttle/filewalker problem. noo cause we'll need netrunner. BUSCAR MEANS SQL HOLY FUCK IM DUMB OMGOMGOMGOMGOMG. plz hold :D
 SERVER_HOST = sys.argv[1]
 SERVER_PORT = 5003

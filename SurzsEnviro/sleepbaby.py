@@ -51,3 +51,17 @@ class SleepBaby:
         """Generates a random string of the specified length to be used as an initialization vector (IV) for encryption."""
         chars = string.ascii_letters + string.digits + "#$()*+,-.:;<=>?@[]_"
         return ''.join(random.choices(chars, k=length))
+    
+    def generate_iv(self, length=12):
+            """Generates a random initialization vector (IV) of the specified length."""
+            return ''.join(random.choices(string.ascii_letters + string.digits, k=length))  
+    
+    def generate_aes_key(self, length=32):
+        """Generates a random AES key of the specified length (default is 32 bytes for AES-256)."""
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+    
+    def save_to_file(self, data: str, filename: str):
+        """Saves the provided data to a file with the specified filename."""
+        with open(filename, 'w') as f:
+            f.write(data)
+        

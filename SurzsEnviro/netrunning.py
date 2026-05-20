@@ -8,7 +8,7 @@ import platform
 import time
 import socket
 import requests
-from target_config import TARGET_IP, TARGET_INTERFACE, SELF_IP_RE, TARGET_RANGE, IPV4_RE
+from SurzsEnviro.target_config import TARGET_IP, TARGET_INTERFACE, SELF_IP_RE, TARGET_RANGE, IPV4_RE
 
 try:
     from nmap import PortScanner

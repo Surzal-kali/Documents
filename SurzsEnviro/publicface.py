@@ -8,7 +8,7 @@ from whatprocess import WhatProcess as wp
 from enumeration import FileCrawler as fc
 from shellwalking import ShellWalker as sw
 from catchingpackets import PacketSniffer as ps
-from target_config import MSF_PASS, TARGET_IP, TARGET_INTERFACE, TARGET_USERNAME, TARGET_PASSWORD, TARGET_RANGE, SELF_IP_RE, IPV4_RE, WORDLIST_PATH
+from SurzsEnviro.target_config import MSF_PASS, TARGET_IP, TARGET_INTERFACE, TARGET_USERNAME, TARGET_PASSWORD, TARGET_RANGE, SELF_IP_RE, IPV4_RE, WORDLIST_PATH
 from SurzsEnviro.payloads.WIP.conquer import Tenfold as tf
 import requests 
 import platform
