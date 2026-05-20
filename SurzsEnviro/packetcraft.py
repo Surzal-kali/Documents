@@ -70,3 +70,8 @@ class PacketCraft:
     def dissect_packet(self, packet: scapy.Packet):
         packet.show()
     
+    def extract_payload(self, packet: scapy.Packet) -> bytes:
+        if Raw in packet:
+            return bytes(packet[Raw].load)
+        return b""
+    
