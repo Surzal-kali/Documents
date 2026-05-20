@@ -7,11 +7,6 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 import os
 import shutil
 
-
-#TODO: Make the SleepBaby class more robust, and useful for obfuscation, encoding, and encryption of any data.
-# [ ] Random String Generation: Enhance the string_burp method to allow for customizable character sets (e.g., alphanumeric, special characters) and the option to include/exclude certain characters. This can be useful for generating more complex and varied random strings for obfuscation purposes.
-# [ ] AES-GCM Encryption/Decryption: Implement AES-GCM encryption and decryption methods that can handle arbitrary input data, allowing for secure encryption of sensitive information. This should include proper handling of encryption keys, initialization vectors (IVs), and authentication tags to ensure data integrity and confidentiality.
-#idea sleepbaby is our 
 class SleepBaby:
     """A class that provides methods for generating random strings, encrypting and decrypting data using AES-GCM, and managing file operations using the FileShuttle class."""
 
