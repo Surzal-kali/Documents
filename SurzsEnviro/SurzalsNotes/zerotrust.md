@@ -122,11 +122,14 @@ def main( ):
 
         #### hold on. problemo. if the outer key leaks, while the information isn't stored, the rest of the chain
 
-```
+``
+
 ok problem, if the outer key leaks, while the information isn't stored, the rest of the chain is still vulnerable. it'd be a simple couple hops to find the endpoint, both command and execution. 
 
 so we have it generate a new key for each hop, and encrypt the next hop information with that key, then encrypt that key with the next hop's public key. this way, even if the outer key leaks, the next hop information is still protected by the new key, which is only accessible to the intended relay node. its a domino effect
 
 
-the runtime...
+the runtime... will be a significant overhead depending. 
+
+
 
