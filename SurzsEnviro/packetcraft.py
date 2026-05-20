@@ -9,7 +9,7 @@ import string
 import time
 import cryptography
 from scapy.all import sr1, send, sniff, hexdump, Raw, sendp
-from SurzsEnviro.target_config import TARGET_INTERFACE, TARGET_IP, TARGET_RANGE
+from target_config import TARGET_INTERFACE, TARGET_IP, TARGET_RANGE
 #TODO: Add more protocols (e.g., ICMP, FTP, etc.),
 # [ ] Add support for crafting packets with custom options and flags,
 # [ ] Implement functionality for sending packets at specific intervals or in bursts,
