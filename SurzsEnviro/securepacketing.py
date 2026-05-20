@@ -13,9 +13,9 @@ class SecurePacketing:
 
     def __init__(self):
         self.sleepbaby = SleepBaby()
-        self.zerotrust = ZeroTrust()
+        self.zerotrust = ZeroTrust( private_key_path="path/to/private_key.pem", public_key_path="path/to/public_key.pem")
         self.packetcraft = PacketCraft()
-    
+    # i guess i gotta generate that off script and load it in here, or maybe i can just generate it on the fly every time, since it's only used for one message at a time. yeah let's do that, it's simpler and more secure to generate a fresh key for each message.
     def create_secure_packet(self, data: str, enc_key: str, iv: str):
         """Creates a secure packet by encrypting the input data and crafting it into a packet format."""
         encrypted_data = self.sleepbaby.encrypt_with_aes(data, enc_key, iv)
