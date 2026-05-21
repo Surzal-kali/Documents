@@ -12,9 +12,6 @@ from SurzsEnviro.target_config import MSF_PASS, TARGET_IP, TARGET_INTERFACE, TAR
 from SurzsEnviro.payloads.WIP.conquer import Tenfold as tf
 import requests 
 import platform
-### TODO: Implement more advance payload delivery and generation with public face, and look more into the art of HTTP requests and responses.
-# [ ] Payload Generation: Enhance the payload generation capabilities to create more sophisticated and customizable payloads for various attack scenarios. This could include support for different payload types (e.g., reverse shells, bind shells, staged payloads) and the ability to specify parameters such as callback IP, port, and encoding options.
-# [ ] Payload Delivery: Implement functionality to deliver generated payloads to target systems using various methods, such as email attachments, web server hosting, or direct network delivery. This should include options for obfuscation and evasion techniques to bypass security measures.
 
 class publicface:
     """This class is designed to be the main entry point for web requests, providing a public-facing interface for various functionalities of web hunting in SurzsEnviro. It can be used for testing, demonstrations, or as a simple interface for users to interact with the underlying tools and modules."""
@@ -170,5 +167,32 @@ class publicface:
             return True
         except socket.error:
             return False
+    def extract_cookies(self, response):
+        """Extract cookies from an HTTP response."""
+        return response.cookies if response else None
+    def extract_headers(self, response):
+        """Extract headers from an HTTP response."""
+        return response.headers if response else None
+    def extract_content(self, response):
+        """Extract content from an HTTP response."""
+        return response.text if response else None
+    def extract_status_code(self, response):
+        """Extract the status code from an HTTP response."""
+        return response.status_code if response else None
+    
+    def extract_json(self, response):
+        """Extract JSON data from an HTTP response."""
+        try:
+            return response.json() if response else None
+        except ValueError:
+            print("Response does not contain valid JSON.")
+            return None
         
+    def extract_links(self, response):
+        """Extract links from an HTTP response."""
+        if response:
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(response.text, 'html.parser')
+            return [a['href'] for a in soup.find_all('a', href=True)]
+        return None
     
