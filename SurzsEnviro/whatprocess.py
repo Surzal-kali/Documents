@@ -1,15 +1,11 @@
 import re
 import shlex
+from typing import Optional
 
 from computerspeak import ComputerSpeak as cs
 from enumeration import FileCrawler as fc
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
-
-#TODO: Add more process management capabilities to the WhatProcess class, 
-# [ ]: Process Suspension and Resumption: Implement methods to suspend and resume processes by their PID. This functionality can be useful for temporarily halting a process without terminating it, allowing for analysis or manipulation before resuming its execution.
-# [ ]: Process Priority Management: Add functionality to change the priority of a process by its PID. This can help in scenarios where you want to allocate more or fewer system resources to a specific process for performance tuning or testing purposes.
-# [ ]: Process Information Retrieval: Enhance the identify_process method to retrieve and return more detailed information about the process, such as its parent process ID (PPID), memory usage, CPU usage, and open file descriptors. This can provide a more comprehensive view of the process's behavior and resource consumption. Look into PWSH or BASH for this one, and maybe even look into using psutil for a more cross-platform approach.
 
 class WhatProcess:
     CRON_NICKNAMES = {
@@ -37,31 +33,36 @@ class WhatProcess:
         return thevalue
     
     
-    def identify_process(self, process_name: str):
+    def identify_process(self, process_name: str) -> Optional[dict]:
         """Identify a process by name and return its details. This function takes a process name as input and attempts to identify the process running on the system. It uses different commands based on the operating system (Windows or Unix-like) to search for the process. If the process is found, its details (such as PID) are extracted and returned in a structured format. If the process is not found, a message is printed indicating that the process was not found, and None is returned."""
         self.cs.speak(f"Identifying process: {process_name}")
         if self.cs.os_name == "Windows":
-            command = f'tasklist /FI "IMAGENAME eq {process_name}"'
+            sanitized_name = process_name.replace('"', "")
+            command = f'tasklist /FO CSV /NH /FI "IMAGENAME eq {sanitized_name}"'
         else:
-            command = f'ps aux | grep {process_name} | head -n 1'
+            quoted_name = shlex.quote(process_name)
+            command = f"pgrep -f -- {quoted_name} | head -n 1"
         output = self.cs.ec(command)
-        if output is None:
+        if output is None or not output.strip():
             print(f"Process '{process_name}' not found.")
             return None
-        process_stuff = output.strip().split()
-        if len(process_stuff) < 2:
+        if self.cs.os_name == "Windows":
+            # tasklist CSV output: "Image Name","PID",...
+            columns = [col.strip('"') for col in output.split(",")]
+            if len(columns) < 2 or columns[0] == "INFO: No tasks are running which match the specified criteria.":
+                print(f"Process '{process_name}' not found.")
+                return None
+            return {"pid": columns[1]}
+        if not output.strip().isdigit():
             print(f"Process '{process_name}' not found.")
             return None
-        else: 
-            process_details = {
-                "pid": process_stuff[1],
-            }
-            return process_details
+        return {"pid": output.strip()}
        
 
     def kill_process(self, pid: int):
         """Kill a process by its PID. This function takes a process ID (PID) as input and attempts to kill the process with that PID. It uses different commands based on the operating system (Windows or Unix-like) to terminate the process. The function includes error handling to catch and report any issues that may arise during the process termination, and it provides feedback on whether the process was successfully killed or if an error occurred."""
         try:
+            pid = int(pid)
             if self.cs.os_name == "Windows":
                 self.cs.ec(f"taskkill /PID {pid} /F")
             else:
@@ -88,6 +89,7 @@ class WhatProcess:
     def monitor_process(self, pid: int):
         """Monitor a process by its PID and return its resource usage. This function takes a process ID (PID) as input and attempts to monitor the resource usage of the specified process. It uses different commands based on the operating system (Windows or Unix-like) to retrieve the CPU and memory usage of the process. The results are returned in a structured format, and any errors encountered during the monitoring process are handled gracefully."""
         self.cs.speak(f"Monitoring process with PID: {pid}")
+        pid = int(pid)
         if self.cs.os_name == "Windows":
             command = f'typeperf "\\Process({pid})\\% Processor Time" "\\Process({pid})\\Working Set" -sc 1'
         else:
@@ -127,9 +129,10 @@ class WhatProcess:
     def restart_service (self, service_name: str):
         try:
             if self.cs.os_name == "Windows":
-                self.cs.ec(f"net stop {service_name} && net start {service_name}")
+                safe_service = service_name.replace('"', "")
+                self.cs.ec(f'net stop "{safe_service}" && net start "{safe_service}"')
             else:
-                self.cs.ec(f"systemctl restart {service_name}")
+                self.cs.ec(f"systemctl restart {shlex.quote(service_name)}")
             print(f"Service '{service_name}' has been restarted.")
         except Exception as e:
             print(f"Error restarting service: {e}") #if something bugs we can restart it. :D
@@ -147,7 +150,14 @@ class WhatProcess:
     def cron_job(self, service:str, command:str, schedule: str):
         """Schedule a cron job with the specified command and schedule."""
         if self.cs.os_name == "Windows":
-            self.cs.ec(f"Set-Service -Name {service} -StartupType Automatic(Delayed Start); Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command \"{command}\"') -Trigger (New-ScheduledTaskTrigger -AtStartup) -TaskName '{service}_cron_job' -Description 'Cron job for {service}'")
+            safe_service = service.replace("'", "")
+            escaped_command = command.replace("'", "''")
+            self.cs.ec(
+                f"Set-Service -Name '{safe_service}' -StartupType Automatic; "
+                f"Register-ScheduledTask -Action (New-ScheduledTaskAction -Execute 'powershell.exe' -Argument '-Command ''{escaped_command}''') "
+                f"-Trigger (New-ScheduledTaskTrigger -AtStartup) -TaskName '{safe_service}_cron_job' "
+                f"-Description 'Cron job for {safe_service}' -Force"
+            )
             self.cs.speak(f"Scheduling task: '{command}' with schedule: '{schedule}'")
             # Example of simulating task scheduling
             print(f"Task '{command}' has been scheduled with schedule '{schedule}'.") #that ones importante. another windows/linux branch
@@ -161,29 +171,37 @@ class WhatProcess:
         print(f"Cron job '{command}' has been scheduled with schedule '{schedule}'.") #that ones importante. another windows/linux branch
     def remove_cron_job(self, command: str):
         """Remove a scheduled cron job by its command. This function takes a command string as input and attempts to remove any scheduled cron jobs that match the provided command. It uses different commands based on the operating system (Windows or Unix-like) to perform the removal. The function includes error handling to catch and report any issues that may arise during the removal process, and it provides feedback on whether the cron job was successfully removed or if an error occurred."""
-        # This is a placeholder implementation. You would need to implement the actual logic to remove cron jobs based on your requirements.
-        self.cs.speak(f"Removing cron job: '{command}'") #oh yeah i never finished this part. whoops. well you get the idea. just need to parse the crontab and remove the line with the command in it. ye. regex and matching. das all. 
-        # Example of simulating cron job removal
-        print(f"Cron job '{command}' has been removed.") #that ones importante. another windows/linux branch
-        
-        def kill_process_by_name(self, pid: int):
-            csi = cs()
-            try:
-                if csi.os_name == "Windows":
-                    csi.ec(f"taskkill /PID {pid} /F")
-                else:
-                    csi.ec(f"kill -9 {pid}")
-                print(f"Process with PID '{pid}' has been killed.")
-            except Exception as e:
-                print(f"Error killing process: {e}")
+        self.cs.speak(f"Removing cron job: '{command}'")
+        try:
+            if self.cs.os_name == "Windows":
+                task_name = command.replace("'", "")
+                self.cs.ec(f"schtasks /Delete /TN \"{task_name}\" /F")
+            else:
+                pattern = shlex.quote(command)
+                self.cs.ec(
+                    f"(crontab -l 2>/dev/null | grep -F -v -- {pattern}) | crontab -"
+                )
+            print(f"Cron job '{command}' has been removed.")
+        except Exception as e:
+            print(f"Error removing cron job: {e}")
+
+    def kill_process_by_name(self, process_name: str):
+        details = self.identify_process(process_name)
+        if not details:
+            return
+        try:
+            self.kill_process(int(details["pid"]))
+        except Exception as e:
+            print(f"Error killing process '{process_name}': {e}")
+
     def elevate_privileges(self, pid: int):
         """Attempt to elevate privileges of a process by its PID. This function takes a process ID (PID) as input and attempts to elevate the privileges of the specified process. It uses different commands based on the operating system (Windows or Unix-like) to perform the privilege escalation. The function includes error handling to catch and report any issues that may arise during the elevation process, and it provides feedback on whether the privileges were successfully elevated or if an error occurred."""
-        csi = cs()
         try:
-            if csi.os_name == "Windows":
-                csi.ec(f"powershell -Command \"Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList '-Command \"Get-Process -Id {pid} | ForEach-Object {{ $_.PriorityClass = 'High' }}\"'\"")
+            pid = int(pid)
+            if self.cs.os_name == "Windows":
+                self.cs.ec(f"powershell -Command \"Start-Process -FilePath powershell.exe -Verb RunAs -ArgumentList '-Command \"Get-Process -Id {pid} | ForEach-Object {{ $_.PriorityClass = ''High'' }}\"'\"")
             else:
-                csi.ec(f"sudo renice -n -10 -p {pid}")
+                self.cs.ec(f"sudo renice -n -10 -p {pid}")
             print(f"Privileges for process with PID '{pid}' have been elevated.")
         except Exception as e:
             print(f"Error elevating privileges: {e}")
@@ -192,3 +210,13 @@ class WhatProcess:
 if __name__ == "__main__":
     wpi = WhatProcess()
     wpi.list_processes()
+    wpi.cron_job("ExampleService", "echo 'Hello, World!'", "daily")
+    wpi.remove_cron_job("echo 'Hello, World!'")
+
+
+# （づ￣3￣）づ╭❤️～ Approved.
+
+#TODO: Add more process management capabilities to the WhatProcess class, 
+# [ ]: Process Suspension and Resumption: Implement methods to suspend and resume processes by their PID. This functionality can be useful for temporarily halting a process without terminating it, allowing for analysis or manipulation before resuming its execution.
+# [ ]: Process Priority Management: Add functionality to change the priority of a process by its PID. This can help in scenarios where you want to allocate more or fewer system resources to a specific process for performance tuning or testing purposes.
+# [ ]: Process Information Retrieval: Enhance the identify_process method to retrieve and return more detailed information about the process, such as its parent process ID (PPID), memory usage, CPU usage, and open file descriptors. This can provide a more comprehensive view of the process's behavior and resource consumption. Look into PWSH or BASH for this one, and maybe even look into using psutil for a more cross-platform approach.

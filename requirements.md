@@ -1,5 +1,6 @@
 appdirs==1.4.4
 bcrypt==5.0.0
+beautifulsoup4==4.14.3
 black==26.5.1
 certifi==2026.4.22
 cffi==2.0.0
@@ -27,11 +28,13 @@ pymetasploit3==1.0.6
 PyNaCl==1.6.2
 pyright==1.1.409
 pyshark==0.6
+python-nmap==0.7.1
 pytokens==0.4.1
 requests==2.34.2
 retry==0.9.2
 ruff==0.15.13
 scapy==2.7.0
+soupsieve==2.8.3
 termcolor==3.3.0
 typing_extensions==4.15.0
 urllib3==2.7.0
