@@ -5,8 +5,9 @@ from importlib.metadata  import files, version
 from pathlib import Path
 import time
 import paramiko
-### TODO: - Implement more network capabilities to the Shellwalker Class with the following features:
-# [ ] Remote Shell History Extraction: Extend the ShellWalker class to support remote shell history extraction
+
+from target_config import TARGET_IP, TARGET_PASSWORD, TARGET_USERNAME
+
 SYS_KEYWORDS = {
     "Source Port","Destination Port",  "Timestamps", "UDP payload", "TCP payload", "HTTP", "DNS", "SSL", "TLS", "FTP", "SMTP", "IMAP", "POP3", "sudo", "nano", "vim", "code", "python", "ssh", "scp", "cat", "ls", "cd", "clear", "dir", "type", "more", "less", "head", "tail", "find", "grep", "awk", "sed", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service", "journalctl", "grep", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service",
     "firewall", "ufw", "iptables", "nmap", "dns", "dig", "nslookup", "tcpdump", "wireshark", "pyshark", "scapy", "msfconsole", "msfrpc", "metasploit", "powershell", "bash", "zsh", "history", "env", "printenv", "set", "export", "alias", "unalias", "which", "whereis", "locate", "find", "updatedb", "crontab", "at",
@@ -84,3 +85,38 @@ class ShellWalker ():
             "system_path": system_path,
         } #thanks. it was a fun experiment. whats next? 
 
+    def remote_shell_payload(self, hostname, username, password):
+        """Generate a payload containing remote shell history and system PATH information based on user consent preferences. This method establishes an SSH connection to the remote host, retrieves the shell history and system PATH information while respecting any out-of-scope settings specified by the user. The collected remote shell history and PATH information can then be used for further analysis in the digestion process and summarized in the report card."""
+        if self._is_out_of_scope("remote shell history") or self._is_out_of_scope("remote system path"):
+            return {}
+        try:
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(hostname, username=username, password=password)
+            stdin, stdout, stderr = ssh.exec_command('echo $SHELL')
+            shell_type = stdout.read().decode().strip()
+            history_file = self._locate_history_file(shell_type)
+            stdin, stdout, stderr = ssh.exec_command(f'cat {history_file}')
+            command_history = stdout.read().decode().splitlines()
+            stdin, stdout, stderr = ssh.exec_command('echo $PATH')
+            path_env = stdout.read().decode().strip()
+            path_dirs = path_env.split(os.pathsep)
+            ssh.close()
+            return {
+                "remote_shell_history": command_history,
+                "remote_system_path": path_dirs,
+            }
+        except Exception as e:
+            print(f"Error connecting to remote host: {e}")
+            return {}
+
+if __name__ == "__main__":
+    shell_walker = ShellWalker()
+    payload = shell_walker.remote_shell_payload(TARGET_IP, TARGET_USERNAME, TARGET_PASSWORD)  # Replace with actual remote host details
+    print(payload)
+
+# TODO TRIAGE {priority:P1} {area:remote-shell} {status:open}
+# [ ] Normalize remote shell value from echo $SHELL (for example /bin/bash -> bash) before history lookup.
+# [ ]Make remote PATH parsing remote-OS aware instead of using local os.pathsep unconditionally.
+# [ ] Add SSH port parameter with default fallback.
+# [ ] Replace broad exception handling with specific auth/timeout/transport/command failure paths.
