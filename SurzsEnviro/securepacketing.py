@@ -5,7 +5,6 @@ from target_config import TARGET_IP, SELF_IP_RE
 import random
 
 
-
 TARGET_PORT = 12345
 
 class SecurePacketing:
@@ -35,4 +34,4 @@ class SecurePacketing:
         return decrypted_data
 
 
-# （づ￣3￣）づ╭❤️～ A PROVED CONCEPT 
+# （づ￣3￣）づ╭❤️～ APPROVED CONCEPT 
