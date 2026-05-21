@@ -1,6 +1,6 @@
 import os
 import shlex
-
+import subprocess
 from computerspeak import ComputerSpeak as cs
 
 try: #im not sure if this is the best way to handle this, but it should work for now. we can always refactor later if we need to.
@@ -17,9 +17,6 @@ MSF_PASS = os.getenv("MSF_PASS", "")
 MSF_RPC_PORT = int(os.getenv("MSF_RPC_PORT", "55552"))
 MSF_RPC_SSL = os.getenv("MSF_RPC_SSL", "false").strip().lower() == "true"
 
-### TODO: Learn more metapsloitable fun facts :D explore automated payload generation and more scripting advantages.
-# [ ] Integrate msfvenom for payload generation, allowing users to create custom payloads with specific options and configurations. This can enhance the flexibility and effectiveness of the payloads used in testing scenarios.
-# [ ] Discover more automation techniques besides session listing, executing modules, and searching for them. 
 
 def _log_action(message):
     """Log an action message using the ComputerSpeak class. This function takes a message as input and uses the ComputerSpeak instance to execute a command that echoes the message. The message is safely quoted using shlex.quote to prevent any issues with special characters or command injection vulnerabilities. This logging mechanism provides a way to track the actions being performed in the Metasploit helper functions."""
@@ -84,8 +81,4 @@ def payload_generation(payload_name, options):
     generated_payload = payload.payload_generate()
     return generated_payload
 
-
-
-    # Example usage of the Metasploit helper functions
-    
-#my entire cybersecurity class is metasploitable, so i need this to work lmfao. course work begins in a few hours, and i want to have this ready to go. i will figure it out hey your right! in 3 hours.
+#unfortunately, editing the assembly code through msfvenom or msfconsole seem to be guardrailed hard, so we'll rely on more traditional methods of payload delivery for now, but we can always revisit this in the future if we want to get more creative.
