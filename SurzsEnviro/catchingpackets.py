@@ -19,7 +19,7 @@ def _require_pyshark():
     if pyshark is None:
         raise ModuleNotFoundError(
             "pyshark is not installed in the active Python environment. "
-            "Install dependencies from requirements.txt before using PacketSniffer."
+            "Install dependencies from requirements.md before using PacketSniffer."
         )
 
 
@@ -233,7 +233,13 @@ class PacketSniffer:
     def _resolve_path(self, path_value: str) -> Path:
         path = Path(path_value)
         if not path.is_absolute():
-            path = _HERE / path
+            cwd_path = Path.cwd() / path
+            if cwd_path.exists() or (
+                path.parts and path.parts[0] == _HERE.name and cwd_path.parent.exists()
+            ):
+                path = cwd_path
+            else:
+                path = _HERE / path
         path.parent.mkdir(parents=True, exist_ok=True)
         return path
 

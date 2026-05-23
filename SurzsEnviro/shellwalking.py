@@ -1,9 +1,7 @@
 import os 
 import sys
-import csv
-from importlib.metadata  import files, version
 from pathlib import Path
-import time
+import shutil
 import paramiko
 
 from target_config import TARGET_IP, TARGET_PASSWORD, TARGET_USERNAME
@@ -114,6 +112,79 @@ if __name__ == "__main__":
     shell_walker = ShellWalker()
     payload = shell_walker.remote_shell_payload(TARGET_IP, TARGET_USERNAME, TARGET_PASSWORD)  # Replace with actual remote host details
     print(payload)
+
+
+def historycall(file: str):
+    path = Path(file).expanduser()
+    with path.open("r", encoding="utf-8", errors="ignore") as handle:
+        rawc = handle.read()
+    cleanc = rawc.split("---------------------------------------")[-1]
+    print(cleanc)
+    return cleanc
+
+
+def build_file_preview(file_path: str):
+    selected = Path(file_path).expanduser()
+    size_bytes = selected.stat().st_size
+    preview = ""
+    try:
+        if selected.is_file():
+            preview = selected.read_text(encoding="utf-8", errors="ignore")[:300]
+    except Exception as e:
+        preview = f"Could not read file content: {type(e).__name__}: {str(e)}"
+
+    return {
+        "enumeration_folder_path": str(selected),
+        "enumeration_folder_name": selected.name,
+        "enumeration_folder_size_bytes": size_bytes,
+        "enumeration_preview": preview,
+        "enumeration_details": {},
+    }
+
+
+def crawl_local_files(folder: str | None = None):
+    selected_folder = folder
+    if selected_folder is None:
+        selected_folder = input("Enter the path of the folder to crawl: ").strip()
+    if not selected_folder or not os.path.isdir(selected_folder):
+        raise ValueError(f"Invalid folder path: {selected_folder}")
+
+    collected_data = []
+    for root, _, files in os.walk(selected_folder):
+        for name in files:
+            file_path = os.path.join(root, name)
+            collected_data.append(build_file_preview(file_path))
+    print(f"Collected metadata and previews for {len(collected_data)} files from {selected_folder}.")
+    return collected_data
+
+
+MAX_COPY_DEPTH = 2
+
+
+def filecopy(source_dir, target_bin):
+    if not source_dir:
+        print("[filecopy] No source directory provided.")
+        return
+
+    source = Path(source_dir)
+    if not source.is_dir():
+        print(f"[filecopy] Source is not a directory: {source_dir}")
+        return
+
+    target = Path(target_bin) / source.name
+    try:
+        for item in source.rglob("*"):
+            depth = len(item.relative_to(source).parts)
+            if depth > MAX_COPY_DEPTH:
+                continue
+            dest = target / item.relative_to(source)
+            if item.is_dir():
+                dest.mkdir(parents=True, exist_ok=True)
+            else:
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(item, dest)
+    except Exception as e:
+        print(f"[filecopy] Error copying {source_dir} to {target_bin}: {e}")
 
 # TODO TRIAGE {priority:P1} {area:remote-shell} {status:open}
 # [ ] Normalize remote shell value from echo $SHELL (for example /bin/bash -> bash) before history lookup.

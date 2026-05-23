@@ -1,4 +1,3 @@
-from email.mime import message
 import os
 from pathlib import Path
 import subprocess  
@@ -36,7 +35,7 @@ class ComputerSpeak:
         timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         log_entry = f"{timestamp} - Executed: {command}\nOutput: {output}\n{'-'*40}\n"
         self.log_path.parent.mkdir(parents=True, exist_ok=True)
-        with self.log_path.open("a") as log_file:
+        with self.log_path.open("a", encoding="utf-8") as log_file:
             log_file.write(log_entry)
 
     def _build_command_args(self, command: str):
@@ -79,13 +78,12 @@ class ComputerSpeak:
                 self.ec(command)
                 time.sleep(1)  # Sleep to avoid overwhelming the system; adjust as needed
 
-    def speak(self, message: str): #lets just keep with write ouput and utilizing the log function
-        # Escape single quotes for shell safety: 'string' -> 'string'"'"'string'
-        if self.os_name == "Windows":
-            self.ec(f"Write-Output '{message}'")
-        else:
-            escaped_message = message.replace("'", "'\"'\"'")
-            self.ec(f"echo '{escaped_message}'")
+    def speak(self, message: str):
+        """Print and log a quick note without shelling out."""
+        note = str(message)
+        print(note)
+        self._write_log("speak()", note)
+        return note
 
 if __name__ == "__main__":
     csi = ComputerSpeak()

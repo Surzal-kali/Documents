@@ -180,6 +180,15 @@ def load_env():
         with open(filepath, "w") as f:
             f.write(source)
         print(f"[+] Saved → {filepath}")
+    computer_speak_cls = namespace.get("ComputerSpeak")
+    if callable(computer_speak_cls):
+        try:
+            cs_instance = computer_speak_cls()
+            namespace["cs"] = cs_instance
+            namespace["speak"] = cs_instance.speak
+            namespace["ec"] = cs_instance.ec
+        except Exception as err:
+            print(f"[!] Could not initialize ComputerSpeak shortcuts: {err}")
     namespace["pinspect"] = pinspect
     namespace["reload_all"] = reload_all
     namespace["add_script"] = add_script

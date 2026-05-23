@@ -36,6 +36,10 @@ Inspect modules and functions:
     dir(module_name)
     pinspect(module_name) for complete code introspection
 
+Quick notes and shell helpers:
+    speak("remember this target path")
+    ec("pwd")
+
 Store state in variables:
 
     result = function_name(args)
@@ -46,11 +50,10 @@ Store state in variables:
 
 -----------------------------------
 
-To checkout a database of .MD or .txt notes, use the Librarian class with the Full Path to your notes directory:
-    li = Librarian("/path/to/notes")
-    li.build_library_index()  # Scans and indexes notes
-    li.print_index()  # Prints the indexed notes
-    li.open_bookmark("Note Title")  # Prints the note to console.
+Browse notes directly from the loaded helpers:
+    notes_list()
+    notes_search("keyword")
+    notes_open("relative/path.md")
 """
 def module_aware_completer(namespace):
     # Try to use Jedi if available

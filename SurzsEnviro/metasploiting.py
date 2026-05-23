@@ -27,7 +27,7 @@ def _get_client():
     global client
     if MsfRpcClient is None:
         raise RuntimeError(
-            "pymetasploit3 is not installed. Install SurzsEnviro/requirements.txt before using Metasploit helpers."
+            "pymetasploit3 is not installed. Install dependencies from requirements.md before using Metasploit helpers."
         ) from _MSF_IMPORT_ERROR
     if client is None:
         client = MsfRpcClient(password=MSF_PASS, port=MSF_RPC_PORT, ssl=MSF_RPC_SSL)

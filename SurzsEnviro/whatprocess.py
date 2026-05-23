@@ -3,7 +3,6 @@ import shlex
 from typing import Optional
 
 from computerspeak import ComputerSpeak as cs
-from enumeration import FileCrawler as fc
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
 
@@ -21,7 +20,6 @@ class WhatProcess:
 
     def __init__(self):
         self.cs = cs()
-        self.fc = fc()
         self.nr = nr()
 
     def _cron_entry(self, command: str, schedule: str) -> str:

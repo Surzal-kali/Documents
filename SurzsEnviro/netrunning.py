@@ -20,7 +20,7 @@ def _require_portscanner():
     if PortScanner is None:
         raise ModuleNotFoundError(
             "python-nmap is not installed in the active Python environment. "
-            "Install dependencies from requirements.txt before using nmap helpers."
+            "Install dependencies from requirements.md before using nmap helpers."
         )
 
 
@@ -33,7 +33,7 @@ class NetRunning:
         if PortScanner is None:
             raise ModuleNotFoundError(
                 "python-nmap is not installed in the active Python environment. "
-                "Install dependencies from requirements.txt before using nmap helpers."
+                "Install dependencies from requirements.md before using nmap helpers."
             )
         nm = PortScanner()
         try:

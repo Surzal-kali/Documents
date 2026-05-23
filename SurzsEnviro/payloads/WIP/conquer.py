@@ -18,7 +18,6 @@ class Tenfold:
     DEFAULT_CORE_DEPS = (
         "computerspeak.py",
         "fileshuttle.py",
-        "enumeration.py",
         "shellwalking.py",
         "netrunning.py",
         "dacore.py",
