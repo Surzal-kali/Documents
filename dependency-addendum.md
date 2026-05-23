@@ -1,16 +1,22 @@
 # SEPERATE DEPENDENCIES NEEDED FOR THE PROJECT
 
-Metasploit Framework:
+## Metasploit Framework:
+its honestly the gold standard, and sometimes automating it is the simplest option
 
-Clang
+## Clang
+Do i really need to? compile on cli :D multi step for proper linting if you're paranoid like me
 
-Hurl
+## Hurl
+since we're still sticking to cli, we still need to enumerate and vuln assess endpoints proper and at the same scale.
+The answer? automate hurl.
 
-tshark
+## Tshark
+simple and efficient packet capture
 
-scapy
+## Scapy
+complex, multi-faceted, and beautiful python packet craft and send :D
 
-
+## THE IDEA
 alot of time on your hands to systemically enumerate and discover the vulnerabilities in the project and then write exploits for them....by hand. ai can lint (and probably draft/bounce ideas off of like i do) but can it machine speak? i thought not.
 
 you need to know the system you're querying, and be absolutely positive you know what your doing with the system api of the system you're installing this on. Both matter way more than normal.
@@ -22,7 +28,7 @@ this project is a translator when put it simply. treat it like such and exploit 
 also also also
 
 this will EVENTUALLY have a installer script but for now
-
+#### Manual Install
 git clone
 
 cd Documents
@@ -34,7 +40,7 @@ source venv/bin/activate
 pip install -r requirements.md
 
 (tada u have basic py functionality)
-
+##### Automation Hintsies
 but also........
 
 primarily this tiny thing will be a Remote Execution Endpoint. So we need our good pal metasploit, headless, with bare min overhead so
@@ -44,9 +50,6 @@ msfrpcd -P <PASSWORD> -S -a 127.0.0.1
 or however thats spelt if youre not on kali-rolling proper. 
 
 we just need the basic api to query our payloads and such :D
-
-
-# Fancy Tips Ill Automate Later
 
 if you want to keep the ipython3 repl init super short and clean
 
@@ -58,7 +61,8 @@ export MSF_PASS=<PASSWORD>
 export TARGET_INTERFACE=<Net-Interface-Here> (this ones different linux v windows and i cant fucking recall windows cause fuck windows)
 export TARGET_IP=<xxx.xxx.xxxx.xxx>
 export TARGET_PASSWORD=" "
-export TARGET_USERNAME=<insert username or empty quotes>
+export TARGET_USERNAME=<insert-username-or-empty-quotes>
+
 export SELF_IP_RE=<xxx.xxx.xxx.xxx/xx>
 export TARGET_RANGE=<xxx.xxx.xxx.xxx/xx>
 
