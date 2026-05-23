@@ -29,6 +29,7 @@ also also also
 
 this will EVENTUALLY have a installer script but for now
 #### Manual Install
+```
 git clone
 
 cd Documents
@@ -38,8 +39,9 @@ python3 -m venv venv
 source venv/bin/activate 
 
 pip install -r requirements.md
+```
 
-(tada u have basic py functionality)
+<!-- (tada u have basic py functionality) -->
 ##### Automation Hintsies
 but also........
 
@@ -53,19 +55,26 @@ we just need the basic api to query our payloads and such :D
 
 if you want to keep the ipython3 repl init super short and clean
 
+```bash
 touch export.txt
 
 nano export.txt
 
 export MSF_PASS=<PASSWORD>
-export TARGET_INTERFACE=<Net-Interface-Here> (this ones different linux v windows and i cant fucking recall windows cause fuck windows)
+
+export TARGET_INTERFACE=<Net-Interface-Here> 
+# this ones different linux v windows and i cant fucking recall windows cause fuck windows
+
 export TARGET_IP=<xxx.xxx.xxxx.xxx>
+
 export TARGET_PASSWORD=" "
+
 export TARGET_USERNAME=<insert-username-or-empty-quotes>
 
 export SELF_IP_RE=<xxx.xxx.xxx.xxx/xx>
-export TARGET_RANGE=<xxx.xxx.xxx.xxx/xx>
 
+export TARGET_RANGE=<xxx.xxx.xxx.xxx/xx>
+```
 
 then everytime you wanna launch its just
 
@@ -76,3 +85,7 @@ cat export.txt
 ipython3
 
 BAM YOU'RE DONE THE JOURNEY IS OVER.
+
+oh and btw, with minimal dependencies we're forcasting about 625MiB Idling. (kali-rolling minimal install specs)
+
+you're welcome
