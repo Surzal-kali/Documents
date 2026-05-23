@@ -44,3 +44,31 @@ msfrpcd -P <PASSWORD> -S -a 127.0.0.1
 or however thats spelt if youre not on kali-rolling proper. 
 
 we just need the basic api to query our payloads and such :D
+
+
+# Fancy Tips Ill Automate Later
+
+if you want to keep the ipython3 repl init super short and clean
+
+touch export.txt
+
+nano export.txt
+
+export MSF_PASS=<PASSWORD>
+export TARGET_INTERFACE=<Net-Interface-Here> (this ones different linux v windows and i cant fucking recall windows cause fuck windows)
+export TARGET_IP=<xxx.xxx.xxxx.xxx>
+export TARGET_PASSWORD=" "
+export TARGET_USERNAME=<insert username or empty quotes>
+export SELF_IP_RE=<xxx.xxx.xxx.xxx/xx>
+export TARGET_RANGE=<xxx.xxx.xxx.xxx/xx>
+
+
+then everytime you wanna launch its just
+
+cat export.txt
+
+(copy and paste the output back into shell)
+
+ipython3
+
+BAM YOU'RE DONE THE JOURNEY IS OVER.
