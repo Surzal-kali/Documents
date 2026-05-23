@@ -1,28 +1,33 @@
-# Copilot Instructions for SurzsEnviro
+# Copilot instructions for this repository
 
-## Commands
+## Build, test, and lint
 
-- Install dependencies: `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`
-- Run the main facade/orchestration entry point: `python3 publicface.py`
-- Run orchestration preflight only: `python3 orchestrator.py`
-- Run the Tenfold scheduler/stager loop: `python3 conquer.py`
-- There is no committed `tests/` directory, no `pytest`/`unittest` suite, and no repo-level lint configuration (`ruff`, `flake8`, `pylint`, `black`, `mypy`) in this repository right now. Do not invent standard test or lint commands, and there is no repo-defined single-test command yet.
+- Install Python dependencies from the repo root with `python3 -m venv .venv && source .venv/bin/activate && python3 -m pip install -r requirements.md`. The dependency list is checked in as `requirements.md`, not `requirements.txt`.
+- There is no committed repo-level build pipeline, lint configuration, or automated test suite in this repository.
+- There is no dedicated single-test command because there is no checked-in test runner.
+- The most reliable script-level smoke checks from the repo root are:
+  - `python3 SurzsEnviro/catchingpackets.py --help`
+  - `python3 SurzsEnviro/catchingpackets.py analyze SurzsEnviro/captured_packets.pcap --analysis-file SurzsEnviro/packet_analysis.txt`
+  - `python3 bootstrap.py`
+  - `python3 SurzsEnviro/payloads/WIP/conquer.py`
 
 ## High-level architecture
 
-- This is a flat, script-first Python codebase, not a packaged module tree. Files import each other directly from the repository root (for example `from netrunning import NetRunning`), so future changes should preserve root-level imports and direct `python3 <file>.py` execution unless the repo is intentionally repackaged.
-- `target_config.py` is the shared configuration boundary. It reads core values such as `MSF_PASS`, `TARGET_USERNAME`, `TARGET_RANGE`, `TARGET_IP`, `TARGET_INTERFACE`, `TARGET_PASSWORD`, and `WORDLIST_PATH` from environment variables and prompts interactively when they are unset. Because many modules import `target_config` at module load time, imports can trigger prompts before any real work starts.
-- `computerspeak.py` is the common shell/logging layer. `ComputerSpeak.execute_command()` picks Bash vs PowerShell, runs subprocesses, and appends command/output logs to `SurzalsNotes/SurzalsTexts/command_log.txt`. Many other modules use `ComputerSpeak` instead of calling subprocesses directly.
-- `publicface.py` is the main facade that wires the subsystems together. Constructing `publicface.publicface` instantiates the network, process, file, shell, packet, scheduler, and orchestrator helpers, creates a Metasploit RPC client, and immediately calls `Orchestrator.preflight()`.
-- `orchestrator.py` is the lightweight startup/preflight layer. Its `preflight()` method dynamically imports the attack and collection modules, inspects `/bin` through `FileShuttle.list_directory()`, classifies entries, and writes findings to `rawbin.txt`.
-- Network and exploitation capabilities are split across `netrunning.py`, `metasploiting.py`, `catchingpackets.py`, and parts of `dacore.py`. Local collection and host-inspection utilities live in `fileshuttle.py`, `enumeration.py`, `shellwalking.py`, and `whatprocess.py`.
-- `conquer.py` is a newer, separate subsystem centered on `Tenfold`. It stages approved scripts from `~/.conquer/source` (or `%PROGRAMDATA%\Conquer\source` on Windows) into a working directory, syncs selected repo dependencies, tracks scheduled runs in `execution.json`, and keeps runtime logs in `debug_log.txt`.
+- The repo has two main parts that are meant to work together: the `SurzsEnviro/` Python toolkit and the `Exploit_Notes/` markdown knowledge base. The root `bootstrap.py` script loads both into one interactive console so operators can use code and notes in the same session.
+- `SurzsEnviro/` is a script-first toolkit, not a normal packaged module tree. Inside that directory, modules use bare imports like `from computerspeak import ComputerSpeak`; the root `SurzsEnviro/bootstrap.py` injects the directory into `sys.path` so those imports still resolve when loaded from the repo root.
+- `SurzsEnviro/bootstrap.py` is the dynamic loader. `load_env()` walks the `SurzsEnviro` namespace, imports every module it can, and exposes modules plus top-level symbols into the REPL namespace. That means imports are part of the runtime bootstrap, not just static organization.
+- `SurzsEnviro/target_config.py` is the shared runtime configuration boundary. It reads target host, interface, username, password, Metasploit password, and related values at import time, prompting interactively when environment variables are unset.
+- `SurzsEnviro/publicface.py` is the closest thing to a facade for the toolkit. Its constructor wires together `NetRunning`, `FileCrawler`, `WhatProcess`, `ShellWalker`, `PacketSniffer`, `Tenfold`, and a Metasploit RPC client, so creating `publicface()` is a heavy bootstrap step rather than a passive object allocation.
+- `SurzsEnviro/computerspeak.py` is the common shell/logging layer. Other modules lean on it for cross-platform command execution and for logging command output to `SurzsEnviro/SurzalsNotes/SurzalsTexts/command_log.txt`.
+- `SurzsEnviro/catchingpackets.py` is the most self-contained CLI entry point. It owns live packet capture, pcap analysis, flow tracking, and anomaly reporting, and it resolves relative output paths against the `SurzsEnviro/` directory.
+- `SurzsEnviro/payloads/WIP/conquer.py` is a separate long-running scheduler/stager subsystem. It syncs approved scripts from `~/.conquer/source` (or `%PROGRAMDATA%/Conquer/source` on Windows), merges `execution.json`, copies a fixed dependency set into a working directory, and records runtime logs in `debug_log.txt`.
 
 ## Key conventions
 
-- Preserve direct-script execution patterns. Several modules have `if __name__ == "__main__"` blocks and are meant to run from the repository root without package installation.
-- Follow the existing short helper aliases in nearby code: `cs`, `fs`, `nr`, `wp`, `fc`, `sw`, `ps`, `Or`, `tf`, and `cc`. New code that touches those areas should stay consistent with that local style.
-- Reuse the existing helper boundaries instead of adding parallel abstractions: `ComputerSpeak` for shell execution/logging, `FileShuttle` for file operations, `NetRunning` for scanning/network helpers, and `metasploiting.py` for Metasploit RPC access.
-- Watch for import-time side effects. Importing modules that transitively pull in `target_config.py` can prompt for configuration, and instantiating `publicface.publicface` also triggers orchestration work immediately.
-- Expect artifacts to be written into the repo root or user-scoped runtime folders rather than a dedicated temp directory. Existing code writes files such as `rawbin.txt`, `packet_analysis.txt`, `loud_scan_results.txt`, captured `.pcap` files, `SurzalsNotes/SurzalsTexts/command_log.txt`, and `~/.conquer/**` state.
-- Treat `randomcode.py`, `dacore.py`, and `catchingshells.py` as legacy or experimental scripts alongside the newer `conquer.py` scheduler. When extending behavior, prefer keeping existing wiring intact instead of assuming there is a single polished entry point.
+- Preserve the repo's two import styles: use package-qualified imports from the repo root (`from SurzsEnviro...`) and keep the existing bare imports inside `SurzsEnviro/` modules unless the whole loading model is being changed intentionally.
+- Avoid accidental import-time prompts. If a task needs non-interactive execution, set `MSF_PASS`, `TARGET_RANGE`, `TARGET_INTERFACE`, `TARGET_IP`, `TARGET_USERNAME`, `TARGET_PASSWORD`, `WORDLIST_PATH`, and `SELF_IP_RE` before importing modules that depend on `target_config.py`.
+- Prefer existing helper boundaries over new wrappers: `ComputerSpeak` for shell execution/logging, `NetRunning` for network helpers, `WhatProcess` for process/service scheduling actions, `ShellWalker` for shell-history collection, and `PacketSniffer` for capture/analysis work.
+- Short local aliases are part of the code style in this toolkit (`cs`, `nr`, `wp`, `fc`, `sw`, `ps`, `tf`). Match them when editing nearby code.
+- Treat runtime outputs as intentional local artifacts. This code writes into `SurzsEnviro/`, `SurzsEnviro/SurzalsNotes/SurzalsTexts/`, and `~/.conquer/working` instead of hiding artifacts in temp directories.
+- `SurzsEnviro/payloads/` contains hand-maintained deployment-oriented copies, not generated files. If behavior changes in a root runtime module, check whether the corresponding payload copy should change too.
+- Many older helpers mix return values with `print()` or `ComputerSpeak` side effects. Before refactoring a function to be "cleaner," check whether callers rely on its console/log behavior as much as its return value.
