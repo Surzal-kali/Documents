@@ -5,7 +5,7 @@ import shutil
 import paramiko
 
 from target_config import TARGET_IP, TARGET_PASSWORD, TARGET_USERNAME
-
+# similarly to whatprocess, this will be refactored to be more modular and platform specific. for now it can only reasonably do remote linux and local linux history and path crawling. so yeah.
 SYS_KEYWORDS = {
     "Source Port","Destination Port",  "Timestamps", "UDP payload", "TCP payload", "HTTP", "DNS", "SSL", "TLS", "FTP", "SMTP", "IMAP", "POP3", "sudo", "nano", "vim", "code", "python", "ssh", "scp", "cat", "ls", "cd", "clear", "dir", "type", "more", "less", "head", "tail", "find", "grep", "awk", "sed", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service", "journalctl", "grep", "curl", "wget", "ping", "traceroute", "netstat", "ss", "lsof", "ps", "top", "htop", "systemctl", "service",
     "firewall", "ufw", "iptables", "nmap", "dns", "dig", "nslookup", "tcpdump", "wireshark", "pyshark", "scapy", "msfconsole", "msfrpc", "metasploit", "powershell", "bash", "zsh", "history", "env", "printenv", "set", "export", "alias", "unalias", "which", "whereis", "locate", "find", "updatedb", "crontab", "at",
@@ -186,8 +186,3 @@ def filecopy(source_dir, target_bin):
     except Exception as e:
         print(f"[filecopy] Error copying {source_dir} to {target_bin}: {e}")
 
-# TODO TRIAGE {priority:P1} {area:remote-shell} {status:open}
-# [ ] Normalize remote shell value from echo $SHELL (for example /bin/bash -> bash) before history lookup.
-# [ ]Make remote PATH parsing remote-OS aware instead of using local os.pathsep unconditionally.
-# [ ] Add SSH port parameter with default fallback.
-# [ ] Replace broad exception handling with specific auth/timeout/transport/command failure paths.
