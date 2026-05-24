@@ -14,7 +14,6 @@ except ModuleNotFoundError:
 
 
 _HERE = Path(__file__).resolve().parent
-# [ ] Implement a user-friendly interface for the PacketSniffer class, allowing users to easily configure capture settings, view real-time packet summaries, and access detailed analysis results. This could involve creating a command-line interface (CLI) with clear options and help messages, as well as providing options for customizing the output format and filtering criteria for captured packets. At the very least, while it still uses pyshark and outputs pcap, we can at least give a documented and colored .md variant. or even csv.
 def _require_pyshark():
     if pyshark is None:
         raise ModuleNotFoundError(
