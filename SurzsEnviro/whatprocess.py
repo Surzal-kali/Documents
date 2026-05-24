@@ -5,7 +5,9 @@ from typing import Optional
 from computerspeak import ComputerSpeak as cs
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
-#This module is going to be redistributed and refactored based on directory aligned platform specific modules. This is just a placeholder and general ideapad of how it would look in each in py.class WhatProcess:
+#This module is going to be redistributed and refactored based on directory aligned platform specific modules. This is just a placeholder and general ideapad of how it would look in each in py.
+
+class WhatProcess:
     CRON_NICKNAMES = {
         "hourly": "@hourly",
         "daily": "@daily",
