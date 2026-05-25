@@ -27,6 +27,7 @@ def _require_portscanner():
 class NetRunning:
     def __init__(self):
         pass
+    #TODO: add the ability to call nmap scripts as well as additional flags. 
     def scan_network(self, target_ip_range: str):
         """Scan the network for active hosts using nmap. Optionally, run specific nmap scsripts against the detected hosts."""
         print(f"Scanning network range {target_ip_range} for active hosts...")
