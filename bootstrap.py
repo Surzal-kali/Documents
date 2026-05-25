@@ -1,13 +1,20 @@
 # Documents/bootstrap.py
 import code
 import os
-import subprocess
-import tempfile
-import sys
-from SurzsEnviro.bootstrap import load_env
-from Exploit_Notes.bootstrap import load_notes
 import readline
 import rlcompleter
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+DOCUMENTS_ROOT = Path(__file__).resolve().parent
+documents_root_str = str(DOCUMENTS_ROOT)
+if documents_root_str not in sys.path:
+    sys.path.insert(0, documents_root_str)
+
+from Exploit_Notes.bootstrap import load_notes
+from SurzsEnviro.bootstrap import load_env
 
 CHEATSHEET=""" 
 ===========================
@@ -130,33 +137,49 @@ def module_aware_completer(namespace):
     return jedi_complete
 
 def open_notes(text: str):
-	editor = os.getenv("VISUAL") or os.getenv("EDITOR") or "less"
-	# Write to a temp file and make it read-only so editors open it as view-only
-	tf = tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8")
-	try:
-		tf.write(text)
-		tf.flush()
-		tf.close()
-		os.chmod(tf.name, 0o400)
-		# Launch editor; pass file as argument. If editor is a simple pager like less, it works.
-		cmd = editor.split() + [tf.name]
-		try:
-			subprocess.run(cmd)
-		except FileNotFoundError:
-			# Fallback to less if the chosen editor is not available
-			subprocess.run(["less", tf.name])
-	finally:
-		try:
-			os.remove(tf.name)
-		except Exception:
-			pass
+    editor = os.getenv("VISUAL") or os.getenv("EDITOR") or "less"
+    # Write to a temp file and make it read-only so editors open it as view-only
+    temp_file = tempfile.NamedTemporaryFile("w", delete=False, encoding="utf-8")
+    try:
+        temp_file.write(text)
+        temp_file.flush()
+        temp_file.close()
+        os.chmod(temp_file.name, 0o400)
+        # Launch editor; pass file as argument. If editor is a simple pager like less, it works.
+        command = editor.split() + [temp_file.name]
+        try:
+            subprocess.run(command)
+        except FileNotFoundError:
+            # Fallback to less if the chosen editor is not available
+            subprocess.run(["less", temp_file.name])
+    finally:
+        try:
+            os.remove(temp_file.name)
+        except Exception:
+            pass
 
 
-namespace = {}
-namespace.update(load_env())
-namespace.update(load_notes())
-namespace["CHEATSHEET"] = CHEATSHEET
+def build_namespace():
+    namespace = {}
+    namespace.update(load_env())
+    namespace.update(load_notes())
+    namespace["CHEATSHEET"] = CHEATSHEET
+    namespace["open_notes"] = open_notes
+    return namespace
 
-readline.parse_and_bind("tab: complete")
-readline.set_completer(module_aware_completer(namespace))
-code.interact(local=namespace, banner=CHEATSHEET )
+
+def launch_repl(namespace=None):
+    if namespace is None:
+        namespace = build_namespace()
+
+    readline.parse_and_bind("tab: complete")
+    readline.set_completer(module_aware_completer(namespace))
+    code.interact(local=namespace, banner=CHEATSHEET)
+
+
+def main():
+    launch_repl()
+
+
+if __name__ == "__main__":
+    main()
