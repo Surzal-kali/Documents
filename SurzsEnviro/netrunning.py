@@ -27,8 +27,7 @@ def _require_portscanner():
 class NetRunning:
     def __init__(self):
         pass
-    #TODO: add the ability to call nmap scripts as well as additional flags. 
-    def scan_network(self, target_ip_range: str):
+    def scan_network(self, target_ip_range: str, nmap_args: str = '-sn'):
         """Scan the network for active hosts using nmap. Optionally, run specific nmap scsripts against the detected hosts."""
         print(f"Scanning network range {target_ip_range} for active hosts...")
         if PortScanner is None:
@@ -38,7 +37,7 @@ class NetRunning:
             )
         nm = PortScanner()
         try:
-            nm.scan(hosts=target_ip_range, arguments=f'-sn -oN {target_ip_range.replace("/", "_")}_nmap_results.txt')
+            nm.scan(hosts=target_ip_range, arguments=f'{nmap_args} -oN {target_ip_range.replace("/", "_")}_nmap_results.txt')
             active_hosts = [host for host in nm.all_hosts() if nm[host].state() == 'up']
             print(f"Active hosts detected: {active_hosts}")
             return active_hosts
