@@ -9,6 +9,7 @@ click==8.4.0
 cryptography==48.0.0
 decorator==5.2.1
 dill==0.4.1
+ipython==9.7.0
 idna==3.15
 invoke==3.0.3
 jedi==0.20.0
@@ -29,6 +30,7 @@ PyNaCl==1.6.2
 pyright==1.1.409
 pyshark==0.6
 python-nmap==0.7.1
+python-owasp-zap-v2.4==0.0.14
 pytokens==0.4.1
 requests==2.34.2
 retry==0.9.2
