@@ -9,9 +9,14 @@ import pkgutil
 import sys
 from pathlib import Path
 import SurzsEnviro
-#TODO: create httpx, ffuf, harvester, hydra, sqlmap, and commix scripts to be imported here.
-# Allow bare imports (e.g. `from computerspeak import ...`) inside SurzsEnviro modules
-# to resolve when this package is loaded from a parent directory.
+#TODO: third party scripts to add:
+#[x] httpx
+#[ ] ffuf
+#[ ] harvester
+#[ ] hydra
+#[ ] sqlmap
+#[ ] commix
+
 _enviro_path = str(Path(__file__).parent)
 if _enviro_path not in sys.path:
     sys.path.insert(0, _enviro_path)

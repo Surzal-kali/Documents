@@ -24,7 +24,10 @@ def _log_action(message):
 
 # so we have login, database status, session listing, module searching, module execution, and payload generation functions. we can always add more as needed, but this should cover the basics for now. im wracking my brain on what else we might want to add, but i think this is a good starting point for interacting with Metasploit from our environment. we can always expand on this in the future as we see fit.auth, call, client, consoles??? , db, jobs, token???, server, and sessions. we have client, sessions, payload execution and generation, module search, and execution. so we're missing db interaction, job management, and console interaction.
 
-#TODO: Implmeent console interaction, job management, and database interaction functions. we can use the MsfRpcClient to interact with these components of Metasploit, allowing us to manage consoles, jobs, and the database directly from our environment. this will provide a more comprehensive integration with Metasploit and allow us to leverage its full capabilities in our operations. we can start by implementing basic functions for each of these areas and then expand on them as needed to provide more advanced features and functionality.
+#TODO: More Functionality such as:
+#[ ] Database interaction (e.g. adding hosts, services, etc.)
+#[ ] Job management (e.g. listing, stopping jobs)
+#[ ] Console interaction (e.g. creating and interacting with Metasploit consoles)
 
 def _get_client():
     global client
