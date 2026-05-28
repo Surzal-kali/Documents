@@ -12,7 +12,8 @@ from SurzsEnviro.bootstrap import load_env
 ns = load_env()
 print("speak" in ns, "reload_all" in ns, "add_script" in ns)
 PY`
-  - `python3 bootstrap.py` to launch the interactive console; use `exit()` to leave it cleanly
+  - `python3 bootstrap.py` to launch the lightweight standalone console; use `exit()` to leave it cleanly
+  - `python3 bootstrap.py --shell ipython` to launch the same Documents-only environment inside IPython when that dependency is installed
 
 ## High-level architecture
 
@@ -20,6 +21,7 @@ PY`
 - `SurzsEnviro/` is a script-first toolkit, not a normal packaged module tree. Inside that directory, modules use bare imports like `from computerspeak import ComputerSpeak`; the root `SurzsEnviro/bootstrap.py` injects the directory into `sys.path` so those imports still resolve when loaded from the repo root.
 - `SurzsEnviro/bootstrap.py` is the dynamic loader. `load_env()` walks the `SurzsEnviro` namespace, imports every module it can, and exposes modules plus top-level symbols into the REPL namespace. It also binds REPL shortcuts like `reload_all()`, `add_script()`, `cs`, `speak()`, and `ec()`, so imports are part of the runtime bootstrap, not just static organization.
 - `Exploit_Notes/bootstrap.py` is the note-access boundary. It indexes markdown files and exposes direct note helpers like `notes_list()`, `notes_search()`, and `notes_open()` into the interactive console.
+- `bootstrap.py` at the `Documents/` root is the lightweight standalone entry point. It loads `SurzsEnviro/` plus `Exploit_Notes/` without requiring the parent repo or `MGScripts/`, and it defaults to the lower-overhead stdlib REPL unless `--shell ipython` is requested.
 - `SurzsEnviro/target_config.py` is the shared runtime configuration boundary. It stays environment-first by default, prints the active runtime scope values at import time for guardrails, and exposes `prompt_for_missing()` for workflows that really do want interactive prompting.
 - `SurzsEnviro/computerspeak.py` is the common shell/logging layer. Other modules lean on it for cross-platform command execution and for logging command output to `SurzsEnviro/SurzalsNotes/SurzalsTexts/command_log.txt`; `whatprocess.py` and `metasploiting.py` build directly on that wrapper instead of shelling out on their own.
 - `ComputerSpeak.speak()` is the quick note/log helper for the framework; the bootstrap loader exposes it directly in the REPL as `speak()`.

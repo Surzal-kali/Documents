@@ -1,8 +1,9 @@
-# Documents/bootstrap.py
+import argparse
 import code
 import os
 import readline
 import rlcompleter
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -20,6 +21,12 @@ CHEATSHEET="""
 ===========================
  SurzsEnviro Interactive Console
 ===========================
+
+Lightweight standalone mode:
+    python3 bootstrap.py
+
+Optional richer shell when IPython is installed:
+    python3 bootstrap.py --shell ipython
 
 SurzsEnviro (Python Modules)
 -----------------------------------
@@ -146,7 +153,7 @@ def open_notes(text: str):
         temp_file.close()
         os.chmod(temp_file.name, 0o400)
         # Launch editor; pass file as argument. If editor is a simple pager like less, it works.
-        command = editor.split() + [temp_file.name]
+        command = shlex.split(editor) + [temp_file.name]
         try:
             subprocess.run(command)
         except FileNotFoundError:
@@ -160,7 +167,7 @@ def open_notes(text: str):
 
 
 def build_namespace():
-    namespace = {}
+    namespace = {"DOCUMENTS_ROOT": DOCUMENTS_ROOT}
     namespace.update(load_env())
     namespace.update(load_notes())
     namespace["CHEATSHEET"] = CHEATSHEET
@@ -168,17 +175,52 @@ def build_namespace():
     return namespace
 
 
-def launch_repl(namespace=None):
-    if namespace is None:
-        namespace = build_namespace()
-
+def configure_plain_repl(namespace):
     readline.parse_and_bind("tab: complete")
     readline.set_completer(module_aware_completer(namespace))
+
+
+def launch_plain_repl(namespace):
     code.interact(local=namespace, banner=CHEATSHEET)
 
 
-def main():
-    launch_repl()
+def launch_ipython_repl(namespace):
+    from IPython import start_ipython
+
+    print(CHEATSHEET)
+    start_ipython(argv=[], user_ns=namespace, display_banner=False)
+
+
+def launch_repl(namespace=None, shell="plain"):
+    if namespace is None:
+        namespace = build_namespace()
+
+    if shell == "ipython":
+        launch_ipython_repl(namespace)
+        return
+    if shell == "auto":
+        try:
+            launch_ipython_repl(namespace)
+            return
+        except ImportError:
+            pass
+
+    configure_plain_repl(namespace)
+    launch_plain_repl(namespace)
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(
+        description="Launch the standalone Documents console."
+    )
+    parser.add_argument(
+        "--shell",
+        choices=("plain", "ipython", "auto"),
+        default="plain",
+        help="REPL backend to use. Defaults to the lightweight plain shell.",
+    )
+    args = parser.parse_args(argv)
+    launch_repl(shell=args.shell)
 
 
 if __name__ == "__main__":
