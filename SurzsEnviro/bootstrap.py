@@ -11,7 +11,7 @@ from pathlib import Path
 import SurzsEnviro
 #TODO: third party scripts to add:
 #[x] httpx
-#[ ] ffuf
+#[x] ffuf
 #[ ] harvester
 #[ ] hydra
 #[ ] sqlmap
