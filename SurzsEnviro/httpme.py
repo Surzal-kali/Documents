@@ -94,4 +94,3 @@ def http_request(method, url, headers=None, data=None, timeout=5.0):
         'stderr': stderr or None,
     }
 
-
