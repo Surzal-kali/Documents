@@ -2,9 +2,10 @@ import argparse
 import os
 from collections import defaultdict, deque
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from pathlib import Path
 from statistics import mean, pstdev
+from time import sleep
 from typing import Any, Callable
 
 try:
@@ -373,7 +374,13 @@ class PacketSniffer:
 
         print(f"Packet analysis written to {analysis_path}")
         return str(analysis_path)
-
+    
+    def start_thread(self):
+        import threading
+        thread = threading.Thread(target=self.start_sniffing, daemon=True)
+        thread.start()
+        sleep(1)  # Give the thread a moment to start
+        return thread
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Capture and analyze network packets.")
