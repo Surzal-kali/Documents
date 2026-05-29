@@ -10,11 +10,11 @@ import tempfile
 from pathlib import Path
 
 DOCUMENTS_ROOT = Path(__file__).resolve().parent
+NOTES_ROOT = DOCUMENTS_ROOT / "Exploit_Notes"
 documents_root_str = str(DOCUMENTS_ROOT)
 if documents_root_str not in sys.path:
     sys.path.insert(0, documents_root_str)
 
-from Exploit_Notes.bootstrap import load_notes
 from SurzsEnviro.bootstrap import load_env
 
 CHEATSHEET=""" 
@@ -64,10 +64,12 @@ Store state in variables:
 
 -----------------------------------
 
-Browse notes directly from the loaded helpers:
-    notes_list()
-    notes_search("keyword")
-    notes_open("relative/path.md")
+Browse the notes directory directly:
+    NOTES_ROOT
+    list(NOTES_ROOT.rglob("*.md"))
+
+Read a note with Python or IPython:
+    print((NOTES_ROOT / "Category/file.md").read_text())
 """
 def module_aware_completer(namespace):
     # Try to use Jedi if available
@@ -167,9 +169,8 @@ def open_notes(text: str):
 
 
 def build_namespace():
-    namespace = {"DOCUMENTS_ROOT": DOCUMENTS_ROOT}
+    namespace = {"DOCUMENTS_ROOT": DOCUMENTS_ROOT, "NOTES_ROOT": NOTES_ROOT}
     namespace.update(load_env())
-    namespace.update(load_notes())
     namespace["CHEATSHEET"] = CHEATSHEET
     namespace["open_notes"] = open_notes
     return namespace

@@ -12,6 +12,7 @@ try:
 except ModuleNotFoundError:
     pyshark = None
 
+#TODO: Import an easier function to call and resolve event threading and privilige issues. 
 
 _HERE = Path(__file__).resolve().parent
 def _require_pyshark():

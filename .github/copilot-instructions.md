@@ -17,11 +17,10 @@ PY`
 
 ## High-level architecture
 
-- The repo has two main parts that are meant to work together: the `SurzsEnviro/` Python toolkit and the `Exploit_Notes/` markdown knowledge base. The root `bootstrap.py` script loads both into one interactive console so operators can use code and notes in the same session.
+- The repo has two main parts that are meant to work together: the `SurzsEnviro/` Python toolkit and the `Exploit_Notes/` markdown knowledge base. The root `bootstrap.py` script loads the toolkit into one interactive console and exposes the note tree through `DOCUMENTS_ROOT` and `NOTES_ROOT` so operators can use code and notes in the same session.
 - `SurzsEnviro/` is a script-first toolkit, not a normal packaged module tree. Inside that directory, modules use bare imports like `from computerspeak import ComputerSpeak`; the root `SurzsEnviro/bootstrap.py` injects the directory into `sys.path` so those imports still resolve when loaded from the repo root.
 - `SurzsEnviro/bootstrap.py` is the dynamic loader. `load_env()` walks the `SurzsEnviro` namespace, imports every module it can, and exposes modules plus top-level symbols into the REPL namespace. It also binds REPL shortcuts like `reload_all()`, `add_script()`, `cs`, `speak()`, and `ec()`, so imports are part of the runtime bootstrap, not just static organization.
-- `Exploit_Notes/bootstrap.py` is the note-access boundary. It indexes markdown files and exposes direct note helpers like `notes_list()`, `notes_search()`, and `notes_open()` into the interactive console.
-- `bootstrap.py` at the `Documents/` root is the lightweight standalone entry point. It loads `SurzsEnviro/` plus `Exploit_Notes/` without requiring the parent repo or `MGScripts/`, and it defaults to the lower-overhead stdlib REPL unless `--shell ipython` is requested.
+- `bootstrap.py` at the `Documents/` root is the lightweight standalone entry point. It loads `SurzsEnviro/`, exposes `DOCUMENTS_ROOT` and `NOTES_ROOT`, and defaults to the lower-overhead stdlib REPL unless `--shell ipython` is requested.
 - `SurzsEnviro/target_config.py` is the shared runtime configuration boundary. It stays environment-first by default, prints the active runtime scope values at import time for guardrails, and exposes `prompt_for_missing()` for workflows that really do want interactive prompting.
 - `SurzsEnviro/computerspeak.py` is the common shell/logging layer. Other modules lean on it for cross-platform command execution and for logging command output to `SurzsEnviro/SurzalsNotes/SurzalsTexts/command_log.txt`; `whatprocess.py` and `metasploiting.py` build directly on that wrapper instead of shelling out on their own.
 - `ComputerSpeak.speak()` is the quick note/log helper for the framework; the bootstrap loader exposes it directly in the REPL as `speak()`.
@@ -34,8 +33,8 @@ PY`
 - Treat import-time behavior as part of the runtime contract. `target_config.py` announces active scope on import, and `load_env()` depends on module imports having side effects that populate the REPL namespace.
 - Avoid accidental import-time prompts. `target_config.py` is environment-first; call `prompt_for_missing()` only when an interactive workflow really needs prompting for missing values.
 - Prefer existing helper boundaries over new wrappers: `ComputerSpeak` for shell execution/logging, `NetRunning` for network helpers, `WhatProcess` for process/service scheduling actions, `ShellWalker` for shell-history collection, `PacketCraft` for crafted packet generation, `PacketSniffer` for capture/analysis, and `Pfsense` for pfSense API calls.
-- The normal operator workflow is REPL-first. If you change how helpers are exposed or reloaded, preserve `reload_all()`, `notes_reindex()`, and the direct top-level helper exports that `bootstrap.py` makes available.
+- The normal operator workflow is REPL-first. If you change how helpers are exposed or reloaded, preserve `reload_all()`, `DOCUMENTS_ROOT`, `NOTES_ROOT`, and the direct top-level helper exports that `bootstrap.py` makes available.
 - Short local aliases are part of the code style in this toolkit (`cs`, `nr`, `wp`, `fc`, `sw`, `ps`, `tf`). Match them when editing nearby code.
 - Treat runtime outputs as intentional local artifacts. This code writes into `SurzsEnviro/` and `SurzsEnviro/SurzalsNotes/SurzalsTexts/` instead of hiding artifacts in temp directories.
-- Keep `Exploit_Notes/` path semantics stable. The notes loader indexes markdown files recursively and `notes_open()` expects paths relative to the `Exploit_Notes/` root.
+- Keep `Exploit_Notes/` path semantics stable. Notes live under the `Exploit_Notes/` root, and REPL examples should continue to resolve paths from `NOTES_ROOT`.
 - Many older helpers mix return values with `print()` or `ComputerSpeak` side effects. Before refactoring a function to be "cleaner," check whether callers rely on its console/log behavior as much as its return value.
