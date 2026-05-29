@@ -12,7 +12,7 @@ import SurzsEnviro
 #TODO: third party scripts to add:
 #[x] httpx
 #[x] ffuf
-#[ ] harvester
+#[x] harvester
 #[ ] hydra
 #[ ] sqlmap
 #[ ] commix
