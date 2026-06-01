@@ -84,7 +84,7 @@ class HttpMe:
 
         stdout = result.stdout.strip()
         stderr = result.stderr.strip()
-        parsed_output = self.parse_httpx_output(stdout)
+        parsed_output = self.parse_httpx_output(self, output=stdout)
 
         return {
             'ok': result.returncode == 0,
