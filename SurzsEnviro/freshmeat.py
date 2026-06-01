@@ -78,6 +78,4 @@ class FreshMeat:
                 break
     def ctf_run(self):
         """Run in VPN/CTF environment where new devices may appear frequently, and broadcast ARP probing yields no results."""
-if __name__ == "__main__":
-    fresh_meat = FreshMeat()
-    fresh_meat.run()
+        pass 
