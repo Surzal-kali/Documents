@@ -209,7 +209,7 @@ class DissectionEngine:
 
         is_anomaly = any(anomalies.values())
         flow_info = next((flow for flow in active_flows if flow["key"] == tracked_key), None)
-
+    
         return DissectionResult(
             packet_id=str(getattr(packet, "number", "0")),
             protocol=protocol,
@@ -379,7 +379,7 @@ class PacketSniffer:
         import threading
         thread = threading.Thread(target=self.start_sniffing, daemon=True)
         thread.start()
-        sleep(1)  # Give the thread a moment to start
+        sleep(300)  # Give the thread a moment to start
         return thread
 
 def main() -> int:
