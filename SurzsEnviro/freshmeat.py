@@ -74,6 +74,8 @@ class FreshMeat:
                         pass
             else:
                 self.speaker.speak("No new devices detected in the last 30 seconds. Still waiting...")
+                self.speaker.speak("K bye")
+                break
     def ctf_run(self):
         """Run in VPN/CTF environment where new devices may appear frequently, and broadcast ARP probing yields no results."""
 if __name__ == "__main__":
