@@ -8,6 +8,8 @@ from statistics import mean, pstdev
 from time import sleep
 from typing import Any, Callable
 
+from sympy import capture
+
 try:
     import pyshark
 except ModuleNotFoundError:
@@ -231,6 +233,65 @@ class PacketSniffer:
         self.interface = interface or os.getenv("TARGET_INTERFACE", "wlan0")
         self.engine = DissectionEngine()
 
+    def _get_layer_field(self, packet: Any, layer_name: str, field_name: str) -> Any | None:
+        layer = getattr(packet, layer_name, None)
+        if layer is None:
+            return None
+        return getattr(layer, field_name, None)
+
+    def _get_layer_option(self, packet: Any, layer_name: str, option_name: str) -> Any | None:
+        layer = getattr(packet, layer_name, None)
+        if layer is None:
+            return None
+        try:
+            return layer.option_value(option_name)
+        except AttributeError:
+            return None
+
+    def wait_for_new_device(self, timeout: int = 30) -> dict[str, str] | None:
+        """Wait for a new device to connect to the network.
+        Returns a dict {'ip': str|None, 'mac': str|None, 'proto': 'arp'|'bootp'|...}
+        or None if nothing was seen within `timeout`.
+        """
+        _require_pyshark()
+        assert pyshark is not None
+        capture = pyshark.LiveCapture(interface=self.interface, bpf_filter="arp or (udp and port 67)")
+        start_time = datetime.now()
+        try:
+            for packet in capture.sniff_continuously():
+                if (datetime.now() - start_time).total_seconds() > timeout:
+                    break
+
+                arp_layer_present = getattr(packet, "arp", None) is not None
+                arp_op = self._get_layer_field(packet, "arp", "op")
+                if arp_op == "1" or (arp_op is None and arp_layer_present):
+                    new_device_ip = (
+                        self._get_layer_field(packet, "arp", "psrc")
+                        or self._get_layer_field(packet, "ip", "src")
+                    )
+                    new_device_mac = (
+                        self._get_layer_field(packet, "arp", "hwsrc")
+                        or self._get_layer_field(packet, "eth", "src")
+                    )
+                    if not new_device_ip and not new_device_mac:
+                        continue
+                    return {"ip": new_device_ip, "mac": new_device_mac, "proto": "arp"}
+
+                if self._get_layer_option(packet, "bootp", "message-type") == "discover":
+                    new_device_mac = (
+                        self._get_layer_field(packet, "eth", "src")
+                        or self._get_layer_field(packet, "bootp", "chaddr")
+                    )
+                    if not new_device_mac:
+                        continue
+                    return {"ip": None, "mac": new_device_mac, "proto": "bootp"}
+        finally:
+            capture.close()
+
+        return None
+    
+
+    
     def _resolve_path(self, path_value: str) -> Path:
         path = Path(path_value)
         if not path.is_absolute():
@@ -430,6 +491,7 @@ def main() -> int:
 
     parser.print_help()
     return 1
+
 
 
 if __name__ == "__main__":
