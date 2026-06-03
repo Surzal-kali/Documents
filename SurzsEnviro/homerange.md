@@ -1,6 +1,6 @@
 # HOME-RANGE IP AND OBSERVATIONS
 
-This page contains information on 12 different vulnerable machines. Each one is alloted cumutivaly to be completed within the next year. 356 days. They are accessible through the IP addresses provided, and sit between two subnets. 
+This page contains information on 12 different vulnerable machines. Each one is  to be completed within the next year. 356 days. They are accessible through the IP addresses provided, and sit between two subnets. 
 
 # 192.168.56.101 - Debian 10 - "EvilBox: One"
 
