@@ -8,8 +8,6 @@ from statistics import mean, pstdev
 from time import sleep
 from typing import Any, Callable
 
-from sympy import capture
-
 try:
     import pyshark
 except ModuleNotFoundError:
