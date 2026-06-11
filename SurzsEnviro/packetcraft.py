@@ -102,7 +102,10 @@ class PacketCraft:
         """Craft a DNS query packet."""
         packet = IP(src=src_ip, dst=dst_ip) / UDP(sport=random.randint(1024, 65535), dport=53) / DNS(rd=1, qd=DNSQR(qname=query_name))
         return packet
-
+    def craft_arp_request(self, src_mac: str, src_ip: str, target_ip: str) -> scapy.Packet:
+        """Craft an ARP request packet."""
+        packet = Ether(src=src_mac, dst="ff:ff:ff:ff:ff:ff") / ARP(hwsrc=src_mac, psrc=src_ip, hwdst="00:00:00:00:00:00", pdst=target_ip, op=1)
+        return packet
     def dhcp_discover(self, src_mac: str) -> scapy.Packet:
         """Craft a DHCP discover packet."""
         packet = Ether(src=src_mac, dst="ff:ff:ff:ff:ff:ff") / IP(src="0.0.0.0", dst="255.255.255.255") / UDP(sport=68, dport=67) / BOOTP(chaddr=src_mac.replace(":", "")) / DHCP(options=[("message-type", "discover"), "end"])
@@ -159,3 +162,7 @@ class PacketCraft:
         raw_bytes = bytes.fromhex(hex_string)
         return Ether(raw_bytes) if raw_bytes.startswith(b'\x00\x00') else IP(raw_bytes)
 
+    def wait_for_packet(self, filter: str = "", timeout: int = 30) -> scapy.Packet | None:
+        """Wait for a packet matching the filter."""
+        packets = sniff(iface=self.interface, filter=filter, count=1, timeout=timeout)
+        return packets[0] if packets else None

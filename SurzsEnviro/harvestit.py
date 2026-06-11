@@ -1,5 +1,4 @@
 import subprocess
-from markdownify import markdownify as md
 import sys
 
 def harvester_scan(domain:str, output_file:str, search_engine:str="all", args:str=""):
