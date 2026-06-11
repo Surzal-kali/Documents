@@ -214,3 +214,5 @@ if __name__ == "__main__":
 
 
 # （づ￣3￣）づ╭❤️～ Approved.
+# yeah i know you're having trouble rendering. sorry. 
+#its kind of the calling card bud. 
