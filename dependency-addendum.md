@@ -88,4 +88,4 @@ BAM YOU'RE DONE THE JOURNEY IS OVER.
 
 oh and btw, with minimal dependencies we're forcasting about 625MiB Idling. (kali-rolling minimal install specs)
 
-you're welcome
+you're welcomed
