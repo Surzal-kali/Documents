@@ -7,7 +7,7 @@ from pathlib import Path
 from statistics import mean, pstdev
 from time import sleep
 from typing import Any, Callable
-
+import time 
 try:
     import pyshark
 except ModuleNotFoundError:
