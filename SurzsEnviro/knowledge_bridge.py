@@ -1,4 +1,5 @@
 import os
+import ollama
 from typing import List
 
 try:
