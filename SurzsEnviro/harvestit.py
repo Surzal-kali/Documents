@@ -10,7 +10,7 @@ def harvester_scan(domain:str, output_file:str, search_engine:str="all", args:st
     ]
     if args:
         command.extend(args.split())
-    try:
+    try: # handle potential errors when running the command
         result = subprocess.run(command, capture_output=True, text=True, check=True)
         print(f"Scan completed successfully. Output saved to {output_file}")
     except subprocess.CalledProcessError as e:
