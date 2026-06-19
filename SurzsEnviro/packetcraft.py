@@ -10,6 +10,7 @@ import time
 import cryptography
 from scapy.all import sr1, send, sniff, hexdump, Raw, sendp
 from target_config import TARGET_INTERFACE, TARGET_IP, TARGET_RANGE
+#a love letter to APT tactics and the "slow and steady wins the rest" mentality. Why have a script shit a thousand packets when a few will do the job? Especially for logging purposes!!! always know what your network traffic is doing.
 class PacketCraft:
     def __init__(self, interface: str = TARGET_INTERFACE):
         self.interface = interface
@@ -166,3 +167,5 @@ class PacketCraft:
         """Wait for a packet matching the filter."""
         packets = sniff(iface=self.interface, filter=filter, count=1, timeout=timeout)
         return packets[0] if packets else None
+    
+    #its very manual tho, no longer fits the "autonomous" vibe of the rest of the repo. 

@@ -8,18 +8,15 @@ import pickle
 import pkgutil
 import sys
 from pathlib import Path
-import SurzsEnviro
-#TODO: third party scripts to add:
-#[x] httpx
-#[x] ffuf
-#[x] harvester
-#[ ] hydra
-#[ ] sqlmap
-#[ ] commix
 
-_enviro_path = str(Path(__file__).parent)
-if _enviro_path not in sys.path:
-    sys.path.insert(0, _enviro_path)
+_enviro_root = Path(__file__).resolve().parent
+_documents_root = _enviro_root.parent
+for candidate in (_documents_root, _enviro_root):
+    candidate_str = str(candidate)
+    if candidate_str not in sys.path:
+        sys.path.insert(0, candidate_str)
+
+import SurzsEnviro
 
 
 def _serialized_callable_name(content) -> str:

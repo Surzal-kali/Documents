@@ -7,16 +7,14 @@ from pathlib import Path
 from statistics import mean, pstdev
 from time import sleep
 from typing import Any, Callable
-
-from sympy import capture
-
+import time
 try:
     import pyshark
 except ModuleNotFoundError:
     pyshark = None
 
 #TODO: Import an easier function to call and resolve event threading and privilige issues. 
-
+# (oh yeah heheh i set these TODOs like 2 months ago and forgot about them, oops)
 _HERE = Path(__file__).resolve().parent
 def _require_pyshark():
     if pyshark is None:

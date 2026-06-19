@@ -6,7 +6,7 @@ from computerspeak import ComputerSpeak as cs
 from netrunning import NetRunning as nr
 from metasploiting import search_modules, execute_module, list_sessions, _get_client
 #This module is going to be redistributed and refactored based on directory aligned platform specific modules. This is just a placeholder and general ideapad of how it would look in each in py.
-
+#my crowning jewel. i love this class, it was back when i didn't understand msf and wanted to emulate it with pure python. it's a bit rough around the edges but it works and is pretty fun to use. it's also a great example of how to use the cs and nr classes together to create something useful.
 class WhatProcess:
     CRON_NICKNAMES = {
         "hourly": "@hourly",
@@ -113,7 +113,7 @@ class WhatProcess:
             }
         return resource_usage
 
-
+#my first OMG IT WORKIE Moment.
     def inject_into_process(self, pid: int, payload: str):
         """Inject a payload into a process by its PID. This function takes a process ID (PID) and a payload string as input and attempts to inject the payload into the specified process. It uses different commands based on the operating system (Windows or Unix-like) to perform the injection. The function includes error handling to catch and report any issues that may arise during the injection process, and it provides feedback on whether the payload was successfully injected or if an error occurred."""
 
@@ -192,7 +192,7 @@ class WhatProcess:
             self.kill_process(int(details["pid"]))
         except Exception as e:
             print(f"Error killing process '{process_name}': {e}")
-
+#TODO: need to have this read our payload folder and escelate with the payloads we have. maybe even have it read a config file for custom payloads and commands. that would be pretty neat! for now its dead weight however its a nice placeholder for the idea of having a function that can elevate privileges with custom payloads.
     def elevate_privileges(self, pid: int):
         """Attempt to elevate privileges of a process by its PID. This function takes a process ID (PID) as input and attempts to elevate the privileges of the specified process. It uses different commands based on the operating system (Windows or Unix-like) to perform the privilege escalation. The function includes error handling to catch and report any issues that may arise during the elevation process, and it provides feedback on whether the privileges were successfully elevated or if an error occurred."""
         try:
@@ -213,4 +213,3 @@ if __name__ == "__main__":
     wpi.remove_cron_job("echo 'Hello, World!'")
 
 
-# （づ￣3￣）づ╭❤️～ Approved.

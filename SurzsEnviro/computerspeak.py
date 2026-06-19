@@ -88,3 +88,5 @@ class ComputerSpeak:
 if __name__ == "__main__":
     csi = ComputerSpeak()
     csi.speak("Hello, this is a test message from ComputerSpeak!")
+
+    #need to build this out for YOU my ai assistant specifically to bridge the gap between python and shell commands. its going to be a bit rough around the edges but it should work for the most part. we can always refactor later if we need to. (it is my fav function despite being a subproccess wrapper)
