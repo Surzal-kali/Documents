@@ -17,13 +17,7 @@ for candidate in (_documents_root, _enviro_root):
         sys.path.insert(0, candidate_str)
 
 import SurzsEnviro
-#TODO: third party scripts to add:
-#[x] httpx
-#[x] ffuf
-#[x] harvester
-#[ ] hydra
-#[ ] sqlmap
-#[ ] commix
+
 
 def _serialized_callable_name(content) -> str:
     name = getattr(content, "__name__", "") or "saved_callable"

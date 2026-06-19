@@ -14,7 +14,7 @@ except ModuleNotFoundError:
     pyshark = None
 
 #TODO: Import an easier function to call and resolve event threading and privilige issues. 
-
+# (oh yeah heheh i set these TODOs like 2 months ago and forgot about them, oops)
 _HERE = Path(__file__).resolve().parent
 def _require_pyshark():
     if pyshark is None:

@@ -2,8 +2,8 @@ import os
 import shlex
 import subprocess
 from computerspeak import ComputerSpeak as cs
-
-try: #im not sure if this is the best way to handle this, but it should work for now. we can always refactor later if we need to.
+#THE PROPER WAY TO MSF GODDANGET. Never got it to work well tho. 
+try: 
     from pymetasploit3.msfrpc import MsfRpcClient
 except ImportError as exc:
     MsfRpcClient = None
@@ -25,7 +25,7 @@ def _log_action(message):
 # so we have login, database status, session listing, module searching, module execution, and payload generation functions. we can always add more as needed, but this should cover the basics for now. im wracking my brain on what else we might want to add, but i think this is a good starting point for interacting with Metasploit from our environment. we can always expand on this in the future as we see fit.auth, call, client, consoles??? , db, jobs, token???, server, and sessions. we have client, sessions, payload execution and generation, module search, and execution. so we're missing db interaction, job management, and console interaction.
 
 #TODO: More Functionality such as:
-#[ ] Database interaction (e.g. adding hosts, services, etc.)
+#[ ] Database interaction (e.g. adding hosts, services, etc.) need to have this read our recon folder and add hosts and services based on our findings. that would be pretty neat! for now its dead weight however its a nice placeholder for the idea of having a function that can interact with the msf database and add our recon findings to it.
 #[ ] Job management (e.g. listing, stopping jobs)
 #[ ] Console interaction (e.g. creating and interacting with Metasploit consoles)
 

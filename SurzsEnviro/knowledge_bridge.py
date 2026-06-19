@@ -4,7 +4,7 @@ from typing import List
 
 try:
     import numpy as np
-    from sentence_transformers import SentenceTransformer
+    from sentence_transformers import SentenceTransformer 
 except ImportError as e:
     raise ImportError(
         "Missing dependencies. Run: pip install ollama numpy sentence-transformers"
@@ -90,8 +90,7 @@ ANSWER:"""
         except Exception as e:
             return f"Error connecting to Ollama: {str(e)}. Ensure 'ollama serve' is running."
 
-# GLOBAL INSTANCE FOR REPL EQUIVALENCY
-# This ensures the indexing happens once at startup, not on every call.
+#this....this isn't necessary anymore. we can just have a single instance of this that the REPL calls. no need for a class method. i mean, open web ui synthesizes the collection, and i can point out exact books in visual studio code when we work here. 
 _assistant = KnowledgeAssistant()
 
 def ask_notes(query: str) -> str:
@@ -101,4 +100,3 @@ def ask_notes(query: str) -> str:
     """
     return _assistant.ask(query)
 
-#haha you don't need to import this, just call ask_notes("your question") in the REPL! mmm somethings erroring tho poor thing

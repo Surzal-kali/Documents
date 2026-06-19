@@ -4,6 +4,7 @@ from computerspeak import ComputerSpeak
 import time
 from packetcraft import PacketCraft
 from netrunning import NetRunning
+#ok ai assistant's take on the FRESHMEAT class is (honeypot was a better idea than i had)
 class FreshMeat:
     def __init__(self):
         self.sniffer = PacketSniffer()
@@ -76,6 +77,6 @@ class FreshMeat:
                 self.speaker.speak("No new devices detected in the last 30 seconds. Still waiting...")
                 self.speaker.speak("K bye")
                 break
-    def ctf_run(self):
+    def ctf_run(self): #this is the part i gotta fixeth. 
         """Run in VPN/CTF environment where new devices may appear frequently, and broadcast ARP probing yields no results."""
         pass 
