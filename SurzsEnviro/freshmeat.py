@@ -5,6 +5,8 @@ import time
 from packetcraft import PacketCraft
 from netrunning import NetRunning
 #ok ai assistant's take on the FRESHMEAT class is (honeypot was a better idea than i had)
+
+#so originally,, for my capstone I had the idea to build this out as the beginning "detector" for the presentation's automated exploit chain at work. The idea was to have it run in the background, and when a new device connected to the network, it would detect it, speak out loud about it, and then attempt to interact with it (send ARP requests, do some basic HTTP probing, etc). Critically, we'd hardcode the presentation logic to the MAC and IP of our "victim" machine, so no one accidentally gets anything. 
 class FreshMeat:
     def __init__(self):
         self.sniffer = PacketSniffer()

@@ -162,4 +162,17 @@ class NetRunning:
         except Exception as e:
             print(f"An unexpected error occurred while connecting to {host} on SSH port: {e}")
             return False
- 
+
+
+#i used to have alot more in here lol. 
+
+    @staticmethod
+    def bring_out_your_dead(host, port, payload):
+        """Send a payload to a target host and port using an HTTP POST request. This function uses the requests library to send the payload as data in the POST request. It returns the response from the server, which can be used to verify if the payload was successfully received and processed by the target host."""
+        url = f"http://{host}:{port}"
+        try:
+            response = requests.post(url, data=payload)
+            return response
+        except requests.RequestException as e:
+            print(f"An error occurred while sending the payload to {url}: {e}")
+            return None 
